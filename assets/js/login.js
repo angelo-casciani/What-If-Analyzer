@@ -1,11 +1,10 @@
 function login(){
-    // Set initial login status to false
+    // Retrieve isLoggedIn value
     var isLoggedIn = localStorage.getItem("isLoggedIn");
 
-    // If user is logged in, redirect to homepage
+    // If user is logged in, redirect to orderpage
     if (isLoggedIn) {
-        console.log("LOGGED IN!");
-        window.location.href = "homepage.html";
+        window.location.href = "orderpage.html";
     }
 
     // Add event listener for login form submission
@@ -13,19 +12,18 @@ function login(){
         //event.preventDefault();
         console.log(document.getElementById("password").value)
         // Authenticate user (replace with your own authentication logic)
-        var companyId = document.getElementById("company-id").value;
+        var personalId = document.getElementById("personal-id").value;
         var password = document.getElementById("password").value;
         
-        if (typeof companyId === "string" && isInt(password)) {
+        if (typeof personalId === "string" && isInt(password)) {
             // Set login status to true
             isLoggedIn = true;
-            console.log("LOGGED IN!");
             
             // Store login status in local storage
             localStorage.setItem("isLoggedIn", "true");
             
-            // Redirect to homepage
-            window.location.href = "homepage.html";
+            // Redirect to orderpage
+            window.location.href = "orderpage.html";
         } else {
             alert("Invalid login credentials.");
         }
@@ -35,9 +33,25 @@ function login(){
 
 
 function isInt(value) {
+    // Return true if the value is a Number
     return !isNaN(value) && 
            parseInt(Number(value)) == value && 
            !isNaN(parseInt(value, 10));
-  }
+}
 
 
+function checkLogin() {
+    if (!localStorage.getItem('isLoggedIn')) {
+        // User is not logged in, redirect to index
+        window.location.href = 'index.html';
+    }
+}
+
+function logout(){
+    if (localStorage.getItem("isLoggedIn")){
+        localStorage.removeItem("isLoggedIn");
+        checkLogin();
+        alert("Logged Out Successfully!");
+    }
+    
+}

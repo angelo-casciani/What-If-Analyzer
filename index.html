@@ -1,33 +1,63 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Login</title>
+		<title>Login - What If Analyzer</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body onload="login()" class="index is-preload">
-		<h1>Login</h1>
-		<form id="login-form">
-			<label for="company-id">Company ID:</label>
-			<input type="text" id="company-id" name="company-id"><br><br>
-			<label for="password">Password:</label>
-			<input type="password" id="password" name="password"><br><br>
-			<input type="submit" value="Login">
-		</form>
-		
+		<div id="page-wrapper">
+			<!-- Banner -->
+				<section id="banner">
 
-		<!-- Scripts -->
-		<script src="assets/js/login.js"></script>
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery.dropotron.min.js"></script>
-		<script src="assets/js/jquery.scrolly.min.js"></script>
-		<script src="assets/js/jquery.scrollex.min.js"></script>
-		<script src="assets/js/browser.min.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/main.js"></script>
+					<!--
+						".inner" is set up as an inline-block so it automatically expands
+						in both directions to fit whatever's inside it. This means it won't
+						automatically wrap lines, so be sure to use line breaks where
+						appropriate (<br />).
+					-->
+					<div class="inner">
+						<header>
+							<h2>What If Analyzer</h2>
+						</header>
+						<p>Here to assist your <strong>decision making process</strong></p>
+							
+					</div>
+					
+					<br><br>
 
+					<div class="wrapper style1 container special-alt">
+						<form id="login-form">
+							<label for="personal-id">Personal ID:</label>
+							<input type="text" id="personal-id" name="personal-id" style="border: 1px solid white;"><br><br>
+							<label for="password">Password:</label>
+							<input type="password" id="password" name="password" style="border: 1px solid white;"><br><br>
+							<input type="submit" value="Login">
+						</form>
+					</div>			
+				
+				</section>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<ul class="copyright">
+						<li><a href="https://github.com/AngeloC99">Angelo Casciani</a></li><li>Human Computer Interaction</li><li>2023</li>
+					</ul>
+				</footer>
+
+		</div>
+
+				<!-- Scripts -->
+				<script src="assets/js/login.js"></script>
+				<script src="assets/js/jquery.min.js"></script>
+				<script src="assets/js/jquery.dropotron.min.js"></script>
+				<script src="assets/js/jquery.scrolly.min.js"></script>
+				<script src="assets/js/jquery.scrollex.min.js"></script>
+				<script src="assets/js/browser.min.js"></script>
+				<script src="assets/js/breakpoints.min.js"></script>
+				<script src="assets/js/util.js"></script>
+				<script src="assets/js/main.js"></script>
 	</body>
 </html>

@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+    <title>Insert Order - What If Analyzer</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body onload="checkLogin()" class="index is-preload">
+      <div id="page-wrapper">
+
+          <!-- Header -->
+				<header id="header">
+					<h1 id="logo">What If Analyzer</a></h1>
+					<nav id="nav">
+						<ul>
+			
+							<li><a onclick="logout()" class="button primary">Logout</a></li>
+						</ul>
+					</nav>
+				</header>
+  
+        <!-- Main -->
+          <article id="main">
+  
+            <header class="special container">
+              <span class="icon solid fa-envelope"></span>
+              <h2>Insert New Order</h2>
+              <p>Use the form below to insert a new order.</p>
+            </header>
+
+
+              <section class="wrapper style4 special container large">
+
+                <!-- Content -->
+                  <div class="content">
+                    <form>
+                      <div class="row gtr-50">
+                        <div class="col-6 col-12-mobile" style="display: flex; flex-direction: row;">
+                          <label for="personal-id" >Customer:</label>
+                          <input type="text" id="customer" name="customer" style="border: 1px solid; margin-left: 30px; padding: 0%;">
+                        </div>
+                        <div class="col-12 col-12-mobile" style="display: flex; flex-direction: row;">
+                          <label for="endOrderDate" style="margin-right: 23px;">End Order:</label>
+                          <input id="endOrderDate" type="datetime-local" style="border: 1px solid;" name="endOrderDate" max="9999-12-31T23:59" />
+                        </div>
+                        
+                        <div class="col-6 col-12-mobile" style="display: flex; flex-direction: column;">
+                          <label for="product" >Product:</label>
+                          <select name="product" class="product">
+                            <option value="" selected disabled>Select a product:</option>
+                            <option value="bidet" >Bidet</option>
+                          </select>
+                        </div>
+
+
+                        <div class="col-4 col-12-mobile">
+                          
+                          <select name="product" class="product">
+                            <option value="" selected disabled>Select a product:</option>
+                          </select>
+                        </div>
+                        <div class="col-4 col-12-mobile">
+                          <select name="type" class="type">
+                            <option value="" selected disabled>Select a type:</option>
+                          </select>
+                        </div class="col-4 col-12-mobile">
+                          <input type="text" id="quantity" name="quantity" style="border: 1px solid; margin-left: 30px; padding: 0%;" oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                        <div>
+
+                        </div>
+                         
+
+                        <div class="col-12">
+                          <ul class="buttons">
+                            <li><input type="submit" class="special" value="Submit Order" /></li>
+                          </ul>
+                        </div>
+                      </div>
+
+
+             
+
+                      
+
+                    </form>
+                  </div>
+  
+              </section>
+  
+          </article>
+
+    
+    
+  
+
+			<!-- Footer -->
+				<footer id="footer">
+					<ul class="copyright">
+						<li><a href="https://github.com/AngeloC99">Angelo Casciani</a></li><li>Human Computer Interaction</li><li>2023</li>
+					</ul>
+				</footer>
+
+		</div>
+
+				<!-- Scripts -->
+				<script src="assets/js/login.js"></script>
+				<script src="assets/js/jquery.min.js"></script>
+				<script src="assets/js/jquery.dropotron.min.js"></script>
+				<script src="assets/js/jquery.scrolly.min.js"></script>
+				<script src="assets/js/jquery.scrollex.min.js"></script>
+				<script src="assets/js/browser.min.js"></script>
+				<script src="assets/js/breakpoints.min.js"></script>
+				<script src="assets/js/util.js"></script>
+				<script src="assets/js/main.js"></script>
+	</body>
+</html>
