@@ -53,5 +53,4 @@ function logout(){
         checkLogin();
         alert("Logged Out Successfully!");
     }
-    
 }
