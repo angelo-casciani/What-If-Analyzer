@@ -95,44 +95,46 @@
 
 })(jQuery);
 
+var productsAvailable = {
+    "option1": { value: "option1", text: "MONOB", flagAvailable: true },
+    "option2": { value: "option2", text: "VASIS", flagAvailable: true },
+    "option3": { value: "option3", text: "VASO", flagAvailable: true },
+    "option4": { value: "option4", text: "LAVABI", flagAvailable: true },
+    "option5": { value: "option5", text: "BIDET", flagAvailable: true },
+    "option6": { value: "option6", text: "BIDES", flagAvailable: true },
+}
+
+var monobAvailable = {
+    "option1": { value: "option1", text: "MPZN", flagAvailable: true },
+}
+
+var vasisAvailable = {
+    "option1": { value: "option1", text: "VS55N", flagAvailable: true },
+}
+
+var vasoAvailable = {
+    "option1": { value: "option1", text: "VP45", flagAvailable: true },
+}
+
+var lavabiAvailable = {
+    "option1": { value: "option1", text: "50ZN", flagAvailable: true },
+    "option2": { value: "option2", text: "10DOFC", flagAvailable: true },
+}
+
+var bidetAvailable = {
+    "option1": { value: "option1", text: "BI55", flagAvailable: true },
+}
+
+var bidesAvailable = {
+    "option1": { value: "option1", text: "BS55N", flagAvailable: true },
+}
+
+var flagCorrectDate = false
+var flagCorrectTable = false
+
+
 $(document).ready(function () {
-    var productsAvailable = {
-        "option1": { value: "option1", text: "MONOB", flagAvailable: true },
-        "option2": { value: "option2", text: "VASIS", flagAvailable: true },
-        "option3": { value: "option3", text: "VASO", flagAvailable: true },
-        "option4": { value: "option4", text: "LAVABI", flagAvailable: true },
-        "option5": { value: "option5", text: "BIDET", flagAvailable: true },
-        "option6": { value: "option6", text: "BIDES", flagAvailable: true },
-    }
-
-    var monobAvailable = {
-        "option1": { value: "option1", text: "MPZN", flagAvailable: true },
-    }
-
-    var vasisAvailable = {
-        "option1": { value: "option1", text: "VS55N", flagAvailable: true },
-    }
-
-    var vasoAvailable = {
-        "option1": { value: "option1", text: "VP45", flagAvailable: true },
-    }
-
-    var lavabiAvailable = {
-        "option1": { value: "option1", text: "50ZN", flagAvailable: true },
-        "option2": { value: "option2", text: "10DOFC", flagAvailable: true },
-    }
-
-    var bidetAvailable = {
-        "option1": { value: "option1", text: "BI55", flagAvailable: true },
-    }
-
-    var bidesAvailable = {
-        "option1": { value: "option1", text: "BS55N", flagAvailable: true },
-    }
-
-    var flagCorrectDate = false
-    var flagCorrectTable = false
-
+    
 
     $("#addProduct").on("click", function () {
         $("#myTable").append("<tr>"
@@ -605,9 +607,74 @@ $(document).ready(function () {
     })
 })
 
+function readTableContent() {
+    var table = document.getElementById("myTable");
+    order = [];
+    for (var i = 1; i < table.rows.length; i++) {
+      var row = table.rows[i];
+      var selectElements = row.querySelectorAll("select");
+      var selectedValues = [];
+      for (var j = 0; j < selectElements.length; j++) {
+        var selectElement = selectElements[j];
+        var selectedValue = selectElement.options[selectElement.selectedIndex].value;
+        selectedValues.push(selectedValue);
+      }
+      order[i-1] = selectedValues;
+    }
 
+    var input = table.querySelectorAll(".quantity"); 
+    for (var j = 0; j < input.length; j++) {
+        order[j].push(input[j].value);
+    }
 
-function submit(){
-	alert("Submitted!");
-    window.location.href = 'submitted.html';
+    for (var i = 0; i < order.length; i++) {
+        order[i][0] = productsAvailable[order[i][0]]['text'];
+        switch (order[i][0]) {
+            case "MONOB":
+                order[i][1] = monobAvailable[order[i][1]]['text'];
+                break
+            case "VASIS":
+                order[i][1] = vasisAvailable[order[i][1]]['text'];
+                break
+            case "VASO":
+                order[i][1] = vasoAvailable[order[i][1]]['text'];
+                break
+            case "LAVABI":
+                order[i][1] = lavabiAvailable[order[i][1]]['text'];
+                break
+            case "BIDET":
+                order[i][1] = bidetAvailable[order[i][1]]['text'];
+                break
+            case "BIDES":
+                order[i][1] = bidesAvailable[order[i][1]]['text'];
+                break
+        }
+        
+    }
+    sessionStorage.setItem('order', JSON.stringify(order));
+
+    const test = sessionStorage.getItem('order');
+    order = JSON.parse(test);
+    console.log(order);
 }
+
+function submitForm() {
+    var form = document.forms["myForm"];
+    
+    var customer = form.elements["customer"];
+    var endDate = form.elements["endOrderDate"];
+
+    sessionStorage.setItem('customer', JSON.stringify(customer.value));
+    sessionStorage.setItem('endDate', JSON.stringify(endDate.value));
+
+    const test = sessionStorage.getItem('customer');
+    const test1 = sessionStorage.getItem('endDate');
+    customer = JSON.parse(test);
+
+    endDate = JSON.parse(test1);
+
+    console.log(customer);
+    console.log(endDate);
+    readTableContent();
+    //window.location.href = 'submitted.html';
+  }
