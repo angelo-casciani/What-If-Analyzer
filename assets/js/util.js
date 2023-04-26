@@ -585,3 +585,8 @@
 	};
 
 })(jQuery);
+
+function redirectToOrder() {
+    sessionStorage.clear();
+    window.location.href = 'orderpage.html';
+}

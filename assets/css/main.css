@@ -3344,4 +3344,9 @@ input, select, textarea {
 	.myTable {
 		border-collapse: separate;
 		border-spacing: 20px;
-	  }	
+		border: #1c2021 1px solid;
+	  }
+	
+	.quantity {
+		border: 1px solid;
+	}

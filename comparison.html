@@ -1,13 +1,13 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Order Confirmation - What If Analyzer</title>
+		<title>Scenarios Comparison - What If Analyzer</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
-	<body class="index is-preload" onload="populatePage()">
+	<body class="index is-preload">
 		<div id="page-wrapper">
 
 			<!-- Header -->
@@ -15,6 +15,14 @@
                 <h1 id="logo">What If Analyzer</a></h1>
                 <nav id="nav">
                     <ul>
+                        <li class="submenu">
+                            <a href="#">Top 3 Scenarios </a>
+                            <ul>
+                                <li><a href="#">Scenario 1</a></li>
+                                <li><a href="#">Scenario 2</a></li>
+                                <li><a href="#">Scenario 3</a></li>
+                            </ul>
+                        </li>
                         <li><a onclick="redirectToOrder()" class="button" style="border: 1px solid;">New Order</a></li>
                         <li><a onclick="logout()" class="button primary">Logout</a></li>
                     </ul>
@@ -25,34 +33,24 @@
 			<!-- Main -->
 			<article id="main">
 				<header class="special container">
-					<span class="icon solid featured fa-check"></span>
-                    <h2>The order has been <strong>correctly</strong>
-                    <br />
-                    inserted in the system.</h2>
-                    Here, you can review the details.
+					<span class="icon solid fa-chart-bar"></span>
+                    <h2><strong>Top 3 Scenarios Comparison</strong></h2>
+                    Here, you can graphically compare the top 3 production scenarios.
 				</header>
-				<section class="wrapper style2 container special-alt">
+				<section class="wrapper style4 container special-alt">
 					<div class="row gtr-50">
-						<div class="col-8 col-12-narrower">
-                            <p id="cust"><strong>Customer</strong>: </p>
-                            <p id="date"><strong>End Order</strong>: </p>
-                            <div>
-                                <table id="myTable" class="myTable" style="border: 1px solid white;">
-                                        <tr class="table-header">
-                                            <td class="table-cell product-header"><strong>Product</strong>:</td>
-                                            <td class="table-cell type-header"><strong>Type</strong>:</td>
-                                            <td class="table-cell quantity-header"><strong>Quantity</strong>:</td>
-                                        </tr>
-                                    </table>
+						<div class="col-12 col-12-narrower">
+                            
+                            <div style="text-align: center;">
+                                <a href="comparisonDetails.html" class="button">Show Details</a>
                             </div>
-                            <footer>
-                                <ul class="buttons">
-                                    <li><a href="comparison.html" class="button">Go To Scenarios</a></li>
-                                </ul>
-                            </footer>
-						</div>        
+                            
+						</div>       
+                    </div> 
 				</section>
 			</article>
+
+			
 
 			<!-- Footer -->
             <footer id="footer">
@@ -72,7 +70,7 @@
 		<script src="assets/js/browser.min.js"></script>
 		<script src="assets/js/breakpoints.min.js"></script>
 		<script src="assets/js/util.js"></script>
-		<script src="assets/js/submitted.js"></script>
+        <script src="assets/js/main.js"></script>
 
 	</body>
 </html>

@@ -149,7 +149,7 @@ $(document).ready(function () {
             + "</select>"
             + "</td>"
             + "<td>"
-            + "<input class=\"quantity\" type=\"text\"  oninput=\"this.value = this.value.replace(/[^0-9]/g, '');\"/>"
+            + "<input class=\"quantity\" type=\"text\" style=\"border: 1px solid;\" oninput=\"this.value = this.value.replace(/[^0-9]/g, '');\"/>"
             + "</td>"
             + "<td>"
             + "<input id=\"removeProduct\" name=\"removeProduct\" type=\"button\" value=\"Remove Product\"/>"
@@ -653,9 +653,6 @@ function readTableContent() {
     }
     sessionStorage.setItem('order', JSON.stringify(order));
 
-    const test = sessionStorage.getItem('order');
-    order = JSON.parse(test);
-    console.log(order);
 }
 
 function submitForm() {
@@ -667,14 +664,6 @@ function submitForm() {
     sessionStorage.setItem('customer', JSON.stringify(customer.value));
     sessionStorage.setItem('endDate', JSON.stringify(endDate.value));
 
-    const test = sessionStorage.getItem('customer');
-    const test1 = sessionStorage.getItem('endDate');
-    customer = JSON.parse(test);
-
-    endDate = JSON.parse(test1);
-
-    console.log(customer);
-    console.log(endDate);
     readTableContent();
-    //window.location.href = 'submitted.html';
-  }
+    window.location.href = 'submitted.html';
+}
