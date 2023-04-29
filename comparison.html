@@ -7,7 +7,7 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
-	<body class="index is-preload">
+	<body class="index is-preload" onload="fillData()">
 		<div id="page-wrapper">
 
 			<!-- Header -->
@@ -38,6 +38,8 @@
                     Here, you can graphically compare the top 3 production scenarios.
 				</header>
 				<section class="wrapper style4 container special-alt">
+					<p id="cust"><strong>Customer</strong>: </p>
+					<p id="date"><strong>End Order</strong>: </p>
 					<div class="row gtr-50">
 						<div class="col-12 col-12-narrower">
                             
@@ -71,6 +73,7 @@
 		<script src="assets/js/breakpoints.min.js"></script>
 		<script src="assets/js/util.js"></script>
         <script src="assets/js/main.js"></script>
+		<script src="assets/js/scenario.js"></script>
 
 	</body>
 </html>

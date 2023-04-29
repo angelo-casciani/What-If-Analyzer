@@ -667,3 +667,7 @@ function submitForm() {
     readTableContent();
     window.location.href = 'submitted.html';
 }
+
+
+
+

@@ -9,19 +9,15 @@ function login(){
 
     // Add event listener for login form submission
     document.getElementById("login-form").addEventListener("submit", function(event) {
-        //event.preventDefault();
-        console.log(document.getElementById("password").value)
         // Authenticate user (replace with your own authentication logic)
         var personalId = document.getElementById("personal-id").value;
         var password = document.getElementById("password").value;
         
         if (typeof personalId === "string" && isInt(password)) {
-            // Set login status to true
-            isLoggedIn = true;
-            
+
             // Store login status in local storage
             localStorage.setItem("isLoggedIn", "true");
-            
+          
             // Redirect to orderpage
             window.location.href = "orderpage.html";
         } else {
@@ -54,3 +50,6 @@ function logout(){
         alert("Logged Out Successfully!");
     }
 }
+
+
+    
