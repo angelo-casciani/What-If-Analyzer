@@ -5,7 +5,9 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/bar_chart.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script src="https://d3js.org/d3.v5.min.js"></script>
 	</head>
 	<body class="index is-preload" onload="fillData()">
 		<div id="page-wrapper">
@@ -38,10 +40,24 @@
                     Here, you can graphically compare the top 3 production scenarios.
 				</header>
 				<section class="wrapper style4 container special-alt">
-					<p id="cust"><strong>Customer</strong>: </p>
-					<p id="date"><strong>End Order</strong>: </p>
 					<div class="row gtr-50">
 						<div class="col-12 col-12-narrower">
+							
+							<div id='layout'>
+								<div id='container'>
+								  <svg />
+								</div>
+							</div>
+
+							<div id='layout'>
+								<div id='containerTime'></div>
+							</div>
+
+							<div id='layout'>
+								<div id='containerMould'></div>
+							</div>
+
+						</br>
                             <div style="text-align: center;">
                                 <a href="comparisonDetails.html" class="button">Show Details</a>
                             </div>
@@ -51,7 +67,7 @@
 				</section>
 			</article>
 
-			
+
 
 			<!-- Footer -->
             <footer id="footer">
