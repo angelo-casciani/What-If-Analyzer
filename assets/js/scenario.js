@@ -1,14 +1,17 @@
 function fillData() {
-    scenario1 = JSON.parse(localStorage.getItem('scenario1'));
-    scenario2 = JSON.parse(localStorage.getItem('scenario2'));
-    scenario3 = JSON.parse(localStorage.getItem('scenario3'));
-    chooseScenarios();
-    insertCost();
-    insertTime();
-    insertMould();
+    chooseScenarios(setScenarios);
 }
 
-function chooseScenarios() {
+function setScenarios() {
+    var scenario1 = JSON.parse(localStorage.getItem('scenario1'));
+    var scenario2 = JSON.parse(localStorage.getItem('scenario2'));
+    var scenario3 = JSON.parse(localStorage.getItem('scenario3'));
+    insertCost(scenario1,scenario2,scenario3);
+    insertTime(scenario1,scenario2,scenario3);
+    insertMould(scenario1,scenario2,scenario3);
+}
+
+function chooseScenarios(callback) {
     if(!localStorage.getItem('scenarios')) {
         var nums = new Set();
         while (nums.size < 3) {
@@ -17,50 +20,33 @@ function chooseScenarios() {
         var scenarios = [...nums];
         localStorage.setItem('scenarios', JSON.stringify(scenarios));
     }
-    
-    scenarios = JSON.parse(localStorage.getItem('scenarios'));
-    url_request = [`http://localhost:8000/simulations/scenario${scenarios[0]}.json`, `http://localhost:8000/simulations/scenario${scenarios[1]}.json`, `http://localhost:8000/simulations/scenario${scenarios[2]}.json`];
 
-    if(!localStorage.getItem('scenario1')) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", url_request[0], true);
-        xhr.onload = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var data = JSON.parse(xhr.responseText);
-            localStorage.setItem('scenario1', JSON.stringify(data));
-        }
-        };
-        xhr.send();
-        
-    }
+    var scenarios = JSON.parse(localStorage.getItem('scenarios'));
+    const url_requests = [`http://localhost:8000/simulations/scenario${scenarios[0]}.json`, `http://localhost:8000/simulations/scenario${scenarios[1]}.json`, `http://localhost:8000/simulations/scenario${scenarios[2]}.json`];
 
-    if(!localStorage.getItem('scenario2')) {
-        var xhr2 = new XMLHttpRequest();
-        xhr2.open("GET", url_request[1], true);
-        xhr2.onload = function() {
-        if (xhr2.readyState === 4 && xhr2.status === 200) {
-            var data2 = JSON.parse(xhr2.responseText);
-            localStorage.setItem('scenario2', JSON.stringify(data2));
-        }
+    for (let i = 0; i < url_requests.length; i++) {
+        const key = `scenario${i+1}`;
+        const url = url_requests[i];
+        if(!localStorage.getItem(key)) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, false);
+            xhr.onload = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    localStorage.setItem(key, JSON.stringify(data));                 
+                }
+            };
+            xhr.onerror = function() {
+                reject(xhr.statusText);
+            };
+            xhr.send();
         };
-        xhr2.send();
-        
     }
-
-    if(!localStorage.getItem('scenario3')) {
-        var xhr3 = new XMLHttpRequest();
-        xhr3.open("GET", url_request[2], true);
-        xhr3.onload = function() {
-        if (xhr3.readyState === 4 && xhr3.status === 200) {
-            var data3 = JSON.parse(xhr3.responseText);
-            localStorage.setItem('scenario3', JSON.stringify(data3));
-        }
-        };
-        xhr3.send();
-    }
+    callback();
 }
 
-function insertCost(){
+
+function insertCost(scenario1,scenario2,scenario3){
     const sample = [
         {
         scenario: 'Scenario 1',
@@ -99,10 +85,6 @@ function insertCost(){
         .range([height, 0])
         .domain([0, 20000]);
     
-    // vertical grid lines
-    // const makeXLines = () => d3.axisBottom()
-    //   .scale(xScale)
-    
     const makeYLines = () => d3.axisLeft()
         .scale(yScale)
     
@@ -112,15 +94,6 @@ function insertCost(){
     
     chart.append('g')
         .call(d3.axisLeft(yScale));
-    
-    // vertical grid lines
-    // chart.append('g')
-    //   .attr('class', 'grid')
-    //   .attr('transform', `translate(0, ${height})`)
-    //   .call(makeXLines()
-    //     .tickSize(-height, 0, 0)
-    //     .tickFormat('')
-    //   )
     
     chart.append('g')
         .attr('class', 'grid')
@@ -225,7 +198,7 @@ function insertCost(){
         .text('Total Cost Comparison')
 }
 
-function insertTime(){
+function insertTime(scenario1,scenario2,scenario3){
     const sample = [
         {
         scenario: 'Scenario 1',
@@ -389,7 +362,7 @@ function insertTime(){
         .text('Total Time Comparison')
 }
 
-function insertMould() {
+function insertMould(scenario1,scenario2,scenario3) {
     const sample = [
         {
         scenario: 'Scenario 1',
