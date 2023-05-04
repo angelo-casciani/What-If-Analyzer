@@ -5,9 +5,11 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/bar_chart.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script src="https://d3js.org/d3.v5.min.js"></script>
 	</head>
-	<body class="index is-preload">
+	<body class="index is-preload" onload="showScenarioComparison()">
 		<div id="page-wrapper">
 
 			<!-- Header -->
@@ -31,7 +33,7 @@
 
 			
 			<!-- Main -->
-            <article id="main">
+			<article id="main">
 				<header class="special container">
 					<span class="icon solid fa-chart-bar"></span>
                     <h2><strong>Comparison Details</strong></h2>
@@ -40,16 +42,42 @@
 				<section class="wrapper style4 container special-alt">
 					<div class="row gtr-150">
 						<div class="col-6 col-12-narrower">
-                            
-                            test
-                            
+							<div>
+								<h1>Scenario 1</h1>
+								<p id="cost1"><strong>Total Cost</strong>: </p>
+								<p id="time1"><strong>Total Time</strong>: </p>
+								<p id="mould1"><strong>Required Mould Changes</strong>: </p>
+							</div>
+							<div>
+								<h1>Scenario 2</h1>
+								<p id="cost2"><strong>Total Cost</strong>: </p>
+								<p id="time2"><strong>Total Time</strong>: </p>
+								<p id="mould2"><strong>Required Mould Changes</strong>: </p>
+							</div>
+							<div>
+								<h1>Scenario 3</h1>
+								<p id="cost3"><strong>Total Cost</strong>: </p>
+								<p id="time3"><strong>Total Time</strong>: </p>
+								<p id="mould3"><strong>Required Mould Changes</strong>: </p>
+							</div>	
 						</div>      
-                        <div class="col-6 col-12-narrower">
-                            
-                            test
-                            
+						<div class="col-6 col-12-narrower">
+							
+							<div id='layout'>
+								<div id='container'>
+								  <svg />
+								</div>
+							</div>
+							<div id='layout'>
+								<div id='containerTime'></div>
+							</div>
+							<div id='layout'>
+								<div id='containerMould'></div>
+							</div>
+							
 						</div>   
-                    </div>  
+					</div>  
+
 				</section>
 			</article>
 			
@@ -75,6 +103,7 @@
 		<script src="assets/js/breakpoints.min.js"></script>
 		<script src="assets/js/util.js"></script>
         <script src="assets/js/main.js"></script>
+		<script src="assets/js/scenario.js"></script>
 
 	</body>
 </html>
