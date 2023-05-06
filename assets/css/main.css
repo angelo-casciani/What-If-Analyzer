@@ -71,6 +71,7 @@ input, select, textarea {
 	-ms-appearance: none;
 	appearance: none;
 }
+  
 
 /* Basic */
 
@@ -3350,3 +3351,4 @@ input, select, textarea {
 	.quantity {
 		border: 1px solid;
 	}
+
