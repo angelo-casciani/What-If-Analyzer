@@ -867,7 +867,6 @@ function insertTimeComparison(scenario1,scenario2,scenario3) {
         .text('Total Time Comparison');
 }
 
-
 function insertMouldComparison(scenario1,scenario2,scenario3) {
     const sample = [
         {
@@ -1032,17 +1031,5 @@ function insertMouldComparison(scenario1,scenario2,scenario3) {
 
 
 function goToScenario(scenarioId) {
-    switch (scenarioId) {
-        case 1:
-            window.location.href = "scenario1.html";
-            break;
-        case 2:
-            window.location.href = "scenario2.html";
-            break;
-        case 3:
-            window.location.href = "scenario3.html";
-            break;
-        default:
-          dayName = "Invalid Scenario Id";
-      }
+    window.location.href = 'scenarioDetails.html?scenario=' + scenarioId;
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Comparison Details - What If Analyzer</title>
+		<title>Scenario Details - What If Analyzer</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -9,7 +9,7 @@
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<script src="https://d3js.org/d3.v5.min.js"></script>
 	</head>
-	<body class="index is-preload" onload="checkLogin();showScenarioComparison()">
+	<body class="index is-preload" onload="checkLogin();fillScenarioDetails()">
 		<div id="page-wrapper">
 
 			<!-- Header -->
@@ -36,58 +36,35 @@
 			<article id="main">
 				<header class="special container">
 					<span class="icon solid fa-chart-bar"></span>
-                    <h2><strong>Comparison Details</strong></h2>
-                    Here, you can compare the metrics of the top 3 scenarios.
+                    <h2><strong>Scenario Details</strong></h2>
+                    Here, you can analyze and export the metrics of the single scenario.
 				</header>
 				<section class="wrapper style4 container special-alt">
-					<div class="row gtr-200">
-						<div class="col-4 col-12-narrower">
-							<div style="background-color: #83d3c9;border: 1px solid black;padding: 10px;color: black;">
-								<h1><strong>Scenario 1</strong></h1>
-								<p id="cost1" style="margin-bottom: 5px;"><strong>Total Cost</strong>: </p>
-								<p id="time1" style="margin-bottom: 5px;"><strong>Total Time</strong>: </p>
-								<p id="mould1" style="margin-bottom: 15px;"><strong>Required Mould Changes</strong>: </p>
-								<a onclick="goToScenario(1)" class="button" style="border: 1px solid;">Go to Scenario 1</a>
-							</div>
-						</br></br>
-							<div style="background-color: #49d49d;border: 1px solid black;padding: 10px;color: black;">
-								<h1><strong>Scenario 2</strong></h1>
-								<p id="cost2" style="margin-bottom: 5px;"><strong>Total Cost</strong>: </p>
-								<p id="time2" style="margin-bottom: 5px;"><strong>Total Time</strong>: </p>
-								<p id="mould2" style="margin-bottom: 15px;"><strong>Required Mould Changes</strong>: </p>
-								<a onclick="goToScenario(2)" class="button" style="border: 1px solid;">Go to Scenario 2</a>
-							</div>
-						</br></br>
-							<div style="background-color: #15b097;border: 1px solid black;padding: 10px;color: black;">
-								<h1><strong>Scenario 3</strong></h1>
-								<p id="cost3" style="margin-bottom: 5px;"><strong>Total Cost</strong>: </p>
-								<p id="time3" style="margin-bottom: 5px;"><strong>Total Time</strong>: </p>
-								<p id="mould3" style="margin-bottom: 15px;"><strong>Required Mould Changes</strong>: </p>
-								<a onclick="goToScenario(3)" class="button" style="border: 1px solid;">Go to Scenario 3</a>
-							</div>	
-						</div>      
-						<div class="col-8 col-12-narrower">
-							
-							<div id='layout' style="position:relative;top:-10px;">
+					<div class="row gtr-50">
+						<div class="col-12 col-12-narrower">
+                            <div id='layout'>
 								<div id='container' style="height:300px;width:480px">
 								  <svg />
 								</div>
 							</div>
-							<div id='layout' style="position:relative;top:15px;">
-								<div id='containerTime' style="height:300px;width:480px"></div>
-							</div>
-							<div id='layout' style="position:relative;top:35px;;">
-								<div id='containerMould' style="height:300px;width:480px"></div>
-							</div>
-							
-						</div>   
-					</div>  
 
+							<p id="scenarioId" style="margin-bottom: 2px;"><strong>Scenario</strong>: </p>
+                            <p id="cost" style="margin-bottom: 2px;"><strong>Total Cost</strong>: </p>
+							<p id="time" style="margin-bottom: 2px;"><strong>Total Time</strong>: </p>
+							<p id="mould" style="margin-bottom: 2px;"><strong>Required Mould Changes</strong>: </p>
+						</br>
+                            <div style="text-align: center;">
+                                <a onclick="goToScenarioMetrics()" class="button">Show Graph</a>
+                            </div>
+                        </br>
+                            <div style="text-align: center;">
+                                <a id="download-link" onclick="exportScenario();" class="button">Export Data</a>
+                            </div>
+
+						</div>       
+                    </div>
 				</section>
 			</article>
-			
-
-			
 
 			<!-- Footer -->
             <footer id="footer">
@@ -108,7 +85,7 @@
 		<script src="assets/js/breakpoints.min.js"></script>
 		<script src="assets/js/util.js"></script>
         <script src="assets/js/main.js"></script>
-		<script src="assets/js/scenario.js"></script>
+		<script src="assets/js/details.js"></script>
 
 	</body>
 </html>
