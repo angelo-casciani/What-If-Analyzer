@@ -87,7 +87,8 @@ function insertCost(scenario1,scenario2,scenario3){
     // To handle the scale of the values on the y-axis
     const yScale = d3.scaleLinear()
         .range([height, 0])
-        .domain([0, 20000]);
+        .domain([0.99999*Math.min(scenario1['totalCostScenario'].toFixed(2),scenario2['totalCostScenario'].toFixed(2),scenario3['totalCostScenario'].toFixed(2)), 
+        Math.max(scenario1['totalCostScenario'].toFixed(2),scenario2['totalCostScenario'].toFixed(2),scenario3['totalCostScenario'].toFixed(2))]);
     
     const makeYLines = () => d3.axisLeft()
         .scale(yScale)
@@ -113,11 +114,22 @@ function insertCost(scenario1,scenario2,scenario3){
     
     barGroups
         .append('rect')
-        .attr('class', 'bar')
+        .attr('class', 'barr')
         .attr('x', (g) => xScale(g.scenario))
         .attr('y', (g) => yScale(g.value))
         .attr('height', (g) => height - yScale(g.value))
         .attr('width', xScale.bandwidth())
+        .attr('fill', function(d) {
+            if (d.scenario.includes('1')) {
+              return '#83d3c9';
+            } 
+            else if (d.scenario.includes('2')){
+                return '#49d49d'
+            }
+            else {
+              return '#15b097';
+            }
+          })
         .on('mouseenter', function (actual, i) {
         d3.selectAll('.value')
             .attr('opacity', 0)
@@ -238,7 +250,9 @@ function insertTime(scenario1,scenario2,scenario3){
     // To handle the scale of the values on the y-axis
     const yScale = d3.scaleLinear()
         .range([height, 0])
-        .domain([0, 4000]);
+        .domain([0.9*Math.min(((scenario1['totalProductionTimeScenario']/60)/60).toFixed(2),((scenario2['totalProductionTimeScenario']/60)/60).toFixed(2),((scenario3['totalProductionTimeScenario']/60)/60).toFixed(2)), 
+        Math.max(((scenario1['totalProductionTimeScenario']/60)/60).toFixed(2),((scenario2['totalProductionTimeScenario']/60)/60).toFixed(2),((scenario3['totalProductionTimeScenario']/60)/60).toFixed(2))]);
+    
     
     const makeYLines = () => d3.axisLeft()
         .scale(yScale)
@@ -264,11 +278,22 @@ function insertTime(scenario1,scenario2,scenario3){
     
     barGroups
         .append('rect')
-        .attr('class', 'bar')
+        .attr('class', 'barr')
         .attr('x', (g) => xScale(g.scenario))
         .attr('y', (g) => yScale(g.value))
         .attr('height', (g) => height - yScale(g.value))
         .attr('width', xScale.bandwidth())
+        .attr('fill', function(d) {
+            if (d.scenario.includes('1')) {
+              return '#83d3c9';
+            } 
+            else if (d.scenario.includes('2')){
+                return '#49d49d'
+            }
+            else {
+              return '#15b097';
+            }
+          })
         .on('mouseenter', function (actual, i) {
         d3.selectAll('.value')
             .attr('opacity', 0)
@@ -389,7 +414,9 @@ function insertMould(scenario1,scenario2,scenario3) {
     // To handle the scale of the values on the y-axis
     const yScale = d3.scaleLinear()
         .range([height, 0])
-        .domain([0, 25]);
+        .domain([0.9*Math.min(scenario1['totalMouldChangesScenario'],scenario2['totalMouldChangesScenario'],scenario3['totalMouldChangesScenario']), 
+        Math.max(scenario1['totalMouldChangesScenario'],scenario2['totalMouldChangesScenario'],scenario3['totalMouldChangesScenario'])]);
+    
     
     // vertical grid lines
     // const makeXLines = () => d3.axisBottom()
@@ -428,11 +455,22 @@ function insertMould(scenario1,scenario2,scenario3) {
     
     barGroups
         .append('rect')
-        .attr('class', 'bar')
+        .attr('class', 'barr')
         .attr('x', (g) => xScale(g.scenario))
         .attr('y', (g) => yScale(g.value))
         .attr('height', (g) => height - yScale(g.value))
         .attr('width', xScale.bandwidth())
+        .attr('fill', function(d) {
+            if (d.scenario.includes('1')) {
+              return '#83d3c9';
+            } 
+            else if (d.scenario.includes('2')){
+                return '#49d49d'
+            }
+            else {
+              return '#15b097';
+            }
+          })
         .on('mouseenter', function (actual, i) {
         d3.selectAll('.value')
             .attr('opacity', 0)
