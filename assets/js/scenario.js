@@ -675,7 +675,7 @@ function insertComparison(scenario1,scenario2,scenario3){
         .call(yAxisRight)
         .style('stroke', '#49d49d');
         
-    /*chart.append('g')
+/*    chart.append('g')
         .attr('class', 'grid')
         .call(makeYLines()
         .tickSize(-width, 0, 0)
@@ -757,9 +757,9 @@ function insertComparison(scenario1,scenario2,scenario3){
                 .attr('x', (a) => xScale(a.scenario) - 5)
                 .attr('width', xScale.bandwidth() + 10)
             
-            const y_right = yScaleRight(actual.value)
-            const y_left = yScaleLeft(actual.value)
-            const y_left1 = yScaleLeft1(actual.value)
+            const y_right = yScaleRight(actual.value);
+            const y_left = yScaleLeft(actual.value);
+            const y_left1 = yScaleLeft1(actual.value);
         
             line = chart.append('line')
                 .attr('id', 'limit')
