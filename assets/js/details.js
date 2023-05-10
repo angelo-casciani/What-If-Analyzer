@@ -40,7 +40,7 @@ function insertGraph(scenario) {
     const svg = d3.select('svg');
     const svgContainer = d3.select('#container');
     
-    const margin = 80;
+    const margin = 70;
     const width = 500 - 2 * margin;
     const height = 300 - 2 * margin;
     
@@ -68,7 +68,7 @@ function insertGraph(scenario) {
     //const makeYLines = () => d3.axisLeft().scale(yScale)
     const yAxisLeft = d3.axisLeft(yScaleLeft);
     const yAxisRight1 = d3.axisRight(yScaleRight1);
-    const yAxisRight2 = d3.axisLeft(yScaleRight2);
+    const yAxisRight2 = d3.axisLeft(yScaleRight2).tickFormat(d3.format(".0f"));;
     
     chart.append('g')
         .attr('transform', `translate(0, ${height})`)
@@ -241,7 +241,7 @@ function insertGraph(scenario) {
         .append('text')
         .attr('class', 'label')
         .attr('x', -(height / 2) - margin)
-        .attr('y', margin / 3.3)
+        .attr('y', margin / 6)
         .attr('transform', 'rotate(-90)')
         .attr('text-anchor', 'middle')
         .text('Measure')
@@ -282,6 +282,14 @@ function goToScenarioMetrics() {
     window.location.href = 'scenarioMetrics.html?scenario=' + scenarioId;
 }
 
+function backToScenario() {
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var scenarioId = urlParams.get('scenario');
+    window.location.href = 'scenarioDetails.html?scenario=' + scenarioId;
+}
+
+
 function fillScenarioMetrics() {
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
@@ -289,12 +297,11 @@ function fillScenarioMetrics() {
     document.getElementById("scenarioId").innerHTML += scenarioId;
 
     var scenario = JSON.parse(localStorage.getItem('scenario'+scenarioId));
-    //insertLineChart(scenario);
+    
     var objectsOnMachines = computeObjectsMachines(scenario);
     const machineToDates = datesToMachine(scenario, objectsOnMachines);
-    console.log(machineToDates);
     insertScatterplot(machineToDates);
-   
+    //insertLineChart(scenario);
 }
 
 function computeObjectsMachines(scenario) {
@@ -383,7 +390,7 @@ function datesToMachine(scenario, objectsOnMachines) {
 
 function insertScatterplot(data) {
     // Create SVG container
-    const margin = { top: 20, right: 20, bottom: 30, left: 250 };
+    const margin = { top: 50, right: 20, bottom: 30, left: 250 };
     const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
     
@@ -432,5 +439,36 @@ function insertScatterplot(data) {
                 .attr("fill", "#83d3c9");
         }
     }
+
+
+    // Add x-axis label
+    svg
+        .append("text")
+        .attr("class", "axis-label")
+        .attr("x", width / 2)
+        .attr("y", height + margin.bottom*1.5)
+        .attr("text-anchor", "middle")
+        .text("Machines");
+
+    // Add y-axis label
+    svg
+        .append("text")
+        .attr("class", "axis-label")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", -margin.left*0.35)
+        .attr("dy", "1em")
+        .attr("text-anchor", "middle")
+        .text("Dates");
+
+    // Add chart title
+    svg
+        .append("text")
+        .attr("class", "title")
+        .attr("x", width / 2)
+        .attr("y", -30)
+        .attr("text-anchor", "middle")
+        .text("Mould Changes over Time");
+
 
 }

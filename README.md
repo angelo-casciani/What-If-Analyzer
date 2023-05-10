@@ -10,4 +10,8 @@ Open the terminal in the What-If-Analyzer directory and run the following comman
 ```bash
 python -m http.server 8000
 ```
-Then, the website is reachable at: [What-If Analyzer](http://localhost:8000/index.html)
+Then, the website is reachable at: [What-If Analyzer](http://localhost:8000/index.html).
+Latest version of Microsoft Edge is recommended.
+
+## Access The Tool
+To perform the login (only for testing), insert a string of characters as Personal ID and a sequence of numbers as Password.

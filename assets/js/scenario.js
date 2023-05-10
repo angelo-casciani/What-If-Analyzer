@@ -887,12 +887,12 @@ function insertComparison(scenario1,scenario2,scenario3){
         .attr('text-anchor', 'middle')
         .text('Total Cost (\u20AC)')  */
     
-    svg.append('text')
+    /*svg.append('text')
         .attr('class', 'label')
         .attr('x', width / 2 + margin)
         .attr('y', height + margin * 1.7)
         .attr('text-anchor', 'middle')
-        .text('Scenarios Metrics')
+        .text('Scenarios Metrics')*/
     
     svg.append('text')
         .attr('class', 'title')
