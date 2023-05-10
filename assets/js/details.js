@@ -292,7 +292,8 @@ function fillScenarioMetrics() {
     //insertLineChart(scenario);
     var objectsOnMachines = computeObjectsMachines(scenario);
     const machineToDates = datesToMachine(scenario, objectsOnMachines);
-    //insertScatterplot(machineToDates);
+    console.log(machineToDates);
+    insertScatterplot(machineToDates);
    
 }
 
@@ -381,5 +382,55 @@ function datesToMachine(scenario, objectsOnMachines) {
 }
 
 function insertScatterplot(data) {
+    // Create SVG container
+    const margin = { top: 20, right: 20, bottom: 30, left: 250 };
+    const width = 800 - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
+    
+    const svg = d3
+        .select("#scatterplot")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+    
+    // Create the scales
+    const xScale = d3
+        .scaleBand()
+        .range([0, width])
+        .domain(Object.keys(data))
+        .padding(0.1);
+    
+    const yScale = d3
+        .scaleTime()
+        .range([height, 0])
+        .domain([
+        d3.min(Object.values(data), (dates) => d3.min(dates, (date) => new Date(date))),
+        d3.max(Object.values(data), (dates) => d3.max(dates, (date) => new Date(date)))
+        ]);
+    
+    // Create the x-axis and y-axis
+    const xAxis = d3.axisBottom(xScale);
+    
+    svg.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", `translate(0, ${height})`)
+        .call(xAxis);
+    
+    const yAxis = d3.axisLeft(yScale);
+    
+    svg.append("g").attr("class", "y-axis").call(yAxis);
+    
+    // Create the scatter plot circles
+    for (const [machine, dates] of Object.entries(data)) {
+        for (const date of dates) {
+            svg.append("circle")
+                .attr("cx", xScale(machine) + xScale.bandwidth() / 2)
+                .attr("cy", yScale(new Date(date)))
+                .attr("r", 5)
+                .attr("fill", "#83d3c9");
+        }
+    }
 
 }
