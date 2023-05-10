@@ -81,12 +81,12 @@ function insertGraph(scenario) {
     chart.append('g')
         .attr('transform', `translate(${width}, 0)`)
         .call(yAxisRight1)
-        .style('stroke', '#15b097');
+        .style('stroke', '#49d49d');
         
     chart.append('g')
         .attr('transform', `translate(${width}, 0)`)
         .call(yAxisRight2)
-        .style('stroke', '#49d49d');
+        .style('stroke', '#15b097');
     
     /*chart.append('g')
         .attr('class', 'grid')
@@ -289,110 +289,97 @@ function fillScenarioMetrics() {
     document.getElementById("scenarioId").innerHTML += scenarioId;
 
     var scenario = JSON.parse(localStorage.getItem('scenario'+scenarioId));
-    insertLineChart(scenario);
+    //insertLineChart(scenario);
+    var objectsOnMachines = computeObjectsMachines(scenario);
+    const machineToDates = datesToMachine(scenario, objectsOnMachines);
+    //insertScatterplot(machineToDates);
    
 }
 
-function insertLineChart(scenario) {
-    var datesObjects = {}
-    var allGroup = [] 
-    for (var i = 0; i < scenario["objects"].length; i++) {
-        var name = scenario["objects"][i]["objectName"];
-        allGroup.push(name);
-        var dates = [];
-        for (var j = 0; j < Object.keys(scenario["objects"][i]["instances"]).length; i++) {
-            dates.push(new Date(scenario["objects"][i]["instances"][j][0]));
+function computeObjectsMachines(scenario) {
+    var objectOnMachine = {};
+    otherPieces = [];
+    for (var i = 0; i < Object.keys(scenario["orchestator"]).length; i++) {
+        var key = Object.keys(scenario["orchestator"])[i].toString();
+        //console.log(scenario["orchestator"][key].length);
+        var object = scenario["orchestator"][key][0];
+        object = object.substring(0, object.lastIndexOf("."));
+        if (object.includes("lavabi") && scenario["orchestator"][key].length == 2) {
+            objectOnMachine[object] = 3;             // Assign only 3 machines to this lavabo
         }
-        datesObjects[name] = dates;
-    }
-    console.log(datesObjects);
-    var startDate = new Date(scenario["objects"][0]["instances"][0][0]);
-    var endDate = new Date(scenario["objects"][0]["instances"][332][0]);
-
-    // set the dimensions and margins of the graph
-    var margin = {top: 10, right: 100, bottom: 30, left: 130},
-    width = 700 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
-
-    // append the svg object to the body of the page
-    var svg = d3.select("#lineplot")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
-
-    // add the options to the button
-    d3.select("#selectButton")
-        .selectAll('myOptions')
-        .data(allGroup)
-        .enter()
-        .append('option')
-        .text(function (d) { return d; }) // text showed in the menu
-        .attr("value", function (d) { return d; }) // corresponding value returned by the button
-
-    // A color scale: one color for each group
-    var myColor = d3.scaleOrdinal()
-        .domain(allGroup)
-        .range(d3.schemeSet2);
-
-    // Add X axis
-    var x = d3.scaleLinear()
-        .domain([0,400])
-        .range([ 0, width ]);
-    svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
-
-    // Add Y axis
-    var y = d3.scaleTime()
-        .domain([startDate, endDate])
-        .range([height, 0]);
-    svg.append("g")
-        .call(d3.axisLeft(y));
-
-    /*
-    // Initialize line with group a
-    var line = svg
-        .append('g')
-        .append("path")
-            .datum(data)
-            .attr("d", d3.line()
-            .x(function(d) { return x(+d.time) })
-            .y(function(d) { return y(+d.valueA) })
-            )
-            .attr("stroke", function(d){ return myColor("valueA") })
-            .style("stroke-width", 4)
-            .style("fill", "none")
-
-    // A function that update the chart
-    function update(selectedGroup) {
-
-        // Create new data with the selection?
-        var dataFilter = data.map(function(d){return {time: d.time, value:d[selectedGroup]} })
-
-        // Give these new data to update line
-        line
-            .datum(dataFilter)
-            .transition()
-            .duration(1000)
-            .attr("d", d3.line()
-                .x(function(d) { return x(+d.time) })
-                .y(function(d) { return y(+d.value) })
-            )
-            .attr("stroke", function(d){ return myColor(selectedGroup) })
+        else if (object.includes("lavabi") && scenario["orchestator"][key].length < 2) {
+            //console.log(object.substring(0, object.lastIndexOf(".")));
+            objectOnMachine[object] = 6;     
+        }
+        else {
+            otherPieces.push(object);
+        }
     }
 
-    // When the button is changed, run the updateChart function
-    d3.select("#selectButton").on("change", function(d) {
-        // recover the option that has been chosen
-        var selectedOption = d3.select(this).property("value")
-        // run the updateChart function with this selected option
-        update(selectedOption)
-    })
-    */
-    
+    for (var i = 0; i < otherPieces.length; i++) {
+        objectOnMachine[otherPieces[i]] = Math.trunc(20 / otherPieces.length);
+        if (i == otherPieces.length-1) {
+            objectOnMachine[otherPieces[i]] += 20 - (i+1)*Math.trunc(20 / otherPieces.length);   // Assign remaining machines to it
+        }
+    }
+    return objectOnMachine;
+}
 
+function datesToMachine(scenario, objectsOnMachines) {
+    var objectsOnDates = {};
+    for (const key in objectsOnMachines) {
+        objectsOnDates[key] = [];
+    }
+
+    for (var i = 0; i < Object.keys(objectsOnMachines).length; i++) {
+        const dates = Object.values(scenario["objects"][i]["instances"]);
+        const stepSize = Math.floor(dates.length / scenario["objects"][i]["numberMouldChanges"]);
+        for (let j=0; j < dates.length; j += stepSize) {
+            objectsOnDates[Object.keys(objectsOnMachines)[i]].push(dates[j]);
+        }
+    }
+
+    var machines = Array.from({ length: 20 }, (_, i) => i + 7);
+    var machinesLavabi = [1,2,3,4,5,6];
+    var pieceOnMachine = {};
+
+    for (const [object, count] of Object.entries(objectsOnMachines)) {
+        if (object.includes("lavabi") && count==6) {
+            pieceOnMachine[object] = machinesLavabi;
+        } else if (object.includes("lavabi") && count!=6) {
+            var machinesToUse = machinesLavabi.splice(0, count);
+            pieceOnMachine[object] = machinesToUse;
+            machinesLavabi = machinesLavabi.filter((element) => !machinesToUse.includes(element));
+        } else {
+            var machinesToUse = machines.splice(0, count);
+            pieceOnMachine[object] = machinesToUse;
+            machines = machines.filter((element) => !machinesToUse.includes(element));
+        }
+    }
+
+    //console.log(pieceOnMachine);
+
+    var machineToDates = {};
+
+    for (const [object, dates] of Object.entries(objectsOnDates)) {
+        for (const [piece, machines] of Object.entries(pieceOnMachine)){
+            if (object==piece) {
+                for (let i = 0; i < dates.length; i++) {
+                    const date = dates[i];
+                    const machineIndex = i % machines.length;
+                    const machine = machines[machineIndex];
+                    if (!machineToDates[machine]) {
+                        machineToDates[machine] = [];
+                    }
+                    machineToDates[machine].push(date);
+                }
+            }
+            
+        }
+    }
+    return machineToDates;
+}
+
+function insertScatterplot(data) {
 
 }
