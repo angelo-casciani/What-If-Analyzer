@@ -37,15 +37,7 @@ body {
   text {
     font-size: 12px;
     fill: #000000;
-  }
-  
-  path {
-    stroke: gray;
-  }
-  
-  line {
-    stroke: gray;
-  }
+  } 
   
   line#limit {
     stroke: #000000;
@@ -84,3 +76,35 @@ body {
   text.source {
     font-size: 10px;
   }
+
+
+  #checkboxes {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    color: #000000;
+  }
+  
+  .checkbox input[type="checkbox"] {
+    /* Hide the default checkbox appearance */
+    display: none;
+  }
+  
+  .checkbox input[type="checkbox"] + label:before {
+    /* Style the checkbox shape */
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid black;
+    background-color: #ffffff; /* Set the desired color here */
+    border-radius: 2px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  
+  .checkbox input[type="checkbox"]:checked + label:before {
+    /* Change the color of checked checkbox */
+    background-color: #0cbda898; /* Set the desired color for checked checkbox */
+  }
+  

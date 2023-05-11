@@ -482,16 +482,51 @@ function insertLineChart(scenario) {
         instances[name] = scenario["objects"][i]["instances"];
     }
 
+    // Checkbox list
+    const checkboxesDiv = d3.select("#checkboxes");
+
+    const checkboxes = checkboxesDiv
+    .selectAll(".checkbox")
+    .data(allGroup)
+    .enter()
+    .append("div")
+    .attr("class", "checkbox");
+
+    checkboxes
+    .append("input")
+    .attr("type", "checkbox")
+    .attr("id", (d) => d)
+    .attr("checked", true)
+    //.on("change", updateChart);
+
+    checkboxes
+    .append("label")
+    .attr("for", (d) => d)
+    .text((d) => d);
+
     // A color scale: one color for each group
     var myColor = d3.scaleOrdinal()
         .domain(allGroup)
         .range(d3.schemeSet2);
 
+    var allData = [];
+    for (const obj in instances) {
+        const d = Object.entries(instances[obj]).map(([instanceNumber, date]) => ({
+            instanceNumber: +instanceNumber,
+            date: new Date(date),
+        }));
+        allData.push(d);
+    }
+
+    
+/*
     // Convert the JSON data into an array of objects
     const data = Object.entries(instances["lavabi_10dofc"]).map(([instanceNumber, date]) => ({
         instanceNumber: +instanceNumber,
         date: new Date(date),
     }));
+*/
+
 
     // Set up the dimensions and margins for the chart
     var margin = { top: 50, right: 20, bottom: 40, left: 150 };
@@ -511,21 +546,35 @@ function insertLineChart(scenario) {
     var xScale = d3
         .scaleTime()
         .range([0, width])
-        .domain(d3.extent(data, (d) => d.date));
+        .domain(d3.extent(allData[0], (d) => d.date));
     
     const yScale = d3
         .scaleLinear()
         .range([height, 0])
-        .domain([0, d3.max(data, (d) => d.instanceNumber)]);
+        .domain([0, d3.max(allData[0], (d) => d.instanceNumber)]);
     
     // Create the line generator
     var line = d3
         .line()
         .x((d) => xScale(d.date))
         .y((d) => yScale(d.instanceNumber));
+
+
+
     
     // Add the line path to the chart
-    svg
+
+    for (var i = 0; i < allData.length; i++) {
+        svg
+        .append("path")
+        .datum(allData[i])
+        .attr("class", "line")
+        .attr("d", line)
+        .attr("stroke", function(d){ return myColor(allGroup[i]) })
+        .style("stroke-width", 4)
+        .style("fill", "none");
+    }
+ /*   svg
         .append("path")
         .datum(data)
         .attr("class", "line")
@@ -533,7 +582,10 @@ function insertLineChart(scenario) {
         .attr("stroke", function(d){ return myColor(allGroup[0]) })
         .style("stroke-width", 4)
         .style("fill", "none");
-    
+
+*/
+
+
     // Add the x-axis
     svg
         .append("g")
