@@ -301,7 +301,7 @@ function fillScenarioMetrics() {
     var objectsOnMachines = computeObjectsMachines(scenario);
     const machineToDates = datesToMachine(scenario, objectsOnMachines);
     insertScatterplot(machineToDates);
-    //insertLineChart(scenario);
+    insertLineChart(scenario);
 }
 
 function computeObjectsMachines(scenario) {
@@ -469,6 +469,113 @@ function insertScatterplot(data) {
         .attr("y", -30)
         .attr("text-anchor", "middle")
         .text("Mould Changes over Time");
+
+
+}
+
+function insertLineChart(scenario) {
+    var allGroup = [];
+    var instances = {};
+    for (var i=0; i < Object.keys(scenario["objects"]).length; i++) {
+        var name = scenario["objects"][i]["objectName"];
+        allGroup.push(name);
+        instances[name] = scenario["objects"][i]["instances"];
+    }
+
+    // A color scale: one color for each group
+    var myColor = d3.scaleOrdinal()
+        .domain(allGroup)
+        .range(d3.schemeSet2);
+
+    // Convert the JSON data into an array of objects
+    const data = Object.entries(instances["lavabi_10dofc"]).map(([instanceNumber, date]) => ({
+        instanceNumber: +instanceNumber,
+        date: new Date(date),
+    }));
+
+    // Set up the dimensions and margins for the chart
+    var margin = { top: 50, right: 20, bottom: 40, left: 150 };
+    var width = 900 - margin.left - margin.right;
+    var height = 400 - margin.top - margin.bottom;
+    
+    // Create the SVG container
+    const svg = d3
+        .select("#lineplot")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+    
+    // Create scales for x and y axes
+    var xScale = d3
+        .scaleTime()
+        .range([0, width])
+        .domain(d3.extent(data, (d) => d.date));
+    
+    const yScale = d3
+        .scaleLinear()
+        .range([height, 0])
+        .domain([0, d3.max(data, (d) => d.instanceNumber)]);
+    
+    // Create the line generator
+    var line = d3
+        .line()
+        .x((d) => xScale(d.date))
+        .y((d) => yScale(d.instanceNumber));
+    
+    // Add the line path to the chart
+    svg
+        .append("path")
+        .datum(data)
+        .attr("class", "line")
+        .attr("d", line)
+        .attr("stroke", function(d){ return myColor(allGroup[0]) })
+        .style("stroke-width", 4)
+        .style("fill", "none");
+    
+    // Add the x-axis
+    svg
+        .append("g")
+        .attr("class", "x-axis")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(xScale));
+    
+    // Add the y-axis
+    svg
+        .append("g")
+        .attr("class", "y-axis")
+        .call(d3.axisLeft(yScale));
+
+    // Add x-axis label
+    svg
+        .append("text")
+        .attr("class", "axis-label")
+        .attr("x", width / 2)
+        .attr("y", height + margin.bottom)
+        .attr("text-anchor", "middle")
+        .text("Machines");
+
+    // Add y-axis label
+    svg
+        .append("text")
+        .attr("class", "axis-label")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", -margin.left*0.35)
+        .attr("dy", "1em")
+        .attr("text-anchor", "middle")
+        .text("Quantity");
+    
+    // Add a title to the chart
+    svg
+        .append("text")
+        .attr("class", "title")
+        .attr("x", width / 2)
+        .attr("y", -30)
+        .attr("text-anchor", "middle")
+        .text("Produced Quantity over Time");
+
 
 
 }
