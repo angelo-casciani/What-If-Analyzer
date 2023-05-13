@@ -21,9 +21,9 @@
                             <a href="#">Top 3 Scenarios </a>
                             <ul>
 								<li><a href="comparison.html">Comparison</a></li>
-                                <li><a onclick="goToScenario(1)">Scenario 1</a></li>
-                                <li><a onclick="goToScenario(2)">Scenario 2</a></li>
-                                <li><a onclick="goToScenario(3)">Scenario 3</a></li>
+                                <li><a onclick="goToScenario(4)">Best Scenario Cost</a></li>
+                                <li><a onclick="goToScenario(7)">Best Scenario Time</a></li>
+                                <li><a onclick="goToScenario(9)">Best Scenario Mould Changes</a></li>
                             </ul>
                         </li>
                         <li><a onclick="redirectToOrder()" class="button" style="border: 1px solid;">New Order</a></li>
@@ -48,11 +48,14 @@
 								  <svg />
 								</div>
 							</div>
-
-							<p id="scenarioId" style="margin-bottom: 2px;"><strong>Scenario</strong>: </p>
-                            <p id="cost" style="margin-bottom: 2px;"><strong>Total Cost</strong>: </p>
-							<p id="time" style="margin-bottom: 2px;"><strong>Total Time</strong>: </p>
-							<p id="mould" style="margin-bottom: 2px;"><strong>Required Mould Changes</strong>: </p>
+							
+							<div style="border: 1px solid;text-align:center;">
+								<p id="scenarioId" style="margin-bottom: 2px;font-weight:bold;">Scenario </p>
+								<p id="cost" style="margin-bottom: 2px;">Total Cost: </p>
+								<p id="time" style="margin-bottom: 2px;">Total Time: </p>
+								<p id="mould" style="margin-bottom: 2px;">Required Mould Changes: </p>
+							</div>
+							
 						</br>
                             <div style="text-align: center;">
                                 <a onclick="goToScenarioMetrics()" class="button">Show Graph</a>

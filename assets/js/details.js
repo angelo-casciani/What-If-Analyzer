@@ -22,27 +22,28 @@ function insertGraph(scenario) {
         {
             scenario: 'Total Cost',
             value: scenario['totalCostScenario'].toFixed(2),
-            color: '#000000'
+            color: '#006d2c'
         },
         {
             scenario: 'Total Time',
             value: ((scenario['totalProductionTimeScenario']/60)/60).toFixed(2),
-            color: '#000000'
+            color: '#2ca25f'
         },
 
         {
             scenario: 'Mould Changes',
             value: scenario['totalMouldChangesScenario'],
-            color: '#000000'
+            color: '#66c2a4'
         }
     ];
     
     const svg = d3.select('svg');
     const svgContainer = d3.select('#container');
     
-    const margin = 70;
-    const width = 500 - 2 * margin;
-    const height = 300 - 2 * margin;
+    const margin = 80;
+    const margin1 = 100;
+    const width = 520 - 2 * margin1;
+    const height = 320 - 2 * margin;
     
     const chart = svg.append('g')
         .attr('transform', `translate(${margin}, ${margin})`);
@@ -55,7 +56,7 @@ function insertGraph(scenario) {
     // To handle the scale of the values on the y-axis
     const yScaleLeft = d3.scaleLinear()
         .range([height, 0])
-        .domain([sample[0].value*0.9, sample[0].value*1.01]);
+        .domain([sample[0].value*0.9, sample[0].value*1.01])
 
     const yScaleRight1 = d3.scaleLinear()
         .range([height, 0])
@@ -66,9 +67,16 @@ function insertGraph(scenario) {
         .domain([sample[2].value*0.95, sample[2].value*1.1]);
     
     //const makeYLines = () => d3.axisLeft().scale(yScale)
-    const yAxisLeft = d3.axisLeft(yScaleLeft);
-    const yAxisRight1 = d3.axisRight(yScaleRight1);
-    const yAxisRight2 = d3.axisLeft(yScaleRight2).tickFormat(d3.format(".0f"));;
+    //const yAxisLeft = d3.axisLeft(yScaleLeft);
+    const yAxisLeft = d3.axisLeft(yScaleLeft)
+                        .tickValues(sample.map((d) => d.value))
+                        .tickFormat((d) => d3.format('.2f')(d) + ' \u20AC');
+    const yAxisRight1 = d3.axisRight(yScaleRight1)
+                        .tickValues(sample.map((d) => d.value))
+                        .tickFormat((d) => d3.format('.2f')(d) + ' h');
+    const yAxisRight2 = d3.axisRight(yScaleRight2)
+                        .tickValues(sample.map((d) => d.value))
+                        .tickFormat(d3.format('.0f'));
     
     chart.append('g')
         .attr('transform', `translate(0, ${height})`)
@@ -76,17 +84,17 @@ function insertGraph(scenario) {
     
     chart.append('g')
         .call(yAxisLeft)
-        .style('stroke', '#83d3c9');
+        .style('stroke', '#006d2c');
 
     chart.append('g')
         .attr('transform', `translate(${width}, 0)`)
         .call(yAxisRight1)
-        .style('stroke', '#49d49d');
+        .style('stroke', '#2ca25f');
         
     chart.append('g')
         .attr('transform', `translate(${width}, 0)`)
         .call(yAxisRight2)
-        .style('stroke', '#15b097');
+        .style('stroke', '#66c2a4');
     
     /*chart.append('g')
         .attr('class', 'grid')
@@ -128,15 +136,7 @@ function insertGraph(scenario) {
         })
         .attr('width', xScale.bandwidth())
         .attr('fill', function(d) {
-            if (d.scenario.includes('Cost')) {
-              return '#83d3c9';
-            } 
-            else if (d.scenario.includes('Time')){
-                return '#49d49d'
-            }
-            else {
-              return '#15b097';
-            }
+            return d.color;
           })
         .on('mouseenter', function (actual, i) {
         d3.selectAll('.value')
@@ -156,7 +156,17 @@ function insertGraph(scenario) {
     
         line = chart.append('line')
             .attr('id', 'limit')
-            .attr('x1', 0)
+            //.attr('x1', 0)
+            .attr('x1', function() {
+                if (actual.scenario.includes('Cost')) {
+                    return 0; // Use left y-scale
+                } else if (actual.scenario.includes('Time')) {
+                    return 1.8*xScale.bandwidth(); // Use right y-scale
+                }
+                else {
+                    return 3.25*xScale.bandwidth(); // Use left y-scale 1
+                }
+            })
             //.attr('y1', y)
             .attr('y1', function() {
                 if (actual.scenario.includes('Cost')) {
@@ -167,8 +177,18 @@ function insertGraph(scenario) {
                 else {
                     return y_right2; // Use left y-scale 1
                 }
-        })
-            .attr('x2', width)
+            })
+            //.attr('x2', width)
+            .attr('x2', function() {
+                if (actual.scenario.includes('Cost')) {
+                    return width-3.22*xScale.bandwidth(); // Use left y-scale
+                } else if (actual.scenario.includes('Time')) {
+                    return width; // Use right y-scale
+                }
+                else {
+                    return width; // Use left y-scale 1
+                }
+            })
             //.attr('y2', y)
             .attr('y2', function() {
                 if (actual.scenario.includes('Cost')) {
@@ -187,11 +207,11 @@ function insertGraph(scenario) {
             //.attr('y', (a) => yScale(a.value) + 30)
             .attr('y', (a) => {
                 if (a.scenario.includes('Cost')) {
-                    return yScaleLeft(a.value) + 30; // Use left y-scale
+                    return yScaleLeft(a.value) - 10; // Use left y-scale
                 } else if (a.scenario.includes('Time')) {
-                    return yScaleRight1(a.value) + 30; // Use right y-scale
+                    return yScaleRight1(a.value) - 10; // Use right y-scale
                 } else {
-                    return yScaleRight2(a.value) + 30; // Use right y-scale
+                    return yScaleRight2(a.value) - 10; // Use right y-scale
                 }
             })
             .attr('fill', 'white')
@@ -219,15 +239,15 @@ function insertGraph(scenario) {
         //.attr('y', (a) => yScale(a.value) + 30)
         .attr('y', (a) => {
             if (a.scenario.includes('Cost')) {
-                return yScaleLeft(a.value) + 30; // Use right y-scale
+                return yScaleLeft(a.value) - 10; // Use right y-scale
             } else if (a.scenario.includes('Time')) {
-                return yScaleRight1(a.value) + 30; // Use left y-scale
+                return yScaleRight1(a.value) - 10; // Use left y-scale
             } else {
-                return yScaleRight2(a.value) + 30; // Use left y-scale
+                return yScaleRight2(a.value) - 10; // Use left y-scale
             }
         })
         .attr('text-anchor', 'middle')
-        .text((a) => {
+        /*.text((a) => {
             if (a.scenario.includes('Cost')) {
               return `${a.value}\u20AC`;
             } else if (a.scenario.includes('Time')) {
@@ -235,9 +255,9 @@ function insertGraph(scenario) {
             } else {
               return `${a.value}`;
             }
-          });
+          }) */;
     
-    svg
+    /*svg
         .append('text')
         .attr('class', 'label')
         .attr('x', -(height / 2) - margin)
@@ -251,12 +271,12 @@ function insertGraph(scenario) {
         .attr('x', width / 2 + margin)
         .attr('y', height + margin * 1.7)
         .attr('text-anchor', 'middle')
-        .text('Metrics')
+        .text('Metrics')*/
     
     svg.append('text')
         .attr('class', 'title')
         .attr('x', width / 2 + margin)
-        .attr('y', 40)
+        .attr('y', 20)
         .attr('text-anchor', 'middle')
         .text('Scenario Metrics')
 }
