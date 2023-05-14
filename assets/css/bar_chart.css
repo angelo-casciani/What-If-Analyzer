@@ -94,12 +94,12 @@ body {
     /* Style the checkbox shape */
     content: "";
     display: inline-block;
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     border: 1px solid black;
     background-color: #ffffff; /* Set the desired color here */
     border-radius: 2px;
-    margin-right: 8px;
+    margin-right: 6px;
     vertical-align: middle;
   }
   

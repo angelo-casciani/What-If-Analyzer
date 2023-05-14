@@ -502,6 +502,11 @@ function insertLineChart(scenario) {
         instances[name] = scenario["objects"][i]["instances"];
     }
 
+    // A color scale: one color for each group
+    var myColor = d3.scaleOrdinal()
+                    .domain(allGroup)
+                    .range(d3.schemeSet2);
+
     // Checkbox list
     const checkboxesDiv = d3.select("#checkboxes");
 
@@ -510,24 +515,63 @@ function insertLineChart(scenario) {
     .data(allGroup)
     .enter()
     .append("div")
-    .attr("class", "checkbox");
+    .attr("class", "checkbox")
+    .style("font-size", "13px");
 
     checkboxes
     .append("input")
     .attr("type", "checkbox")
     .attr("id", (d) => d)
     .attr("checked", true)
-    //.on("change", updateChart);
+    .on("change", function () {
+        const checkedCount = checkboxes.selectAll("input:checked").size();
+        if (checkedCount === 0) {
+          this.checked = true; // Prevent unchecking the last remaining checkbox
+        }
+        d3.select("#select-all-checkbox").property("checked", checkedCount === checkboxes.size());
+        updateChart();
+      });
+
+
+    // Create a "Select All" checkbox
+    const selectAllCheckbox = checkboxesDiv
+    .append("div")
+    .attr("class", "checkbox");
+
+    selectAllCheckbox
+    .append("input")
+    .attr("type", "checkbox")
+    .attr("id", "select-all-checkbox")
+    .attr("checked", true)
+    .on("change", toggleAllCheckboxes);
+
+    selectAllCheckbox
+    .append("label")
+    .attr("for", "select-all-checkbox")
+    .text("Select All")
+    .style("font-size", "13px");
 
     checkboxes
     .append("label")
     .attr("for", (d) => d)
     .text((d) => d);
 
-    // A color scale: one color for each group
-    var myColor = d3.scaleOrdinal()
-        .domain(allGroup)
-        .range(d3.schemeSet2);
+    // Function to toggle all checkboxes based on the "Select All" checkbox
+    function toggleAllCheckboxes() {
+        const selectAllChecked = d3.select("#select-all-checkbox").property("checked");
+      
+        checkboxesDiv.selectAll("input[type=checkbox]").property("checked", selectAllChecked);
+      
+        // Check if all checkboxes are unchecked
+        const checkedCount = checkboxesDiv.selectAll("input[type=checkbox]:checked").size();
+        if (checkedCount === 0) {
+          // Keep the first checkbox checked
+          checkboxesDiv.select("input[type=checkbox]").property("checked", true);
+        }
+      
+        updateChart();
+      }
+      
 
     var allData = [];
     for (const obj in instances) {
@@ -538,23 +582,47 @@ function insertLineChart(scenario) {
         allData.push(d);
     }
 
-    
-/*
-    // Convert the JSON data into an array of objects
-    const data = Object.entries(instances["lavabi_10dofc"]).map(([instanceNumber, date]) => ({
-        instanceNumber: +instanceNumber,
-        date: new Date(date),
-    }));
-*/
+    function updateChart() {
+        
+        var svg = d3
+        .select("#lineplot").selectAll("svg");
+        svg.selectAll(".line").remove();
 
+        svg = d3
+        .select("#lineplot")
+        .selectAll("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+        
+
+        for (var i=0; i < allGroup.length; i++) {
+                // Create the line generator
+            var line = d3
+            .line()
+            .x((d) => xScale(d.date))
+            .y((d) => yScale(d.instanceNumber));
+
+            if (d3.select("#"+allGroup[i]).property("checked")) {
+                svg.append("path")
+                    .datum(allData[i])
+                    .attr("class", "line")
+                    .attr("d", line)
+                    .attr("stroke", function(d){ return myColor(allGroup[i]) })
+                    .style("stroke-width", 4)
+                    .style("fill", "none");
+            }
+        }
+    }
 
     // Set up the dimensions and margins for the chart
     var margin = { top: 50, right: 20, bottom: 40, left: 150 };
-    var width = 900 - margin.left - margin.right;
+    var width = 800 - margin.left - margin.right;
     var height = 400 - margin.top - margin.bottom;
     
     // Create the SVG container
-    const svg = d3
+    var svg = d3
         .select("#lineplot")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -566,45 +634,29 @@ function insertLineChart(scenario) {
     var xScale = d3
         .scaleTime()
         .range([0, width])
-        .domain(d3.extent(allData[0], (d) => d.date));
+        .domain(d3.extent(allData[1], (d) => d.date));
     
     const yScale = d3
         .scaleLinear()
         .range([height, 0])
-        .domain([0, d3.max(allData[0], (d) => d.instanceNumber)]);
+        .domain([0, d3.max(allData[1], (d) => d.instanceNumber)]);
     
     // Create the line generator
     var line = d3
         .line()
         .x((d) => xScale(d.date))
         .y((d) => yScale(d.instanceNumber));
-
-
-
     
     // Add the line path to the chart
-
     for (var i = 0; i < allData.length; i++) {
-        svg
-        .append("path")
-        .datum(allData[i])
-        .attr("class", "line")
-        .attr("d", line)
-        .attr("stroke", function(d){ return myColor(allGroup[i]) })
-        .style("stroke-width", 4)
-        .style("fill", "none");
+        svg.append("path")
+            .datum(allData[i])
+            .attr("class", "line")
+            .attr("d", line)
+            .attr("stroke", function(){ return myColor(allGroup[i]) })
+            .style("stroke-width", 4)
+            .style("fill", "none");
     }
- /*   svg
-        .append("path")
-        .datum(data)
-        .attr("class", "line")
-        .attr("d", line)
-        .attr("stroke", function(d){ return myColor(allGroup[0]) })
-        .style("stroke-width", 4)
-        .style("fill", "none");
-
-*/
-
 
     // Add the x-axis
     svg
@@ -644,10 +696,49 @@ function insertLineChart(scenario) {
         .append("text")
         .attr("class", "title")
         .attr("x", width / 2)
-        .attr("y", -30)
+        .attr("y", -34)
         .attr("text-anchor", "middle")
         .text("Produced Quantity over Time");
 
-
+    insertLegend(svg, allGroup, myColor);
 
 }
+
+
+function insertLegend(svg, allGroup, myColor) {
+    const legendLabels = allGroup;
+    const legendColorScale = d3.scaleOrdinal()
+  .domain(legendLabels)
+  .range(allGroup.map(d => myColor(d)));
+
+    // Append the legend container to the SVG
+    const legend = svg.append("g")
+    .attr("class", "legend")
+    .attr("transform", "translate(660, -10)");
+    
+    // Add legend items
+    const legendItems = legend.selectAll(".legend-item")
+    .data(legendLabels)
+    .enter()
+    .append("g")
+    .attr("class", "legend-item")
+    .attr("transform", (d, i) => `translate(0, ${i * 15})`); // Adjust the vertical spacing as needed
+
+    // Add colored rectangles as legend symbols
+    legendItems.append("rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", 10)
+    .attr("height", 10)
+    .style("fill", (d) => legendColorScale(d));
+
+    // Add text labels
+    legendItems.append("text")
+    .attr("x", 20) // Adjust the horizontal spacing between symbol and text
+    .attr("y", 10) // Adjust the vertical alignment as needed
+    .text((d) => d)
+    .style("font-size", "12px")
+    .style("fill", "#000000"); // Adjust the text color as needed
+}
+
+

@@ -1511,7 +1511,7 @@ function insertMouldComparison(scenarios) {
             .attr('fill', 'white')
             .attr('text-anchor', 'middle')
             .text((a, idx) => {
-            const divergence = (a.value - actual.value).toFixed(2)
+            const divergence = (a.value - actual.value)
             
             let text = ''
             if (divergence > 0) text += '+'
