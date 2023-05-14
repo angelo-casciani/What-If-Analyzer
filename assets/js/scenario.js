@@ -728,19 +728,16 @@ function insertMould(scenarios) {
     insertLegend(svg2);
 }
 
-function showScenarioComparison() {
-    var scenario1 = JSON.parse(localStorage.getItem('scenario1'));
-    var scenario2 = JSON.parse(localStorage.getItem('scenario2'));
-    var scenario3 = JSON.parse(localStorage.getItem('scenario3'));
+function showTopScenariosComparison() {
     var scenario4 = JSON.parse(localStorage.getItem('scenario4'));
-    var scenario5 = JSON.parse(localStorage.getItem('scenario5'));
-    var scenario6 = JSON.parse(localStorage.getItem('scenario6'));
     var scenario7 = JSON.parse(localStorage.getItem('scenario7'));
-    var scenario8 = JSON.parse(localStorage.getItem('scenario8'));
     var scenario9 = JSON.parse(localStorage.getItem('scenario9'));
-    var scenarios = [scenario1,scenario2,scenario3,scenario4,scenario5,scenario6,scenario7,scenario8,scenario9];
+    var scenarios = [scenario4,scenario7,scenario9];
 
-    insertComparison(scenarios);
+    //insertComparison(scenarios);
+    insertCostComparison(scenarios);
+    insertTimeComparison(scenarios);
+    insertMouldComparison(scenarios);
 
     document.getElementById("cost1").innerHTML += scenario4['totalCostScenario'].toFixed(2) + " \u20AC";
     document.getElementById("time1").innerHTML += ((scenario4['totalProductionTimeScenario']/60)/60).toFixed(2) + " h";
@@ -755,7 +752,7 @@ function showScenarioComparison() {
     document.getElementById("mould3").innerHTML += scenario9['totalMouldChangesScenario'];
 }
 
-function insertComparison(scenarios){
+/*function insertComparison(scenarios){
     const sample = [
         {
             scenario: 'Cost#C',
@@ -871,35 +868,6 @@ function insertComparison(scenarios){
         .call(yAxisRight)
         //.style('stroke', '#49d49d');
        
-    /*chart.append('g')
-        .attr('class', 'grid')
-        .call(makeYLines()
-        .tickSize(-width, 0, 0)
-        .tickFormat('')); 
-
-    // To handle the scale of the values on the y-axis
-    const yScale = d3.scaleLinear()
-        .range([height, 0])
-        .domain([0.99999*Math.min(sample[0].value,sample[1].value,sample[2].value), 
-        Math.max(sample[0].value,sample[1].value,sample[2].value)]);
-        
-    const makeYLines = () => d3.axisLeft()
-        .scale(yScale)
-    
-    chart.append('g')
-        .attr('transform', `translate(0, ${height})`)
-        .call(d3.axisBottom(xScale));
-    
-    chart.append('g')
-        .call(d3.axisLeft(yScale));
-    
-    chart.append('g')
-        .attr('class', 'grid')
-        .call(makeYLines()
-        .tickSize(-width, 0, 0)
-        .tickFormat('')
-        )
-    */
     const barGroups = chart.selectAll()
         .data(sample)
         .enter()
@@ -1086,22 +1054,6 @@ function insertComparison(scenarios){
             }
         })
     
-    /*svg
-        .append('text')
-        .attr('class', 'label')
-        .attr('x', -(height / 2) - margin)
-        .attr('y', margin / 9)
-        .attr('transform', 'rotate(-90)')
-        .attr('text-anchor', 'middle')
-        .text('Total Cost (\u20AC)')  */
-    
-    /*svg.append('text')
-        .attr('class', 'label')
-        .attr('x', width / 2 + margin)
-        .attr('y', height + margin * 1.7)
-        .attr('text-anchor', 'middle')
-        .text('Scenarios Metrics')*/
-    
     svg.append('text')
         .attr('class', 'title')
         .attr('x', width / 2 + margin)
@@ -1143,36 +1095,34 @@ function insertComparison(scenarios){
     .text((d) => d)
     .style("font-size", "12px")
     .style("fill", "#000000"); // Adjust the text color as needed
-}
+}*/
 
-
-function insertCostComparison(scenario1,scenario2,scenario3) {
+function insertCostComparison(scenarios) {
     const sample = [
         {
             scenario: 'Scenario 1',
-            value: scenario1['totalCostScenario'].toFixed(2),
-            color: '#000000'
+            value: scenarios[0]['totalCostScenario'].toFixed(2),
+            color: '#006d2c'
         },
         {
             scenario: 'Scenario 2',
-            value: scenario2['totalCostScenario'].toFixed(2),
-            color: '#000000'
+            value: scenarios[1]['totalCostScenario'].toFixed(2),
+            color: '#2ca25f'
         },
 
         {
             scenario: 'Scenario 3',
-            value: scenario3['totalCostScenario'].toFixed(2),
-            color: '#000000'
+            value: scenarios[2]['totalCostScenario'].toFixed(2),
+            color: '#66c2a4'
         }
     ];
     
-    const svg = d3.select('svg');
-    const svgContainer = d3.select('#container');
-    
     const margin = 80;
-    const width = 1000 - 2 * margin;
-    const height = 600 - 2 * margin;
+    const width = 480 - margin;
+    const height = 280 -  margin;
     
+    const svg = d3.select('#containerCost').append("svg");
+
     const chart = svg.append('g')
         .attr('transform', `translate(${margin}, ${margin})`);
 
@@ -1184,17 +1134,17 @@ function insertCostComparison(scenario1,scenario2,scenario3) {
     // To handle the scale of the values on the y-axis
     const yScale = d3.scaleLinear()
         .range([height, 0])
-        .domain([0, 20000]);
+        .domain([0.99999 * Math.min(sample[0].value, sample[1].value, sample[2].value), Math.max(sample[0].value, sample[1].value, sample[2].value)]);
     
-    const makeYLines = () => d3.axisLeft()
-        .scale(yScale)
+    const makeYLines = () => d3.axisLeft().scale(yScale)
     
     chart.append('g')
         .attr('transform', `translate(0, ${height})`)
         .call(d3.axisBottom(xScale));
     
     chart.append('g')
-        .call(d3.axisLeft(yScale));
+        .call(d3.axisLeft(yScale).tickValues(sample.map((d) => d.value))
+        .tickFormat(d3.format('.2f')));
     
     chart.append('g')
         .attr('class', 'grid')
@@ -1217,15 +1167,7 @@ function insertCostComparison(scenario1,scenario2,scenario3) {
         .attr('height', (g) => height - yScale(g.value))
         .attr('width', xScale.bandwidth())
         .attr('fill', function(d) {
-            if (d.scenario.includes('1')) {
-              return '#83d3c9';
-            } 
-            else if (d.scenario.includes('2')){
-                return '#49d49d'
-            }
-            else {
-              return '#15b097';
-            }
+            return d.color;
           })
         .on('mouseenter', function (actual, i) {
         d3.selectAll('.value')
@@ -1250,7 +1192,7 @@ function insertCostComparison(scenario1,scenario2,scenario3) {
         barGroups.append('text')
             .attr('class', 'divergence')
             .attr('x', (a) => xScale(a.scenario) + xScale.bandwidth() / 2)
-            .attr('y', (a) => yScale(a.value) + 30)
+            .attr('y', (a) => yScale(a.value) - 10)
             .attr('fill', 'white')
             .attr('text-anchor', 'middle')
             .text((a, idx) => {
@@ -1258,7 +1200,7 @@ function insertCostComparison(scenario1,scenario2,scenario3) {
             
             let text = ''
             if (divergence > 0) text += '+'
-            text += `${divergence}\u20AC`
+            text += `${divergence} \u20AC`
     
             return idx !== i ? text : '';
             })
@@ -1279,19 +1221,19 @@ function insertCostComparison(scenario1,scenario2,scenario3) {
         chart.selectAll('.divergence').remove()
         })
     
-    barGroups 
+    /*barGroups 
         .append('text')
         .attr('class', 'value')
         .attr('x', (a) => xScale(a.scenario) + xScale.bandwidth() / 2)
-        .attr('y', (a) => yScale(a.value) + 30)
+        .attr('y', (a) => yScale(a.value) - 10)
         .attr('text-anchor', 'middle')
-        .text((a) => `${a.value}\u20AC`)
+        .text((a) => `${a.value}\u20AC`)*/
     
     svg
         .append('text')
         .attr('class', 'label')
         .attr('x', -(height / 2) - margin)
-        .attr('y', margin / 3.3)
+        .attr('y', margin / 8.3)
         .attr('transform', 'rotate(-90)')
         .attr('text-anchor', 'middle')
         .text('Total Cost (\u20AC)')
@@ -1299,47 +1241,47 @@ function insertCostComparison(scenario1,scenario2,scenario3) {
     svg.append('text')
         .attr('class', 'label')
         .attr('x', width / 2 + margin)
-        .attr('y', height + margin * 1.7)
+        .attr('y', height + margin * 1.5)
         .attr('text-anchor', 'middle')
         .text('Scenarios')
     
     svg.append('text')
         .attr('class', 'title')
         .attr('x', width / 2 + margin)
-        .attr('y', 40)
+        .attr('y', 50)
         .attr('text-anchor', 'middle')
         .text('Total Cost Comparison')
 }
 
-function insertTimeComparison(scenario1,scenario2,scenario3) {
+function insertTimeComparison(scenarios) {
     const sample = [
         {
             scenario: 'Scenario 1',
-            value: ((scenario1['totalProductionTimeScenario']/60)/60).toFixed(2),
-            color: '#000000'
+            value: ((scenarios[0]['totalProductionTimeScenario']/60)/60).toFixed(2),
+            color: '#006d2c'
         },
         {
             scenario: 'Scenario 2',
-            value: ((scenario2['totalProductionTimeScenario']/60)/60).toFixed(2),
-            color: '#000000'
+            value: ((scenarios[1]['totalProductionTimeScenario']/60)/60).toFixed(2),
+            color: '#2ca25f'
         },
 
         {
             scenario: 'Scenario 3',
-            value: ((scenario3['totalProductionTimeScenario']/60)/60).toFixed(2),
-            color: '#000000'
+            value: ((scenarios[2]['totalProductionTimeScenario']/60)/60).toFixed(2),
+            color: '#66c2a4'
         }
     ];
-
-    const svg1 = d3.select('#containerTime').append("svg");
     
     const margin = 80;
-    const width = 500 - 2 * margin;
-    const height = 300 - 2 * margin;
+    const width = 480 - margin;
+    const height = 280 -  margin;
     
+    const svg1 = d3.select('#containerTime').append("svg");
+
     const chart = svg1.append('g')
         .attr('transform', `translate(${margin}, ${margin})`);
-    
+
     const xScale = d3.scaleBand()
         .range([0, width])
         .domain(sample.map((s) => s.scenario))
@@ -1348,17 +1290,17 @@ function insertTimeComparison(scenario1,scenario2,scenario3) {
     // To handle the scale of the values on the y-axis
     const yScale = d3.scaleLinear()
         .range([height, 0])
-        .domain([0, 4000]);
-    
-    const makeYLines = () => d3.axisLeft()
-        .scale(yScale)
+        .domain([0.9 * Math.min(sample[0].value, sample[1].value, sample[2].value), Math.max(sample[0].value, sample[1].value, sample[2].value)]);
+
+    const makeYLines = () => d3.axisLeft().scale(yScale)
     
     chart.append('g')
         .attr('transform', `translate(0, ${height})`)
         .call(d3.axisBottom(xScale));
     
     chart.append('g')
-        .call(d3.axisLeft(yScale));
+        .call(d3.axisLeft(yScale).tickValues(sample.map((d) => d.value))
+        .tickFormat(d3.format('.2f')));
     
     chart.append('g')
         .attr('class', 'grid')
@@ -1367,12 +1309,13 @@ function insertTimeComparison(scenario1,scenario2,scenario3) {
         .tickFormat('')
         )
     
+
     const barGroups = chart.selectAll()
         .data(sample)
         .enter()
         .append('g')
-    
-        barGroups
+     
+    barGroups
         .append('rect')
         .attr('class', 'barr')
         .attr('x', (g) => xScale(g.scenario))
@@ -1380,21 +1323,13 @@ function insertTimeComparison(scenario1,scenario2,scenario3) {
         .attr('height', (g) => height - yScale(g.value))
         .attr('width', xScale.bandwidth())
         .attr('fill', function(d) {
-            if (d.scenario.includes('1')) {
-                return '#83d3c9';
-            } 
-            else if (d.scenario.includes('2')){
-                return '#49d49d';
-            }
-            else {
-                return '#15b097';
-            }
+            return d.color;
           })
         .on('mouseenter', function (actual, i) {
         d3.selectAll('.value')
             .attr('opacity', 0)
     
-        d3.select(this)
+            d3.select(this)
             .transition()
             .duration(300)
             .attr('opacity', 0.6)
@@ -1413,7 +1348,7 @@ function insertTimeComparison(scenario1,scenario2,scenario3) {
         barGroups.append('text')
             .attr('class', 'divergence')
             .attr('x', (a) => xScale(a.scenario) + xScale.bandwidth() / 2)
-            .attr('y', (a) => yScale(a.value) + 30)
+            .attr('y', (a) => yScale(a.value) - 10)
             .attr('fill', 'white')
             .attr('text-anchor', 'middle')
             .text((a, idx) => {
@@ -1421,7 +1356,7 @@ function insertTimeComparison(scenario1,scenario2,scenario3) {
             
             let text = ''
             if (divergence > 0) text += '+'
-            text += `${divergence}h`
+            text += `${divergence} h`
     
             return idx !== i ? text : '';
             })
@@ -1442,66 +1377,70 @@ function insertTimeComparison(scenario1,scenario2,scenario3) {
         chart.selectAll('.divergence').remove()
         })
     
-    barGroups 
+    /*barGroups 
         .append('text')
         .attr('class', 'value')
         .attr('x', (a) => xScale(a.scenario) + xScale.bandwidth() / 2)
-        .attr('y', (a) => yScale(a.value) + 30)
+        .attr('y', (a) => yScale(a.value) - 10)
         .attr('text-anchor', 'middle')
-        .text((a) => `${a.value}h`)
+        .text((a) => `${a.value}\u20AC`)*/
     
     svg1
         .append('text')
         .attr('class', 'label')
         .attr('x', -(height / 2) - margin)
-        .attr('y', margin / 3.3)
+        .attr('y', margin / 6)
         .attr('transform', 'rotate(-90)')
         .attr('text-anchor', 'middle')
         .text('Total Time (h)')
-    
+
     svg1.append('text')
         .attr('class', 'label')
         .attr('x', width / 2 + margin)
-        .attr('y', height + margin * 1.7)
+        .attr('y', height + margin * 1.5)
         .attr('text-anchor', 'middle')
         .text('Scenarios')
-    
+
     svg1.append('text')
         .attr('class', 'title')
         .attr('x', width / 2 + margin)
-        .attr('y', 40)
+        .attr('y', 50)
         .attr('text-anchor', 'middle')
         .text('Total Time Comparison');
 }
 
-function insertMouldComparison(scenario1,scenario2,scenario3) {
+function insertMouldComparison(scenarios) {
     const sample = [
         {
-        scenario: 'Scenario 1',
-        value: scenario1['totalMouldChangesScenario'],
-        color: '#000000'
+            scenario: 'Scenario 1',
+            value: scenarios[0]['totalMouldChangesScenario'],
+            color: '#006d2c'
         },
         {
-        scenario: 'Scenario 2',
-        value: scenario2['totalMouldChangesScenario'],
-        color: '#00a2ee'
+            scenario: 'Scenario 2',
+            value: scenarios[1]['totalMouldChangesScenario'],
+            color: '#2ca25f'
         },
+
         {
-        scenario: 'Scenario 3',
-        value: scenario3['totalMouldChangesScenario'],
-        color: '#fbcb39'
+            scenario: 'Scenario 3',
+            value: scenarios[2]['totalMouldChangesScenario'],
+            color: '#66c2a4'
         }
     ];
-
-    const svg2 = d3.select('#containerMould').append("svg");
     
     const margin = 80;
-    const width = 500 - 2 * margin;
-    const height = 300 - 2 * margin;
+    const width = 480 - margin;
+    const height = 280 -  margin;
+    
+    const svg2 = d3.select('#containerMould').append("svg");
     
     const chart = svg2.append('g')
         .attr('transform', `translate(${margin}, ${margin})`);
     
+
+
+
     const xScale = d3.scaleBand()
         .range([0, width])
         .domain(sample.map((s) => s.scenario))
@@ -1510,17 +1449,17 @@ function insertMouldComparison(scenario1,scenario2,scenario3) {
     // To handle the scale of the values on the y-axis
     const yScale = d3.scaleLinear()
         .range([height, 0])
-        .domain([0, 25]);
-    
-    const makeYLines = () => d3.axisLeft()
-        .scale(yScale)
+        .domain([0.9 * Math.min(sample[0].value, sample[1].value, sample[2].value), Math.max(sample[0].value, sample[1].value, sample[2].value)]);
+
+    const makeYLines = () => d3.axisLeft().scale(yScale)
     
     chart.append('g')
         .attr('transform', `translate(0, ${height})`)
         .call(d3.axisBottom(xScale));
     
     chart.append('g')
-        .call(d3.axisLeft(yScale));
+        .call(d3.axisLeft(yScale).tickValues(sample.map((d) => d.value))
+        .tickFormat(d3.format('.0f')));
     
     chart.append('g')
         .attr('class', 'grid')
@@ -1529,12 +1468,13 @@ function insertMouldComparison(scenario1,scenario2,scenario3) {
         .tickFormat('')
         )
     
+
     const barGroups = chart.selectAll()
         .data(sample)
         .enter()
         .append('g')
-    
-        barGroups
+     
+    barGroups
         .append('rect')
         .attr('class', 'barr')
         .attr('x', (g) => xScale(g.scenario))
@@ -1542,21 +1482,13 @@ function insertMouldComparison(scenario1,scenario2,scenario3) {
         .attr('height', (g) => height - yScale(g.value))
         .attr('width', xScale.bandwidth())
         .attr('fill', function(d) {
-            if (d.scenario.includes('1')) {
-              return '#83d3c9';
-            } 
-            else if (d.scenario.includes('2')){
-                return '#49d49d'
-            }
-            else {
-              return '#15b097';
-            }
+            return d.color;
           })
         .on('mouseenter', function (actual, i) {
         d3.selectAll('.value')
             .attr('opacity', 0)
     
-        d3.select(this)
+            d3.select(this)
             .transition()
             .duration(300)
             .attr('opacity', 0.6)
@@ -1575,7 +1507,7 @@ function insertMouldComparison(scenario1,scenario2,scenario3) {
         barGroups.append('text')
             .attr('class', 'divergence')
             .attr('x', (a) => xScale(a.scenario) + xScale.bandwidth() / 2)
-            .attr('y', (a) => yScale(a.value) + 30)
+            .attr('y', (a) => yScale(a.value) - 10)
             .attr('fill', 'white')
             .attr('text-anchor', 'middle')
             .text((a, idx) => {
@@ -1583,7 +1515,7 @@ function insertMouldComparison(scenario1,scenario2,scenario3) {
             
             let text = ''
             if (divergence > 0) text += '+'
-            text += `${divergence}h`
+            text += `${divergence}`
     
             return idx !== i ? text : '';
             })
@@ -1604,34 +1536,26 @@ function insertMouldComparison(scenario1,scenario2,scenario3) {
         chart.selectAll('.divergence').remove()
         })
     
-    barGroups 
-        .append('text')
-        .attr('class', 'value')
-        .attr('x', (a) => xScale(a.scenario) + xScale.bandwidth() / 2)
-        .attr('y', (a) => yScale(a.value) + 30)
-        .attr('text-anchor', 'middle')
-        .text((a) => `${a.value}`)
-    
     svg2
         .append('text')
         .attr('class', 'label')
         .attr('x', -(height / 2) - margin)
-        .attr('y', margin / 3.3)
+        .attr('y', margin / 6)
         .attr('transform', 'rotate(-90)')
         .attr('text-anchor', 'middle')
         .text('Mould Changes (#)')
-    
+
     svg2.append('text')
         .attr('class', 'label')
         .attr('x', width / 2 + margin)
-        .attr('y', height + margin * 1.7)
+        .attr('y', height + margin * 1.5)
         .attr('text-anchor', 'middle')
         .text('Scenarios')
-    
+
     svg2.append('text')
         .attr('class', 'title')
         .attr('x', width / 2 + margin)
-        .attr('y', 40)
+        .attr('y', 50)
         .attr('text-anchor', 'middle')
         .text('Required Mould Changes Comparison')
 }

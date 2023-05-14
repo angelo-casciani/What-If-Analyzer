@@ -9,7 +9,7 @@
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<script src="https://d3js.org/d3.v5.min.js"></script>
 	</head>
-	<body class="index is-preload" onload="checkLogin();showScenarioComparison();">
+	<body class="index is-preload" onload="checkLogin();showTopScenariosComparison();">
 		<div id="page-wrapper">
 
 			<!-- Header -->
@@ -40,47 +40,53 @@
                     <h2><strong>Top 3 Scenarios Comparison</strong></h2>
                     Here, you can compare the metrics of the top 3 scenarios.
 				</header>
+				
 				<section class="wrapper style4 container special-alt">
-				
-						<div class="col-12 col-12-narrower">	
-							<div id='layout'>
-								<div id='container'>
-								  <svg />
-								</div>
+					<div class="row gtr-150" style="text-align: center;">	
+						<div class="col-4 col-12-narrower">
+							<div style="background-color: #006d2c;border: 1px solid black;padding: 10px;color: black;">
+								<h1 style="font-weight:bold;"><strong>Best for Cost</strong></h1>
+								<p id="cost1" style="margin-bottom: 5px;"><strong>Total Cost</strong>: </p>
+								<p id="time1" style="margin-bottom: 5px;"><strong>Total Time</strong>: </p>
+								<p id="mould1" style="margin-bottom: 15px;"><strong>Required Mould Changes</strong>: </p>
+								<a onclick="goToScenario(4)" class="button" style="border: 1px solid;">Go to Scenario</a>
 							</div>
-						</div>   
-             
-					</br></br></br> 
-					<div class="row gtr-150" style="text-align: center;">
+						<br><br>
+							<div style="background-color: #2ca25f;border: 1px solid black;padding: 10px;color: black;">
+								<h1 style="font-weight:bold;"><strong>Best for Time</strong></h1>
+								<p id="cost2" style="margin-bottom: 5px;"><strong>Total Cost</strong>: </p>
+								<p id="time2" style="margin-bottom: 5px;"><strong>Total Time</strong>: </p>
+								<p id="mould2" style="margin-bottom: 15px;"><strong>Required Mould Changes</strong>: </p>
+								<a onclick="goToScenario(7)" class="button" style="border: 1px solid;">Go to Scenario</a>
+							</div>
+						<br><br>
+							<div style="background-color: #66c2a4;border: 1px solid black;padding: 10px;color: black;">
+								<h1 style="font-weight:bold;"><strong>Best for Mould Changes</strong></h1>
+								<p id="cost3" style="margin-bottom: 5px;"><strong>Total Cost</strong>: </p>
+								<p id="time3" style="margin-bottom: 5px;"><strong>Total Time</strong>: </p>
+								<p id="mould3" style="margin-bottom: 15px;"><strong>Required Mould Changes</strong>: </p>
+								<a onclick="goToScenario(9)" class="button" style="border: 1px solid;">Go to Scenario</a>
+							</div>	
+						</div>
 					
-						<div style="background-color: #006d2c;border: 1px solid black;padding: 10px;color: black;margin-left:125px;">
-							<h1 style="font-weight:bold;"><strong>Best for Cost</strong></h1>
-							<p id="cost1" style="margin-bottom: 5px;"><strong>Total Cost</strong>: </p>
-							<p id="time1" style="margin-bottom: 5px;"><strong>Total Time</strong>: </p>
-							<p id="mould1" style="margin-bottom: 15px;"><strong>Required Mould Changes</strong>: </p>
-							<a onclick="goToScenario(4)" class="button" style="border: 1px solid;">Go to Scenario</a>
+						<div class="col-8 col-12-narrower">
+							<div id='layout'>
+								<div id='containerCost' style="height:330px;width:530px; margin-left: 80px;margin-top: -40px;"></div>
+							</div>
+							<div id='layout'>
+								<div id='containerTime' style="height:330px;width:530px"></div>
+							</div>
+							<div id='layout'>
+								<div id='containerMould' style="height:330px;width:530px"></div>
+							</div>
 						</div>
-			
-						<div style="background-color: #2ca25f;border: 1px solid black;padding: 10px;color: black; margin-left:20px;">
-							<h1 style="font-weight:bold;"><strong>Best for Time</strong></h1>
-							<p id="cost2" style="margin-bottom: 5px;"><strong>Total Cost</strong>: </p>
-							<p id="time2" style="margin-bottom: 5px;"><strong>Total Time</strong>: </p>
-							<p id="mould2" style="margin-bottom: 15px;"><strong>Required Mould Changes</strong>: </p>
-							<a onclick="goToScenario(7)" class="button" style="border: 1px solid;">Go to Scenario</a>
-						</div>
-				
-						<div style="background-color: #66c2a4;border: 1px solid black;padding: 10px;color: black; margin-left:20px;">
-							<h1 style="font-weight:bold;"><strong>Best for Mould Changes</strong></h1>
-							<p id="cost3" style="margin-bottom: 5px;"><strong>Total Cost</strong>: </p>
-							<p id="time3" style="margin-bottom: 5px;"><strong>Total Time</strong>: </p>
-							<p id="mould3" style="margin-bottom: 15px;"><strong>Required Mould Changes</strong>: </p>
-							<a onclick="goToScenario(9)" class="button" style="border: 1px solid;">Go to Scenario</a>
-						</div>	
-
+								
+						
+						
 					</div>
 
 					
-
+					
 
 				</section>
 			</article>
