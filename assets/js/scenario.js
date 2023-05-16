@@ -231,6 +231,10 @@ yAxis.call(d3.axisLeft(yScale)
                 return '#b2e2e2';
               }
           })
+        .on('click', function(d) {
+            const scenarioId = d.scenario.charAt(d.scenario.length - 1); // d.scenario = Scenario #
+            goToScenario(scenarioId);
+        })
         .on('mouseenter', function (actual, i) {
         d3.selectAll('.value')
             .attr('opacity', 0)
@@ -430,6 +434,10 @@ function insertTime(scenarios){
                 return '#b2e2e2';
               }
           })
+        .on('click', function(d) {
+            const scenarioId = d.scenario.charAt(d.scenario.length - 1); // d.scenario = Scenario #
+            goToScenario(scenarioId);
+        })
         .on('mouseenter', function (actual, i) {
             d3.selectAll('.value')
                 .attr('opacity', 0)
@@ -642,6 +650,10 @@ function insertMould(scenarios) {
                 return '#b2e2e2';
               }
           })
+        .on('click', function(d) {
+            const scenarioId = d.scenario.charAt(d.scenario.length - 1); // d.scenario = Scenario #
+            goToScenario(scenarioId);
+        })
         .on('mouseenter', function (actual, i) {
         d3.selectAll('.value')
             .attr('opacity', 0)
@@ -1100,18 +1112,18 @@ function showTopScenariosComparison() {
 function insertCostComparison(scenarios) {
     const sample = [
         {
-            scenario: 'Scenario 1',
+            scenario: 'Scenario 4',
             value: scenarios[0]['totalCostScenario'].toFixed(2),
             color: '#006d2c'
         },
         {
-            scenario: 'Scenario 2',
+            scenario: 'Scenario 7',
             value: scenarios[1]['totalCostScenario'].toFixed(2),
             color: '#2ca25f'
         },
 
         {
-            scenario: 'Scenario 3',
+            scenario: 'Scenario 9',
             value: scenarios[2]['totalCostScenario'].toFixed(2),
             color: '#66c2a4'
         }
@@ -1150,10 +1162,8 @@ function insertCostComparison(scenarios) {
         .attr('class', 'grid')
         .call(makeYLines()
         .tickSize(-width, 0, 0)
-        .tickFormat('')
-        )
+        .tickFormat(''))
     
-
     const barGroups = chart.selectAll()
         .data(sample)
         .enter()
@@ -1169,6 +1179,10 @@ function insertCostComparison(scenarios) {
         .attr('fill', function(d) {
             return d.color;
           })
+        .on('click', function(d) {
+            const scenarioId = d.scenario.charAt(d.scenario.length - 1); // d.scenario = Scenario #
+            goToScenario(scenarioId);
+        })
         .on('mouseenter', function (actual, i) {
         d3.selectAll('.value')
             .attr('opacity', 0)
@@ -1256,18 +1270,18 @@ function insertCostComparison(scenarios) {
 function insertTimeComparison(scenarios) {
     const sample = [
         {
-            scenario: 'Scenario 1',
+            scenario: 'Scenario 4',
             value: ((scenarios[0]['totalProductionTimeScenario']/60)/60).toFixed(2),
             color: '#006d2c'
         },
         {
-            scenario: 'Scenario 2',
+            scenario: 'Scenario 7',
             value: ((scenarios[1]['totalProductionTimeScenario']/60)/60).toFixed(2),
             color: '#2ca25f'
         },
 
         {
-            scenario: 'Scenario 3',
+            scenario: 'Scenario 9',
             value: ((scenarios[2]['totalProductionTimeScenario']/60)/60).toFixed(2),
             color: '#66c2a4'
         }
@@ -1325,6 +1339,10 @@ function insertTimeComparison(scenarios) {
         .attr('fill', function(d) {
             return d.color;
           })
+        .on('click', function(d) {
+            const scenarioId = d.scenario.charAt(d.scenario.length - 1); // d.scenario = Scenario #
+            goToScenario(scenarioId);
+        })
         .on('mouseenter', function (actual, i) {
         d3.selectAll('.value')
             .attr('opacity', 0)
@@ -1412,18 +1430,18 @@ function insertTimeComparison(scenarios) {
 function insertMouldComparison(scenarios) {
     const sample = [
         {
-            scenario: 'Scenario 1',
+            scenario: 'Scenario 4',
             value: scenarios[0]['totalMouldChangesScenario'],
             color: '#006d2c'
         },
         {
-            scenario: 'Scenario 2',
+            scenario: 'Scenario 7',
             value: scenarios[1]['totalMouldChangesScenario'],
             color: '#2ca25f'
         },
 
         {
-            scenario: 'Scenario 3',
+            scenario: 'Scenario 9',
             value: scenarios[2]['totalMouldChangesScenario'],
             color: '#66c2a4'
         }
@@ -1484,6 +1502,10 @@ function insertMouldComparison(scenarios) {
         .attr('fill', function(d) {
             return d.color;
           })
+        .on('click', function(d) {
+            const scenarioId = d.scenario.charAt(d.scenario.length - 1); // d.scenario = Scenario #
+            goToScenario(scenarioId);
+        })
         .on('mouseenter', function (actual, i) {
         d3.selectAll('.value')
             .attr('opacity', 0)

@@ -1741,7 +1741,7 @@ input, select, textarea {
 			height: 7px;
 			opacity: 0.1;
 			position: absolute;
-			top: 1.75em;
+			top: 1em;
 			width: 43%;
 		}
 
@@ -1754,12 +1754,13 @@ input, select, textarea {
 		}
 
 		header.special h2 {
+			margin-top: -1.5em;
 			margin-bottom: 0;
 		}
 
 		header.special h2 + p {
-			margin-bottom: 0;
-			padding-top: 1.5em;
+			margin-bottom: -2em;
+			padding-top: 0em;
 		}
 
 		header.special .icon {
@@ -1768,7 +1769,7 @@ input, select, textarea {
 			left: 0;
 			position: absolute;
 			text-align: center;
-			top: 1em;
+			top: 0.25em;
 			width: 100%;
 		}
 
@@ -2534,7 +2535,7 @@ input, select, textarea {
 		background-size: 25em, 25em, auto, cover;
 		color: #fff;
 		cursor: default;
-		padding: 6em 0;
+		padding: 1em 0;
 		text-align: center;
 	}
 
@@ -2551,7 +2552,7 @@ input, select, textarea {
 			color: #fff;
 			display: inline-block;
 			opacity: 0;
-			padding: 3em;
+			padding: 2em;
 			text-align: center;
 		}
 
@@ -2588,7 +2589,7 @@ input, select, textarea {
 				}
 
 			#banner .inner footer {
-				margin: 2em 0 0 0;
+				margin: 1em 0 0 0;
 			}
 
 /* Main */
@@ -2598,7 +2599,7 @@ input, select, textarea {
 		background-position: top left, top right, bottom left, bottom right;
 		background-repeat: no-repeat;
 		background-size: 25em;
-		padding: 7em 0;
+		padding: 6em 0;
 	}
 
 		#main > :last-child {
@@ -2644,7 +2645,7 @@ input, select, textarea {
 	#footer {
 		background: #E8EEF4;
 		color: #7c8081;
-		padding: 5em 5em 10em 5em;
+		padding: 1em 5em 1em 5em;
 		text-align: center;
 	}
 
@@ -2723,7 +2724,7 @@ input, select, textarea {
 			}
 
 				.wrapper.style4 {
-					padding: 3em;
+					padding: 2.5em;
 				}
 
 		/* Header */

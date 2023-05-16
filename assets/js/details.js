@@ -448,6 +448,22 @@ function insertScatterplot(data) {
     const yAxis = d3.axisLeft(yScale);
     
     svg.append("g").attr("class", "y-axis").call(yAxis);
+
+    // Creation of the grid
+    const makeYLines = () => d3.axisLeft().scale(yScale);
+    svg.append('g')
+    .attr('class', 'grid')
+    .call(makeYLines()
+    .tickSize(-width, 0, 0)
+    .tickFormat(''))
+        
+    const makeXLines = () => d3.axisBottom().scale(xScale);
+    svg.append('g')
+    .attr('class', 'grid')
+    .call(makeXLines()
+    .tickSize(height, 0, 0)
+    .tickFormat(''));
+
     
     // Create the scatter plot circles
     for (const [machine, dates] of Object.entries(data)) {
@@ -641,6 +657,7 @@ function insertLineChart(scenario) {
         .range([height, 0])
         .domain([0, d3.max(allData[1], (d) => d.instanceNumber)]);
     
+
     // Create the line generator
     var line = d3
         .line()
@@ -671,6 +688,13 @@ function insertLineChart(scenario) {
         .attr("class", "y-axis")
         .call(d3.axisLeft(yScale));
 
+    const makeYLines = () => d3.axisLeft().scale(yScale);
+    svg.append('g')
+    .attr('class', 'grid')
+    .call(makeYLines()
+    .tickSize(-width, 0, 0)
+    .tickFormat(''))
+        
     // Add x-axis label
     svg
         .append("text")
