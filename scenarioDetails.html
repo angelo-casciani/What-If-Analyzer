@@ -41,32 +41,45 @@
                     <p>Here, you can analyze and export the metrics of the single scenario.</p>
 				</header>
 				<section class="wrapper style4 container special-alt">
-					<div class="row gtr-50">
-						<div class="col-12 col-12-narrower">
-                            <div id='layout'>
-								<div id='container' style="height:300px;width:480px">
-								  <svg />
+					<div class="row gtr-150" style="text-align: center; padding: 10px 0 0 60px;">
+						<div class="col-5 col-12-narrower">
+                            <div style="background-color: #b2e2e2;border: 1px solid;padding-left: 20px;margin-top: 100px;">
+								<div style="background-color: white;text-align: left;padding-bottom:10px;">
+									<h1 id="scenarioId" style="font-weight:bold;margin-left: 10px;color: black;">Scenario </h1>
+									<p id="cost" style="margin-left: 10px;margin-bottom: -5px;font-size:13pt;">Total Cost: </p>
+									<p id="time" style="margin-left: 10px;margin-bottom: -5px;font-size:13pt;">Total Time: </p>
+									<p id="mould" style="margin-left: 10px;margin-bottom: 15px;font-size:13pt;">Required Mould Changes: </p>
+									
 								</div>
-							</div>
+							</div>	
 							
 							<div style="border: 1px solid;text-align:center;">
-								<p id="scenarioId" style="margin-bottom: 2px;font-weight:bold;">Scenario </p>
-								<p id="cost" style="margin-bottom: 2px;">Total Cost: </p>
-								<p id="time" style="margin-bottom: 2px;">Total Time: </p>
-								<p id="mould" style="margin-bottom: 2px;">Required Mould Changes: </p>
+								
 							</div>
 							
-						</br>
-                            <div style="text-align: center;">
-                                <a onclick="goToScenarioMetrics()" class="button">Show Graph</a>
-                            </div>
-                        </br>
-                            <div style="text-align: center;">
-                                <a id="download-link" onclick="exportScenario();" class="button">Export Data</a>
-                            </div>
+	
 
-						</div>       
+						</div> 
+
+						<div class="col-7 col-12-narrower">
+							<div id='layout'>
+								<div id='container' style="height:300px;width:480px"></div>
+							</div>
+						</div>
                     </div>
+					<br>
+					<div class="row gtr-150">
+						<div class="col-12 col-12-narrower" style="margin-top: 14px;">
+							<div style="text-align: center;">
+								<a onclick="goToScenarioMetrics()" class="button">Show Graph</a>
+							</div>
+						</br>
+							<div style="text-align: center;">
+								<a id="download-link" onclick="exportScenario();" class="button">Export Data</a>
+							</div>
+						</div>
+						
+					</div>
 				</section>
 			</article>
 

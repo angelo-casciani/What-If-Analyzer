@@ -37,13 +37,12 @@ function insertGraph(scenario) {
         }
     ];
     
-    const svg = d3.select('svg');
-    const svgContainer = d3.select('#container');
+    const svg = d3.select('#container').append("svg");
     
     const margin = 80;
     const margin1 = 100;
-    const width = 520 - 2 * margin1;
-    const height = 320 - 2 * margin;
+    const width = 530 - 2 * margin1;
+    const height = 350 - 2 * margin;
     
     const chart = svg.append('g')
         .attr('transform', `translate(${margin}, ${margin})`);
@@ -276,7 +275,7 @@ function insertGraph(scenario) {
     svg.append('text')
         .attr('class', 'title')
         .attr('x', width / 2 + margin)
-        .attr('y', 20)
+        .attr('y', 30)
         .attr('text-anchor', 'middle')
         .text('Scenario Metrics')
 }
