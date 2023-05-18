@@ -409,9 +409,9 @@ function datesToMachine(scenario, objectsOnMachines) {
 
 function insertScatterplot(data) {
     // Create SVG container
-    const margin = { top: 50, right: 20, bottom: 30, left: 250 };
-    const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    var margin = { top: 50, right: 250, bottom: 40, left: 100 };
+    var width = 1000 - margin.left - margin.right;
+    var height = 450 - margin.top - margin.bottom;
     
     const svg = d3
         .select("#scatterplot")
@@ -481,7 +481,7 @@ function insertScatterplot(data) {
         .append("text")
         .attr("class", "axis-label")
         .attr("x", width / 2)
-        .attr("y", height + margin.bottom*1.5)
+        .attr("y", height + margin.bottom*1)
         .attr("text-anchor", "middle")
         .text("Machines");
 
@@ -491,7 +491,7 @@ function insertScatterplot(data) {
         .attr("class", "axis-label")
         .attr("transform", "rotate(-90)")
         .attr("x", -height / 2)
-        .attr("y", -margin.left*0.35)
+        .attr("y", -margin.left*0.75)
         .attr("dy", "1em")
         .attr("text-anchor", "middle")
         .text("Dates");
@@ -586,7 +586,56 @@ function insertLineChart(scenario) {
       
         updateChart();
       }
-      
+    
+    // Add an event listener to the select element for the time scale on x-axis
+    var select = document.getElementById("granularity");
+    select.addEventListener("change", function () {
+        var selectedOption = select.value;
+        updateXScale(selectedOption);
+    });
+
+    function updateXScale(selectedOption) {
+        switch (selectedOption) {
+          case "day":
+            xScale.domain(d3.extent(allData.flat(), (d) => d.date));
+            xScale.ticks(d3.timeDay);
+            xScale.tickFormat(d3.timeFormat("%d %b")); // Example format: 01 Jan
+            break;
+          case "week":
+            const startOfWeek = d3.min(allData.flat(), (d) => getStartOfWeek(d.date));
+            const endOfWeek = d3.max(allData.flat(), (d) => getEndOfWeek(d.date));
+            xScale.domain([startOfWeek, endOfWeek]);
+            xScale.ticks(d3.timeWeek);
+            xScale.tickFormat(d3.timeFormat("%b %d")); // Example format: 01 Jan
+            break;
+          case "month":
+            const startOfMonth = d3.min(allData.flat(), (d) => getStartOfMonth(d.date));
+            const endOfMonth = d3.max(allData.flat(), (d) => getEndOfMonth(d.date));
+            xScale.domain([startOfMonth, endOfMonth]);
+            xScale.ticks(d3.timeMonth);
+            xScale.tickFormat(d3.timeFormat("%b %Y")); // Example format: Jan 2023
+            break;
+          case "year":
+            const startOfYear = d3.min(allData.flat(), (d) => getStartOfYear(d.date));
+            const endOfYear = d3.max(allData.flat(), (d) => getEndOfYear(d.date));
+            xScale.domain([startOfYear, endOfYear]);
+            xScale.ticks(d3.timeYear);
+            xScale.tickFormat(d3.timeFormat("%Y")); // Example format: 2023
+            break;
+          default:
+            xScale.domain(d3.extent(allData.flat(), (d) => d.date));
+            xScale.ticks(d3.timeDay);
+            xScale.tickFormat(d3.timeFormat("%d %b")); // Example format: 01 Jan
+            break;
+        }
+
+        // Update the x-axis and rewrite graph
+        const xAxisGroup = d3.select(".x-axis");
+        xAxisGroup.call(d3.axisBottom(xScale));
+        updateChart();
+
+    }
+    
 
     var allData = [];
     for (const obj in instances) {
@@ -598,7 +647,6 @@ function insertLineChart(scenario) {
     }
 
     function updateChart() {
-        
         var svg = d3
         .select("#lineplot").selectAll("svg");
         svg.selectAll(".line").remove();
@@ -632,9 +680,9 @@ function insertLineChart(scenario) {
     }
 
     // Set up the dimensions and margins for the chart
-    var margin = { top: 50, right: 20, bottom: 40, left: 150 };
-    var width = 800 - margin.left - margin.right;
-    var height = 400 - margin.top - margin.bottom;
+    var margin = { top: 50, right: 250, bottom: 40, left: 100 };
+    var width = 1000 - margin.left - margin.right;
+    var height = 450 - margin.top - margin.bottom;
     
     // Create the SVG container
     var svg = d3
@@ -649,13 +697,12 @@ function insertLineChart(scenario) {
     var xScale = d3
         .scaleTime()
         .range([0, width])
-        .domain(d3.extent(allData[1], (d) => d.date));
-    
+        .domain(d3.extent(allData.flat(), (d) => d.date));
+  
     const yScale = d3
         .scaleLinear()
         .range([height, 0])
-        .domain([0, d3.max(allData[1], (d) => d.instanceNumber)]);
-    
+        .domain([0, d3.max(allData.flat(), (d) => d.instanceNumber)]);
 
     // Create the line generator
     var line = d3
@@ -709,7 +756,7 @@ function insertLineChart(scenario) {
         .attr("class", "axis-label")
         .attr("transform", "rotate(-90)")
         .attr("x", -height / 2)
-        .attr("y", -margin.left*0.35)
+        .attr("y", -margin.left*0.6)
         .attr("dy", "1em")
         .attr("text-anchor", "middle")
         .text("Quantity");
@@ -727,7 +774,6 @@ function insertLineChart(scenario) {
 
 }
 
-
 function insertLegend(svg, allGroup, myColor) {
     const legendLabels = allGroup;
     const legendColorScale = d3.scaleOrdinal()
@@ -737,7 +783,7 @@ function insertLegend(svg, allGroup, myColor) {
     // Append the legend container to the SVG
     const legend = svg.append("g")
     .attr("class", "legend")
-    .attr("transform", "translate(660, -10)");
+    .attr("transform", "translate(670, 0)");
     
     // Add legend items
     const legendItems = legend.selectAll(".legend-item")
@@ -765,3 +811,41 @@ function insertLegend(svg, allGroup, myColor) {
 }
 
 
+function getStartOfWeek(date) {
+    const startOfWeek = new Date(date);
+    startOfWeek.setHours(0, 0, 0, 0);
+    startOfWeek.setDate(date.getDate() - date.getDay());
+    return startOfWeek;
+  }
+  
+  function getEndOfWeek(date) {
+    const endOfWeek = new Date(date);
+    endOfWeek.setHours(23, 59, 59, 999);
+    endOfWeek.setDate(date.getDate() + (6 - date.getDay()));
+    return endOfWeek;
+  }
+  
+  function getStartOfMonth(date) {
+    const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    startOfMonth.setHours(0, 0, 0, 0);
+    return startOfMonth;
+  }
+  
+  function getEndOfMonth(date) {
+    const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    endOfMonth.setHours(23, 59, 59, 999);
+    return endOfMonth;
+  }
+  
+  function getStartOfYear(date) {
+    const startOfYear = new Date(date.getFullYear(), 0, 1);
+    startOfYear.setHours(0, 0, 0, 0);
+    return startOfYear;
+  }
+  
+  function getEndOfYear(date) {
+    const endOfYear = new Date(date.getFullYear(), 11, 31);
+    endOfYear.setHours(23, 59, 59, 999);
+    return endOfYear;
+  }
+  
