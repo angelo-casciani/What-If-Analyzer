@@ -134,12 +134,6 @@ var flagCorrectTable = false
 
 
 $(document).ready(function () {
-    // Check for Date no older than today
-    const currentDate = new Date();
-    const currentDateString = currentDate.toISOString().slice(0, 16);
-    const endOrderDateInput = document.getElementById("endOrderDate");
-    endOrderDateInput.min = currentDateString;
-
     $("#addProduct").on("click", function () {
         $("#myTable").append("<tr>"
             + "<td>"
@@ -673,3 +667,10 @@ function submitForm() {
 }
 
 
+function checkDate() {
+    // Check for Date no older than today
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 16);
+    const endOrderDateInput = document.getElementById("endOrderDate");
+    endOrderDateInput.min = currentDateString;
+}

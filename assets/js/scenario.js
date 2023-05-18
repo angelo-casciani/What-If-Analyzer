@@ -46,9 +46,9 @@ function chooseScenarios(callback) {
     localStorage.setItem('scenarios', JSON.stringify(scenarios));
 
     var scenarios = JSON.parse(localStorage.getItem('scenarios'));
-    const url_requests = [`http://localhost:8000/simulations/scenario${scenarios[0]}.json`, `http://localhost:8000/simulations/scenario${scenarios[1]}.json`, `http://localhost:8000/simulations/scenario${scenarios[2]}.json`,
-                        `http://localhost:8000/simulations/scenario${scenarios[3]}.json`,`http://localhost:8000/simulations/scenario${scenarios[4]}.json`, `http://localhost:8000/simulations/scenario${scenarios[5]}.json`,`http://localhost:8000/simulations/scenario${scenarios[6]}.json`,
-                        `http://localhost:8000/simulations/scenario${scenarios[7]}.json`,`http://localhost:8000/simulations/scenario${scenarios[8]}.json`];
+    const url_requests = [`/simulations/scenario${scenarios[0]}.json`, `/simulations/scenario${scenarios[1]}.json`, `/simulations/scenario${scenarios[2]}.json`,
+                        `/simulations/scenario${scenarios[3]}.json`,`/simulations/scenario${scenarios[4]}.json`, `/simulations/scenario${scenarios[5]}.json`,`/simulations/scenario${scenarios[6]}.json`,
+                        `/simulations/scenario${scenarios[7]}.json`,`/simulations/scenario${scenarios[8]}.json`];
 
     for (let i = 0; i < url_requests.length; i++) {
         const key = `scenario${i+1}`;
