@@ -35,12 +35,12 @@
                       <div class="row gtr-50">
                         <div class="col-6 col-12-mobile" style="display: flex; flex-direction: row;">
                           <label for="customer" >Customer:</label>
-                          <input type="text" id="customer" name="customer" style="border: 1px solid; margin-left: 42px; padding: 0%;">
+                          <input type="text" id="customer" name="customer" style="border: 1px solid; margin-left: 42px; padding: 0%;" required>
                         </div>
 
                         <div class="col-12 col-12-mobile" style="display: flex; flex-direction: row;">
                           <label for="endOrderDate" style="margin-right: 37.5px;">End Order:</label>
-                          <input id="endOrderDate" type="datetime-local" style="border: 1px solid;" name="endOrderDate" max="9999-12-31T23:59" />
+                          <input id="endOrderDate" type="datetime-local" style="border: 1px solid;" name="endOrderDate" max="9999-12-31T23:59" required/>
                         </div>
 
                         <div class="col-12 col-12-mobile" style="display: flex; flex-direction: row;">
@@ -59,20 +59,20 @@
                                 </tr>
                                 <tr>
                                     <td class="table-cell product-cell">
-                                        <select name="product" class="product">
+                                        <select name="product" class="product" required>
                                             <option value="" selected disabled>Select a product:</option>
                                         </select>
                                     </td>
                                     <td class="table-cell type-cell">
-                                        <select name="type" class="type">
+                                        <select name="type" class="type" required>
                                             <option value="" selected disabled>Select a type:</option>
                                         </select>
                                     </td>
                                     <td class="table-cell quantity-cell">
-                                        <input class="quantity" type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');" style="border: 1px solid;" />
+                                        <input class="quantity" type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '');" style="border: 1px solid;" required/>
                                     </td>
                                     <td class="table-cell remove-cell">
-                                        <input id="removeProduct" name="removeProduct" type="button" value="Remove Product" />
+                                        <input id="removeProduct" name="removeProduct" type="button" value="Remove Product" style="background-color:rgb(212, 206, 206);" disabled/>
                                     </td>
                                 </tr>
                         </table>

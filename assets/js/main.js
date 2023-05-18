@@ -134,22 +134,26 @@ var flagCorrectTable = false
 
 
 $(document).ready(function () {
-    
+    // Check for Date no older than today
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 16);
+    const endOrderDateInput = document.getElementById("endOrderDate");
+    endOrderDateInput.min = currentDateString;
 
     $("#addProduct").on("click", function () {
         $("#myTable").append("<tr>"
             + "<td>"
-            + "<select name =\"product\" class=\"product\">"
-            + "<option value=\"\" selected disabled>Select a product:</option>"
+            + "<select name =\"product\" class=\"product\" required>"
+            + "<option value=\"\" selected disabled>Select a product:</option> required"
             + "</select>"
             + "</td>"
             + "<td>"
-            + "<select name=\"type\" class=\"type\">"
+            + "<select name=\"type\" class=\"type\" required>"
             + "<option value=\"\" selected disabled>Select a type:</option>"
             + "</select>"
             + "</td>"
             + "<td>"
-            + "<input class=\"quantity\" type=\"text\" style=\"border: 1px solid;\" oninput=\"this.value = this.value.replace(/[^0-9]/g, '');\"/>"
+            + "<input class=\"quantity\" type=\"text\" style=\"border: 1px solid;\" oninput=\"this.value = this.value.replace(/[^0-9]/g, '');\" required/>"
             + "</td>"
             + "<td>"
             + "<input id=\"removeProduct\" name=\"removeProduct\" type=\"button\" value=\"Remove Product\"/>"
@@ -667,7 +671,5 @@ function submitForm() {
     readTableContent();
     window.location.href = 'submitted.html';
 }
-
-
 
 
