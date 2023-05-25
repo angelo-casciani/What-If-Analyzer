@@ -21,9 +21,9 @@
                             <a href="#">Top 3 Scenarios </a>
                             <ul>
 								<li><a href="comparisonDetails.html">Top 3 Comparison</a></li>
-                                <li><a onclick="goToScenario(4)">Best Scenario Cost</a></li>
-                                <li><a onclick="goToScenario(7)">Best Scenario Time</a></li>
-                                <li><a onclick="goToScenario(9)">Best Scenario Mould Changes</a></li>
+                                <li><a id="topCost" onclick="goToScenario(JSON.parse(localStorage.getItem('top3'))[0])">Best Scenario Cost</a></li>
+                                <li><a id="topTime" onclick="goToScenario(JSON.parse(localStorage.getItem('top3'))[1])">Best Scenario Time</a></li>
+                                <li><a id="topMould" onclick="goToScenario(JSON.parse(localStorage.getItem('top3'))[2])">Best Scenario Mould Changes</a></li>
                             </ul>
                         </li>
                         <li><a onclick="redirectToOrder()" class="button" style="border: 1px solid;">New Order</a></li>

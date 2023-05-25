@@ -22,6 +22,7 @@ function setScenarios() {
     insertCost(sample);
     insertTime(sample);
     insertMould(sample);
+    
 }
 
 function chooseScenarios(callback) {
@@ -1477,6 +1478,14 @@ function adaptScenariosForVisualization(scenarios) {
     sample.find(obj => parseFloat(obj.mould) === minMould).color = '#66c2a4';
     sample.find(obj => parseFloat(obj.mould) === minMould).bestMould = true;
 
+    const top3 = [
+        parseInt(sample.find(obj => obj.bestCost).scenario.slice(-1)),
+        parseInt(sample.find(obj => obj.bestTime).scenario.slice(-1)),
+        parseInt(sample.find(obj => obj.bestMould).scenario.slice(-1))
+      ];
+    
+    localStorage.setItem('top3', JSON.stringify(top3));
+
     return sample;
 }
 
@@ -1505,3 +1514,4 @@ function getAllScenariosFromLocalStorage() {
     var scenarios = [scenario1,scenario2,scenario3,scenario4,scenario5,scenario6,scenario7,scenario8,scenario9];
     return scenarios;
 }
+
