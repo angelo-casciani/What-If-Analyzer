@@ -309,7 +309,6 @@ function backToScenario() {
     window.location.href = 'scenarioDetails.html?scenario=' + scenarioId;
 }
 
-
 function fillScenarioMetrics() {
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
@@ -326,28 +325,34 @@ function fillScenarioMetrics() {
 
 function computeObjectsMachines(scenario) {
     var objectOnMachine = {};
-    otherPieces = [];
-    for (var i = 0; i < Object.keys(scenario["orchestator"]).length; i++) {
-        var key = Object.keys(scenario["orchestator"])[i].toString();
-        //console.log(scenario["orchestator"][key].length);
-        var object = scenario["orchestator"][key][0];
-        object = object.substring(0, object.lastIndexOf("."));
-        if (object.includes("lavabi") && scenario["orchestator"][key].length == 2) {
-            objectOnMachine[object] = 3;             // Assign only 3 machines to this lavabo
-        }
-        else if (object.includes("lavabi") && scenario["orchestator"][key].length < 2) {
-            //console.log(object.substring(0, object.lastIndexOf(".")));
-            objectOnMachine[object] = 6;     
-        }
-        else {
-            otherPieces.push(object);
+    var otherPieces = [];
+    var machinesForLavabi = 6;
+    var availForLavabi = machinesForLavabi;
+    var machinesForOther = 20;
+
+    for (key in Object.keys(scenario["orchestator"])){
+        key = (parseInt(key) + 1).toString();
+        for (var i=0; i < scenario["orchestator"][key].length; i++) {
+            var object = scenario["orchestator"][key][i];
+            object = object.substring(0, object.lastIndexOf("."));
+            if (object.includes("lavabi")) {
+                objectOnMachine[object] = Math.trunc(machinesForLavabi / scenario["orchestator"][key].length);  // Assign only 3 machines to this lavabo 
+                availForLavabi -= objectOnMachine[object]
+            }
+            else {
+                otherPieces.push(object);
+            }
         }
     }
 
+    if (Object.keys(objectOnMachine).length > 0 && availForLavabi > 0) {     // Assign remaining available machines for lavabi to the first one
+        Object.keys(objectOnMachine)[0] += availForLavabi;
+    }
+
     for (var i = 0; i < otherPieces.length; i++) {
-        objectOnMachine[otherPieces[i]] = Math.trunc(20 / otherPieces.length);
+        objectOnMachine[otherPieces[i]] = Math.trunc(machinesForOther / otherPieces.length);
         if (i == otherPieces.length-1) {
-            objectOnMachine[otherPieces[i]] += 20 - (i+1)*Math.trunc(20 / otherPieces.length);   // Assign remaining machines to it
+            objectOnMachine[otherPieces[i]] += machinesForOther - (i+1)*Math.trunc(machinesForOther / otherPieces.length);   // Assign remaining machines to it
         }
     }
     return objectOnMachine;
@@ -359,11 +364,19 @@ function datesToMachine(scenario, objectsOnMachines) {
         objectsOnDates[key] = [];
     }
 
+    var objectsMouldChanges = {};
+    for (key in Object.keys(scenario["objects"])) {
+        objectsMouldChanges[scenario["objects"][key]["objectName"]] = scenario["objects"][key]["numberMouldChanges"];
+    }
+
     for (var i = 0; i < Object.keys(objectsOnMachines).length; i++) {
         const dates = Object.values(scenario["objects"][i]["instances"]);
-        const stepSize = Math.floor(dates.length / scenario["objects"][i]["numberMouldChanges"]);
+        const stepSize = Math.round(dates.length / objectsMouldChanges[Object.keys(objectsOnMachines)[i]]);
         for (let j=0; j < dates.length; j += stepSize) {
-            objectsOnDates[Object.keys(objectsOnMachines)[i]].push(dates[j]);
+            if (objectsOnDates[Object.keys(objectsOnMachines)[i]].length < objectsMouldChanges[Object.keys(objectsOnMachines)[i]]) {
+                objectsOnDates[Object.keys(objectsOnMachines)[i]].push(dates[j]);
+            }
+            
         }
     }
 
@@ -390,6 +403,7 @@ function datesToMachine(scenario, objectsOnMachines) {
     var machineToDates = {};
 
     for (const [object, dates] of Object.entries(objectsOnDates)) {
+        //console.log(dates);
         for (const [piece, machines] of Object.entries(pieceOnMachine)){
             if (object==piece) {
                 for (let i = 0; i < dates.length; i++) {
@@ -409,7 +423,6 @@ function datesToMachine(scenario, objectsOnMachines) {
 }
 
 function insertScatterplot(data) {
-    // Create SVG container
     var margin = { top: 50, right: 250, bottom: 40, left: 100 };
     var width = 1000 - margin.left - margin.right;
     var height = 450 - margin.top - margin.bottom;
@@ -449,7 +462,7 @@ function insertScatterplot(data) {
     
     svg.append("g").attr("class", "y-axis").call(yAxis);
 
-    // Creation of the grid
+    // Create the grid
     const makeYLines = () => d3.axisLeft().scale(yScale);
     svg.append('g')
     .attr('class', 'grid')
