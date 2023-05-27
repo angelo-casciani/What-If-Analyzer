@@ -1,5 +1,5 @@
 function fillData() {
-    var scenarios = ["scenario1","scenario2","scenario3","scenario4","scenario5","scenario6","scenario7","scenario8","scenario9"]
+    var scenarios = ["scenario1","scenario2","scenario3","scenario4","scenario5","scenario6","scenario7","scenario8","scenario9","scenario10"]
     var scenFlag = true;
 
     for (const scenario in scenarios) {
@@ -35,13 +35,13 @@ function chooseScenarios(callback) {
         localStorage.setItem('scenarios', JSON.stringify(scenarios));
     }*/
 
-    var scenarios = [1,2,3,4,5,6,7,8,9];
+    var scenarios = [1,2,3,4,5,6,7,8,9,10];
     localStorage.setItem('scenarios', JSON.stringify(scenarios));
 
     var scenarios = JSON.parse(localStorage.getItem('scenarios'));
     const url_requests = [`/simulations/scenario${scenarios[0]}.json`, `/simulations/scenario${scenarios[1]}.json`, `/simulations/scenario${scenarios[2]}.json`,
                         `/simulations/scenario${scenarios[3]}.json`,`/simulations/scenario${scenarios[4]}.json`, `/simulations/scenario${scenarios[5]}.json`,`/simulations/scenario${scenarios[6]}.json`,
-                        `/simulations/scenario${scenarios[7]}.json`,`/simulations/scenario${scenarios[8]}.json`];
+                        `/simulations/scenario${scenarios[7]}.json`,`/simulations/scenario${scenarios[8]}.json`,`/simulations/scenario${scenarios[9]}.json`];
 
     for (let i = 0; i < url_requests.length; i++) {
         const key = `scenario${i+1}`;
@@ -164,7 +164,7 @@ yAxis.call(d3.axisLeft(yScale)
         .attr('width', xScale.bandwidth())
         .attr('fill', (g) => g.color)
         .on('click', function(d) {
-            const scenarioId = d.scenario.charAt(d.scenario.length - 1); // d.scenario = Scenario #
+            const scenarioId = d.scenario.slice(d.scenario.lastIndexOf(" ")+1, d.scenario.length); // d.scenario = Scenario #
             goToScenario(scenarioId);
         })
         .on('mouseenter', function (actual, i) {
@@ -272,9 +272,9 @@ function insertTime(scenarios){
     // To handle the scale of the values on the y-axis
     const yScale = d3.scaleLinear()
         .range([height, 0])
-        .domain([0.9*Math.min(sample[0].time,sample[1].time,sample[2].time,sample[3].time,sample[4].time,sample[5].time,sample[6].time,sample[7].time,sample[8].time), 
-        Math.max(sample[0].time,sample[1].time,sample[2].time,sample[3].time,sample[4].time,sample[5].time,sample[6].time,sample[7].time,sample[8].time)]);
-    
+        .domain([0.9 * d3.min(sample, (d) => d.time),
+        d3.max(sample, (d) => d.time)]);
+        
     
     const makeYLines = () => d3.axisLeft()
         .scale(yScale)
@@ -307,7 +307,7 @@ function insertTime(scenarios){
         .attr('width', xScale.bandwidth())
         .attr('fill', (g) => g.color)
         .on('click', function(d) {
-            const scenarioId = d.scenario.charAt(d.scenario.length - 1); // d.scenario = Scenario #
+            const scenarioId = d.scenario.slice(d.scenario.lastIndexOf(" ")+1, d.scenario.length); // d.scenario = Scenario #
             goToScenario(scenarioId);
         })
         .on('mouseenter', function (actual, i) {
@@ -415,9 +415,8 @@ function insertMould(scenarios) {
     // To handle the scale of the values on the y-axis
     const yScale = d3.scaleLinear()
         .range([height, 0])
-        .domain([0.9*Math.min(sample[0].mould,sample[1].mould,sample[2].mould,sample[3].mould,sample[4].mould,sample[5].mould,sample[6].mould,sample[7].mould,sample[8].mould), 
-        Math.max(sample[0].mould,sample[1].mould,sample[2].mould,sample[3].mould,sample[4].mould,sample[5].mould,sample[6].mould,sample[7].mould,sample[8].mould)]);
-    
+        .domain([0.9 * d3.min(sample, (d) => d.mould),
+            d3.max(sample, (d) => d.mould)]);
     
     // vertical grid lines
     // const makeXLines = () => d3.axisBottom()
@@ -463,7 +462,7 @@ function insertMould(scenarios) {
         .attr('width', xScale.bandwidth())
         .attr('fill', (g) => g.color)
         .on('click', function(d) {
-            const scenarioId = d.scenario.charAt(d.scenario.length - 1); // d.scenario = Scenario #
+            const scenarioId = d.scenario.slice(d.scenario.lastIndexOf(" ")+1, d.scenario.length); // d.scenario = Scenario #
             goToScenario(scenarioId);
         })
         .on('mouseenter', function (actual, i) {
@@ -1000,7 +999,7 @@ function insertCostComparison(scenarios) {
             return d.color;
           })
         .on('click', function(d) {
-            const scenarioId = d.scenario.charAt(d.scenario.length - 1); // d.scenario = Scenario #
+            const scenarioId = d.scenario.slice(d.scenario.lastIndexOf(" ")+1, d.scenario.length); // d.scenario = Scenario #
             goToScenario(scenarioId);
         })
         .on('mouseenter', function (actual, i) {
@@ -1143,7 +1142,7 @@ function insertTimeComparison(scenarios) {
             return d.color;
           })
         .on('click', function(d) {
-            const scenarioId = d.scenario.charAt(d.scenario.length - 1); // d.scenario = Scenario #
+            const scenarioId = d.scenario.slice(d.scenario.lastIndexOf(" ")+1, d.scenario.length); // d.scenario = Scenario #
             goToScenario(scenarioId);
         })
         .on('mouseenter', function (actual, i) {
@@ -1241,9 +1240,6 @@ function insertMouldComparison(scenarios) {
     
     const chart = svg2.append('g')
         .attr('transform', `translate(${margin}, ${margin})`);
-    
-
-
 
     const xScale = d3.scaleBand()
         .range([0, width])
@@ -1289,7 +1285,7 @@ function insertMouldComparison(scenarios) {
             return d.color;
           })
         .on('click', function(d) {
-            const scenarioId = d.scenario.charAt(d.scenario.length - 1); // d.scenario = Scenario #
+            const scenarioId = d.scenario.slice(d.scenario.lastIndexOf(" ")+1, d.scenario.length); // d.scenario = Scenario #
             goToScenario(scenarioId);
         })
         .on('mouseenter', function (actual, i) {
@@ -1464,6 +1460,16 @@ function adaptScenariosForVisualization(scenarios) {
             bestCost: false,
             bestTime: false,
             bestMould: false
+        },
+        {
+            scenario: 'Scenario 10',
+            cost: scenarios[9]['totalCostScenario'].toFixed(2),
+            time: ((scenarios[9]['totalProductionTimeScenario']/60)/60).toFixed(2),
+            mould: scenarios[9]['totalMouldChangesScenario'],
+            color: '#b2e2e2',
+            bestCost: false,
+            bestTime: false,
+            bestMould: false
         }
     ];
 
@@ -1478,10 +1484,15 @@ function adaptScenariosForVisualization(scenarios) {
     sample.find(obj => parseFloat(obj.mould) === minMould).color = '#66c2a4';
     sample.find(obj => parseFloat(obj.mould) === minMould).bestMould = true;
 
+
+    bestCostScenario = sample.find(obj => obj.bestCost).scenario;
+    bestTimeScenario = sample.find(obj => obj.bestTime).scenario;
+    bestMouldScenario = sample.find(obj => obj.bestMould).scenario;
+
     const top3 = [
-        parseInt(sample.find(obj => obj.bestCost).scenario.slice(-1)),
-        parseInt(sample.find(obj => obj.bestTime).scenario.slice(-1)),
-        parseInt(sample.find(obj => obj.bestMould).scenario.slice(-1))
+        parseInt(bestCostScenario.slice(bestCostScenario.lastIndexOf(" ")+1, bestCostScenario.length)),
+        parseInt(bestTimeScenario.slice(bestTimeScenario.lastIndexOf(" ")+1, bestTimeScenario.length)),
+        parseInt(bestMouldScenario.slice(bestMouldScenario.lastIndexOf(" ")+1, bestMouldScenario.length))
       ];
     
     localStorage.setItem('top3', JSON.stringify(top3));
@@ -1511,7 +1522,8 @@ function getAllScenariosFromLocalStorage() {
     var scenario7 = JSON.parse(localStorage.getItem('scenario7'));
     var scenario8 = JSON.parse(localStorage.getItem('scenario8'));
     var scenario9 = JSON.parse(localStorage.getItem('scenario9'));
-    var scenarios = [scenario1,scenario2,scenario3,scenario4,scenario5,scenario6,scenario7,scenario8,scenario9];
+    var scenario10 = JSON.parse(localStorage.getItem('scenario10'));
+    var scenarios = [scenario1,scenario2,scenario3,scenario4,scenario5,scenario6,scenario7,scenario8,scenario9,scenario10];
     return scenarios;
 }
 

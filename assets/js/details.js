@@ -256,22 +256,6 @@ function insertGraph(scenario) {
             }
           }) */;
     
-    /*svg
-        .append('text')
-        .attr('class', 'label')
-        .attr('x', -(height / 2) - margin)
-        .attr('y', margin / 6)
-        .attr('transform', 'rotate(-90)')
-        .attr('text-anchor', 'middle')
-        .text('Measure')
-
-    svg.append('text')
-        .attr('class', 'label')
-        .attr('x', width / 2 + margin)
-        .attr('y', height + margin * 1.7)
-        .attr('text-anchor', 'middle')
-        .text('Metrics')*/
-    
     svg.append('text')
         .attr('class', 'title')
         .attr('x', width / 2 + margin)
@@ -285,13 +269,30 @@ function exportScenario() {
     var urlParams = new URLSearchParams(queryString);
     var scenarioId = urlParams.get('scenario');
     
-    var scenario = localStorage.getItem('scenario'+scenarioId);
-    const jsonDataBlob = new Blob([scenario], { type: 'application/json' });
-    const jsonDataURL = URL.createObjectURL(jsonDataBlob);
+    var scenario = JSON.parse(localStorage.getItem('scenario'+scenarioId));
+
+    // Function to recursively format the JSON object as a readable string
+    function formatJson(obj, indent = 0) {
+        const tab = '\t'.repeat(indent);
+        const entries = Object.entries(obj);
+
+        return entries.map(([key, value]) => {
+            if (Array.isArray(value) || typeof value === 'object') {
+                return `${tab}${key}:\n${formatJson(value, indent + 1)}`;
+            } else {
+                return `${tab}${key}: ${value}`;
+            }
+        }).join('\n');
+    }
+
+    const formattedScenario = formatJson(scenario);
+
+    const textDataBlob = new Blob([formattedScenario], { type: 'text/plain' });
+    const textDataURL = URL.createObjectURL(textDataBlob);
     
     const link = document.getElementById('download-link');
-    link.href = jsonDataURL;
-    link.setAttribute('download', `scenario${scenarioId}.json`);
+    link.href = textDataURL;
+    link.setAttribute('download', `scenario${scenarioId}.txt`);
 }
 
 function goToScenarioMetrics() {
@@ -661,7 +662,7 @@ function insertLineChart(scenario) {
         
 
         for (var i=0; i < allGroup.length; i++) {
-                // Create the line generator
+            // Create the line generator
             var line = d3
             .line()
             .x((d) => xScale(d.date))
@@ -712,7 +713,8 @@ function insertLineChart(scenario) {
     
     // Add the line path to the chart
     for (var i = 0; i < allData.length; i++) {
-        svg.append("path")
+        svg
+            .append("path")
             .datum(allData[i])
             .attr("class", "line")
             .attr("d", line)
@@ -735,12 +737,13 @@ function insertLineChart(scenario) {
         .call(d3.axisLeft(yScale));
 
     const makeYLines = () => d3.axisLeft().scale(yScale);
-    svg.append('g')
-    .attr('class', 'grid')
-    .call(makeYLines()
-    .tickSize(-width, 0, 0)
-    .tickFormat(''))
-        
+    svg
+        .append('g')
+        .attr('class', 'grid')
+        .call(makeYLines()
+        .tickSize(-width, 0, 0)
+        .tickFormat(''))
+            
     // Add x-axis label
     svg
         .append("text")
@@ -771,7 +774,6 @@ function insertLineChart(scenario) {
         .text("Produced Quantity over Time");
 
     insertLegend(svg, allGroup, myColor);
-
 }
 
 function insertLegend(svg, allGroup, myColor) {
@@ -810,42 +812,41 @@ function insertLegend(svg, allGroup, myColor) {
     .style("fill", "#000000"); // Adjust the text color as needed
 }
 
-
 function getStartOfWeek(date) {
     const startOfWeek = new Date(date);
     startOfWeek.setHours(0, 0, 0, 0);
     startOfWeek.setDate(date.getDate() - date.getDay());
     return startOfWeek;
-  }
+}
   
-  function getEndOfWeek(date) {
+function getEndOfWeek(date) {
     const endOfWeek = new Date(date);
     endOfWeek.setHours(23, 59, 59, 999);
     endOfWeek.setDate(date.getDate() + (6 - date.getDay()));
     return endOfWeek;
-  }
+}
   
-  function getStartOfMonth(date) {
+function getStartOfMonth(date) {
     const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
     startOfMonth.setHours(0, 0, 0, 0);
     return startOfMonth;
-  }
+}
   
-  function getEndOfMonth(date) {
+function getEndOfMonth(date) {
     const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     endOfMonth.setHours(23, 59, 59, 999);
     return endOfMonth;
-  }
+}
   
-  function getStartOfYear(date) {
+function getStartOfYear(date) {
     const startOfYear = new Date(date.getFullYear(), 0, 1);
     startOfYear.setHours(0, 0, 0, 0);
     return startOfYear;
-  }
+}
   
-  function getEndOfYear(date) {
+function getEndOfYear(date) {
     const endOfYear = new Date(date.getFullYear(), 11, 31);
     endOfYear.setHours(23, 59, 59, 999);
     return endOfYear;
-  }
+}
   
