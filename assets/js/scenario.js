@@ -29,7 +29,7 @@ function chooseScenarios(callback) {
     localStorage.setItem('scenarios', JSON.stringify(scenarios));
 
     var scenarios = JSON.parse(localStorage.getItem('scenarios'));
-    var urlPrefix = '/simulations/scenario';
+    var urlPrefix = './simulations/scenario';
 
     var requests = [];
     for (var i = 0; i < scenarios.length; i++) {
