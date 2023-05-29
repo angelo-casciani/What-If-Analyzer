@@ -647,10 +647,8 @@ function readTableContent() {
                 order[i][1] = bidesAvailable[order[i][1]]['text'];
                 break
         }
-        
     }
     sessionStorage.setItem('order', JSON.stringify(order));
-
 }
 
 function submitForm() {
@@ -663,12 +661,19 @@ function submitForm() {
     sessionStorage.setItem('endDate', JSON.stringify(endDate.value));
 
     readTableContent();
+
+    if (localStorage.getItem('scenarios')) {
+        for (let i = 1; i <= 10; i++) {
+            localStorage.removeItem('scenario'+i);
+        }
+        localStorage.removeItem('scenarios');
+        localStorage.removeItem('top3');
+    }
     window.location.href = 'submitted.html';
 }
 
 
 function checkDate() {
-    // Check for Date no older than today
     const currentDate = new Date();
     const currentDateString = currentDate.toISOString().slice(0, 16);
     const endOrderDateInput = document.getElementById("endOrderDate");

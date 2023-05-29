@@ -14,11 +14,11 @@
 
 			<!-- Header -->
             <header id="header">
-                <h1 id="logo">What If Analyzer</a></h1>
+                <h1 id="logo"><a href="comparison.html">What If Analyzer</a></h1>
                 <nav id="nav">
                     <ul>
                         <li class="submenu">
-                            <a href="#">Top 3 Scenarios </a>
+                            <a href="#">Top 3 Scenarios</a>
                             <ul>
 								<li><a href="comparisonDetails.html">Top 3 Comparison</a></li>
                                 <li><a id="topCost" onclick="goToScenario(JSON.parse(localStorage.getItem('top3'))[0])">Best Scenario Cost</a></li>
@@ -42,10 +42,10 @@
 				</header>
 				
 				<section class="wrapper style4 container special-alt">
-					<div class="row gtr-150" style="text-align: center; padding: 0px 0 0 60px;">	
+					<div class="row gtr-150" style="text-align: center; padding: 0 0 35px 45px;">	
 						<div class="col-5 col-12-narrower" style="margin-top: 13px;">
 							<div style="background-color: #006d2c;border: 1px solid;padding-left: 20px;">
-								<div style="background-color: white;text-align: left;padding-bottom:12px;">
+								<div style="background-color: white;text-align: left;padding-bottom:15px;">
 									<h1 id="scenario1" style="margin-left: 10px;color: black;"><strong>Best Cost: Scenario </strong></h1>
 									<p id="cost1" style="margin-left: 10px;margin-bottom: -5px;font-size:13pt;"><strong>Total Cost</strong>: </p>
 									<p id="time1" style="margin-left: 10px;margin-bottom: -5px;font-size:13pt;"><strong>Total Time</strong>: </p>
@@ -53,7 +53,17 @@
 									<a id="button1" class="button" style="display: block; width: 100px; margin: 0 auto;  border: 1px solid;">Go to Scenario</a>
 								</div>
 							</div>
-							<div style="background-color: #2ca25f;border: 1px solid;padding-left: 20px;margin-top: 105px;">
+						</div>
+						<div class="col-7 col-12-narrower">
+							<div id='layout'>
+								<div id='containerCost' style="height:330px;width:530px; margin-left: 13px;margin-top: -40px;"></div>
+							</div>
+						</div>
+					</div>		
+
+					<div class="row gtr-150" style="text-align: center; padding: 0 0 35px 45px;">	
+						<div class="col-5 col-12-narrower" style="margin-top: 13px;">
+							<div style="background-color: #2ca25f;border: 1px solid;padding-left: 20px;">
 								<div style="background-color: white;text-align: left;padding-bottom:15px;">
 									<h1 id="scenario2" style="margin-left: 10px;color: black;"><strong>Best Time: Scenario </strong></h1>
 									<p id="cost2" style="margin-left: 10px;margin-bottom: -5px;font-size:13pt;"><strong>Total Cost</strong>: </p>
@@ -62,7 +72,17 @@
 									<a id="button2" class="button" style="display: block; width: 100px; margin: 0 auto;  border: 1px solid;">Go to Scenario</a>
 								</div>
 							</div>
-							<div style="background-color: #66c2a4;border: 1px solid;padding-left: 20px;margin-top: 100px;">
+						</div>
+						<div class="col-7 col-12-narrower">
+							<div id='layout'>
+								<div id='containerTime' style="height:330px;width:530px;margin-top: -40px;"></div>
+							</div>
+						</div>
+					</div>	
+
+					<div class="row gtr-150" style="text-align: center; padding: 0 0 35px 45px;">	
+						<div class="col-5 col-12-narrower" style="margin-top: 13px;">
+							<div style="background-color: #66c2a4;border: 1px solid;padding-left: 20px;">
 								<div style="background-color: white;text-align: left;padding-bottom:15px;">
 									<h1 id="scenario3" style="margin-left: 10px;color: black;"><strong>Best M_Changes: Scenario </strong></h1>
 									<p id="cost3" style="margin-left: 10px;margin-bottom: -5px;font-size:13pt;"><strong>Total Cost</strong>: </p>
@@ -72,22 +92,22 @@
 								</div>
 							</div>	
 						</div>
-					
 						<div class="col-7 col-12-narrower">
 							<div id='layout'>
-								<div id='containerCost' style="height:330px;width:530px; margin-left: 13px;margin-top: -40px;"></div>
-							</div>
-							<div id='layout'>
-								<div id='containerTime' style="height:330px;width:530px"></div>
-							</div>
-							<div id='layout'>
-								<div id='containerMould' style="height:330px;width:530px"></div>
+								<div id='containerMould' style="height:330px;width:530px;margin-top: -40px;"></div>
 							</div>
 						</div>
+					</div>	
+					
+					<div class="row gtr-150" style="text-align: center; padding: 0px 0 0 60px;">
 						<div style="text-align: center; margin: 0 auto; width: 500px;">
 							<a href="comparison.html" class="button">Back to Scenarios Comparison</a>
 						</div>
 					</div>
+							
+						
+						
+					
 				</section>
 			</article>
 			

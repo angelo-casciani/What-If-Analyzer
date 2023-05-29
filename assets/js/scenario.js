@@ -21,47 +21,47 @@ function setScenarios() {
     const sample = adaptScenariosForVisualization(scenarios);
     insertCost(sample);
     insertTime(sample);
-    insertMould(sample);
-    
+    insertMould(sample);  
 }
 
 function chooseScenarios(callback) {
-    /*if(!localStorage.getItem('scenarios')) {
-        var nums = new Set();
-        while (nums.size < 3) {
-            nums.add(Math.floor(Math.random() * 10) + 1);
-        }
-        var scenarios = [...nums];
-        localStorage.setItem('scenarios', JSON.stringify(scenarios));
-    }*/
-
-    var scenarios = [1,2,3,4,5,6,7,8,9,10];
+    var scenarios = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     localStorage.setItem('scenarios', JSON.stringify(scenarios));
 
     var scenarios = JSON.parse(localStorage.getItem('scenarios'));
-    const url_requests = [`/simulations/scenario${scenarios[0]}.json`, `/simulations/scenario${scenarios[1]}.json`, `/simulations/scenario${scenarios[2]}.json`,
-                        `/simulations/scenario${scenarios[3]}.json`,`/simulations/scenario${scenarios[4]}.json`, `/simulations/scenario${scenarios[5]}.json`,`/simulations/scenario${scenarios[6]}.json`,
-                        `/simulations/scenario${scenarios[7]}.json`,`/simulations/scenario${scenarios[8]}.json`,`/simulations/scenario${scenarios[9]}.json`];
+    var urlPrefix = '/simulations/scenario';
 
-    for (let i = 0; i < url_requests.length; i++) {
-        const key = `scenario${i+1}`;
-        const url = url_requests[i];
-        if(!localStorage.getItem(key)) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", url, false);
-            xhr.onload = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var data = JSON.parse(xhr.responseText);
-                    localStorage.setItem(key, JSON.stringify(data));                 
-                }
-            };
-            xhr.onerror = function() {
-                reject(xhr.statusText);
-            };
-            xhr.send();
-        };
+    var requests = [];
+    for (var i = 0; i < scenarios.length; i++) {
+        var key = 'scenario' + (i + 1);
+        var url = urlPrefix + scenarios[i] + '.json';
+
+        if (!localStorage.getItem(key)) {
+            (function (key, url) {
+                requests.push(
+                    new Promise(function (resolve, reject) {
+                        $.ajax({
+                            url: url,
+                            method: 'GET',
+                            dataType: 'json',
+                            success: function (data) {
+                                localStorage.setItem(key, JSON.stringify(data));
+                                resolve();
+                            },
+                            error: function (xhr, status, error) {
+                                console.error(error);
+                                reject();
+                            }
+                        });
+                    })
+                );
+            })(key, url);
+        }
     }
-    callback();
+
+    Promise.all(requests).then(function () {
+        callback();
+    });
 }
 
 function insertLegend(svg) {
@@ -553,10 +553,7 @@ function insertMould(scenarios) {
 
 function showTopScenariosComparison() {
     const scenarios = getAllScenariosFromLocalStorage();
-
     const sample = adaptTop3ForVisualization(scenarios);
-
-    //insertComparison(scenarios);
     insertCostComparison(sample);
     insertTimeComparison(sample);
     insertMouldComparison(sample);
@@ -599,351 +596,6 @@ function showTopScenariosComparison() {
     }
     
 }
-
-/*function insertComparison(scenarios){
-    const sample = [
-        {
-            scenario: 'Cost#C',
-            value: scenarios[3]['totalCostScenario'].toFixed(2),
-            color: '#006d2c',
-            id: 1
-        },
-        {
-            scenario: 'Time#C',
-            value: ((scenarios[3]['totalProductionTimeScenario']/60)/60).toFixed(2),
-            color: '#006d2c',
-            id: 2
-        },
-        {
-            scenario: 'Mould#C',
-            value: scenarios[3]['totalMouldChangesScenario'],
-            color: '#006d2c',
-            id: 3
-        },
-        {
-            scenario: 'Cost#T',
-            value: scenarios[6]['totalCostScenario'].toFixed(2),
-            color: '#2ca25f',
-            id: 4
-        },
-        {
-            scenario: 'Time#T',
-            value: ((scenarios[6]['totalProductionTimeScenario']/60)/60).toFixed(2),
-            color: '#2ca25f',
-            id: 5
-        },
-        {
-            scenario: 'Mould#T',
-            value: scenarios[6]['totalMouldChangesScenario'],
-            color: '#2ca25f',
-            id: 6
-        },
-        {
-            scenario: 'Cost#M',
-            value: scenarios[8]['totalCostScenario'].toFixed(2),
-            color: '#66c2a4',
-            id: 7
-        },
-        {
-            scenario: 'Time#M',
-            value: ((scenarios[8]['totalProductionTimeScenario']/60)/60).toFixed(2),
-            color: '#66c2a4',
-            id: 8
-        },
-        {
-            scenario: 'Mould#M',
-            value: scenarios[8]['totalMouldChangesScenario'],
-            color: '#66c2a4',
-            id: 9
-        }
-    ];
-    
-    const svg = d3.select('svg');
-    const svgContainer = d3.select('#container');
-    
-    const margin = 80;
-    const width = 1000 - 2 * margin;
-    const height = 600 - 2 * margin;
-    
-    const chart = svg.append('g')
-        .attr('transform', `translate(${margin}, ${margin})`);
-    
-    const xScale = d3.scaleBand()
-        .range([0, width])
-        .domain(sample.map((s) => s.scenario))
-        .padding(0.27)
-
-    const yScaleLeft = d3.scaleLinear()
-        .range([height, 0])
-        .domain([0.99999 * Math.min(sample[0].value, sample[3].value, sample[6].value), Math.max(sample[0].value, sample[3].value, sample[6].value)]);
-    
-    const yScaleLeft1 = d3.scaleLinear()
-        .range([height, 0])
-        .domain([0.9 * Math.min(sample[2].value, sample[5].value, sample[8].value), 1.2*Math.max(sample[2].value, sample[5].value, sample[8].value)]);
-
-    const yScaleRight = d3.scaleLinear()
-        .range([height, 0])
-        .domain([0.9 * Math.min(sample[1].value, sample[4].value, sample[7].value), Math.max(sample[1].value, sample[4].value, sample[7].value)]);
-    
-    const yAxisLeft = d3.axisLeft(yScaleLeft)
-                        .tickValues(sample.map((d) => d.value))
-                        .tickFormat((d) => d3.format('.2f')(d) + ' \u20AC');
-    const yAxisLeft1 = d3.axisRight(yScaleLeft1)
-                        .tickValues(sample.map((d) => d.value))
-                        .tickFormat(d3.format('.0f'));
-    const yAxisRight = d3.axisRight(yScaleRight)
-                        .tickValues(sample.map((d) => d.value))
-                        .tickFormat((d) => d3.format('.2f')(d) + ' h');
-        
-    const makeYLines = () => d3.axisLeft()
-        .scale(yScaleLeft);
-        
-    chart.append('g')
-        .attr('transform', `translate(0, ${height})`)
-        .call(d3.axisBottom(xScale));
-    
-    chart.append('g')
-        .call(yAxisLeft)
-        //.style('stroke', '#83d3c9');
-
-    chart.append('g')
-        .attr('transform', `translate(${width}, 0)`)
-        .call(yAxisLeft1)
-        //.style('stroke', '#15b097');
-        
-    chart.append('g')
-        .attr('transform', `translate(${width}, 0)`)
-        .call(yAxisRight)
-        //.style('stroke', '#49d49d');
-       
-    const barGroups = chart.selectAll()
-        .data(sample)
-        .enter()
-        .append('g')
-    
-    barGroups
-        .append('rect')
-        .attr('class', 'barr')
-        .attr('x', (g) => xScale(g.scenario))
-        //.attr('y', (g) => yScale(g.value))
-        .attr('y', (g) => {
-            if (g.scenario.includes('Cost')) {
-                return yScaleLeft(g.value); // Use right y-scale
-            } else if (g.scenario.includes('Time')) {
-                return yScaleRight(g.value); // Use left y-scale
-            } else {
-                return yScaleLeft1(g.value); // Use left y-scale
-            }
-        })
-        //.attr('height', (g) => height - yScaleRight(g.value))
-        .attr('height', (g) => {
-            if (g.scenario.includes('Cost')) {
-                return height - yScaleLeft(g.value); // Use right y-scale
-            } else if (g.scenario.includes('Time')) {
-                return height - yScaleRight(g.value); // Use left y-scale
-            }
-            else {
-                return height - yScaleLeft1(g.value); // Use left y-scale
-            }
-        })
-        .attr('width', xScale.bandwidth())
-        .attr('fill', function(d) {
-                return d.color;
-            })
-        .on('mouseenter', function (actual, i) {
-            d3.selectAll('.value')
-                .attr('opacity', 0)
-        
-            d3.select(this)
-                .transition()
-                .duration(300)
-                .attr('opacity', 0.8)
-                .attr('x', (a) => xScale(a.scenario) - 5)
-                .attr('width', xScale.bandwidth() + 10)
-            
-            const y_right = yScaleRight(actual.value);
-            const y_left = yScaleLeft(actual.value);
-            const y_left1 = yScaleLeft1(actual.value);
-        
-            line = chart.append('line')
-                .attr('id', 'limit')
-                //.attr('x1', 0)
-                .attr('x1', function() {
-                    if (actual.scenario.includes('Cost')) {
-                        return 0; // Use left y-scale
-                    } else if (actual.scenario.includes('Time')) {
-                        return xScale.bandwidth(); // Use right y-scale
-                    }
-                    else {
-                        return 3.25*xScale.bandwidth(); // Use left y-scale 1
-                    }
-                })
-                .attr('y1', function() {
-                    if (actual.scenario.includes('Cost')) {
-                        return y_left; // Use left y-scale
-                    } else if (actual.scenario.includes('Time')) {
-                        return y_right; // Use right y-scale
-                    }
-                    else {
-                        return y_left1; // Use left y-scale 1
-                    }
-            })
-            //.attr('y1', y)
-            //.attr('x2', width)
-            .attr('x2', function() {
-                if (actual.scenario.includes('Cost')) {
-                    return actual.id*width/10+actual.id*7; // Use left y-scale
-                } else if (actual.scenario.includes('Time')) {
-                    return width; // Use right y-scale
-                }
-                else {
-                    return width; // Use left y-scale 1
-                }
-            })
-            //.attr('y2', y)
-            .attr('y2', function() {
-                if (actual.scenario.includes('Cost')) {
-                    return y_left; // Use right y-scale
-                } else if (actual.scenario.includes('Time')) {
-                    return y_right; // Use right y-scale
-                }
-                else {
-                    return y_left1; // Use left y-scale 1
-                }
-            })
-    
-        barGroups.append('text')
-            .attr('class', 'divergence')
-            .attr('x', (a) => xScale(a.scenario) + xScale.bandwidth() / 2)
-            //.attr('y', (a) => yScale(a.value) + 30)
-            .attr('y', (a) => {
-                if (a.scenario.includes('Cost')) {
-                    return yScaleLeft(a.value) - 10; // Use right y-scale
-                } else if (a.scenario.includes('Time')) {
-                    return yScaleRight(a.value) - 10; // Use left y-scale
-                } else {
-                    return yScaleLeft1(a.value) - 10; // Use left y-scale
-                }
-            })
-            .attr('fill', 'white')
-            .attr('text-anchor', 'middle')
-            .text((a, idx) => {
-                if (a.scenario.includes("Cost") && actual.scenario.includes("Cost")) {
-                    const divergence = (a.value - actual.value).toFixed(2)
-                    
-                    let text = ''
-                    if (divergence > 0) text += '+'
-                    text += `${divergence}\u20AC`
-            
-                    return idx !== i ? text : '';
-                }
-                else if (a.scenario.includes("Time") && actual.scenario.includes("Time")) {
-                    const divergence = (a.value - actual.value).toFixed(2)
-                    
-                    let text = ''
-                    if (divergence > 0) text += '+'
-                    text += `${divergence}h`
-            
-                    return idx !== i ? text : '';
-                } 
-                else if (a.scenario.includes("Mould") && actual.scenario.includes("Mould")) {
-                    const divergence = (a.value - actual.value)
-                    
-                    let text = ''
-                    if (divergence > 0) text += '+'
-                    text += `${divergence}`
-            
-                    return idx !== i ? text : '';
-                }
-                
-            })
-    
-        })
-        .on('mouseleave', function () {
-            d3.selectAll('.value')
-                .attr('opacity', 1)
-        
-            d3.select(this)
-                .transition()
-                .duration(300)
-                .attr('opacity', 1)
-                .attr('x', (a) => xScale(a.scenario))
-                .attr('width', xScale.bandwidth())
-        
-            chart.selectAll('#limit').remove()
-            chart.selectAll('.divergence').remove()
-        })
-    
-    barGroups 
-        .append('text')
-        .attr('class', 'value')
-        .attr('x', (a) => xScale(a.scenario) + xScale.bandwidth() / 2)
-        //.attr('y', (a) => yScale(a.value) + 30)
-        .attr('y', (a) => {
-            if (a.scenario.includes('Cost')) {
-                return yScaleLeft(a.value) - 10; // Use right y-scale
-            } else if (a.scenario.includes('Time')) {
-                return yScaleRight(a.value) - 10; // Use left y-scale
-            } else {
-                return yScaleLeft1(a.value) - 10; // Use left y-scale
-            }
-        })
-        .attr('text-anchor', 'middle')
-        //.text((a) => `${a.value}\u20AC`)
-        .text((a) => {
-            if (a.scenario.includes("Cost")){
-                return `${a.value}\u20AC`
-            }
-            else if (a.scenario.includes("Time")) {
-                return `${a.value}h`
-            }
-            else {
-                return `${a.value}`
-            }
-        })
-    
-    svg.append('text')
-        .attr('class', 'title')
-        .attr('x', width / 2 + margin)
-        .attr('y', 18)
-        .attr('text-anchor', 'middle')
-        .text('Top 3 Scenarios Comparison')
-
-    // Create Legend
-    const legendLabels = ["Best Scenario for Cost", "Best Scenario for Time", "Best Scenario for Mould Changes"];
-    const legendColorScale = d3.scaleOrdinal()
-    .domain(legendLabels)
-    .range(["#006d2c", "#2ca25f", "#66c2a4"]);
-
-    // Append the legend container to the SVG
-    const legend = svg.append("g")
-    .attr("class", "legend")
-    .attr("transform", "translate(780, 0)");
-    
-    // Add legend items
-    const legendItems = legend.selectAll(".legend-item")
-    .data(legendLabels)
-    .enter()
-    .append("g")
-    .attr("class", "legend-item")
-    .attr("transform", (d, i) => `translate(0, ${i * 15})`); // Adjust the vertical spacing as needed
-
-    // Add colored rectangles as legend symbols
-    legendItems.append("rect")
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("width", 10)
-    .attr("height", 10)
-    .style("fill", (d) => legendColorScale(d));
-
-    // Add text labels
-    legendItems.append("text")
-    .attr("x", 20) // Adjust the horizontal spacing between symbol and text
-    .attr("y", 10) // Adjust the vertical alignment as needed
-    .text((d) => d)
-    .style("font-size", "12px")
-    .style("fill", "#000000"); // Adjust the text color as needed
-}*/
 
 function insertCostComparison(scenarios) {
     const sample = scenarios;
@@ -1065,8 +717,8 @@ function insertCostComparison(scenarios) {
     svg
         .append('text')
         .attr('class', 'label')
-        .attr('x', -(height / 2) - margin)
-        .attr('y', margin / 8.3)
+        .attr('x', - (height / 2) - margin)
+        .attr('y', margin / 7.5)
         .attr('transform', 'rotate(-90)')
         .attr('text-anchor', 'middle')
         .text('Total Cost (\u20AC)')
@@ -1209,7 +861,7 @@ function insertTimeComparison(scenarios) {
         .append('text')
         .attr('class', 'label')
         .attr('x', -(height / 2) - margin)
-        .attr('y', margin / 6)
+        .attr('y', margin / 7.5)
         .attr('transform', 'rotate(-90)')
         .attr('text-anchor', 'middle')
         .text('Total Time (h)')
@@ -1344,7 +996,7 @@ function insertMouldComparison(scenarios) {
         .append('text')
         .attr('class', 'label')
         .attr('x', -(height / 2) - margin)
-        .attr('y', margin / 6)
+        .attr('y', margin / 7.5)
         .attr('transform', 'rotate(-90)')
         .attr('text-anchor', 'middle')
         .text('Mould Changes (#)')
@@ -1363,7 +1015,6 @@ function insertMouldComparison(scenarios) {
         .attr('text-anchor', 'middle')
         .text('Required Mould Changes Comparison')
 }
-
 
 function goToScenario(scenarioId) {
     window.location.href = 'scenarioDetails.html?scenario=' + scenarioId;
@@ -1526,4 +1177,3 @@ function getAllScenariosFromLocalStorage() {
     var scenarios = [scenario1,scenario2,scenario3,scenario4,scenario5,scenario6,scenario7,scenario8,scenario9,scenario10];
     return scenarios;
 }
-

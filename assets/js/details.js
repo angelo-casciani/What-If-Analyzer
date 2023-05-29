@@ -259,7 +259,7 @@ function insertGraph(scenario) {
     svg.append('text')
         .attr('class', 'title')
         .attr('x', width / 2 + margin)
-        .attr('y', 30)
+        .attr('y', 60)
         .attr('text-anchor', 'middle')
         .text('Scenario Metrics')
 }

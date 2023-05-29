@@ -14,11 +14,11 @@
 
 			<!-- Header -->
             <header id="header">
-                <h1 id="logo">What If Analyzer</a></h1>
+                <h1 id="logo"><a href="comparison.html">What If Analyzer</a></h1>
                 <nav id="nav">
                     <ul>
                         <li class="submenu">
-                            <a href="#">Top 3 Scenarios </a>
+                            <a href="#">Top 3 Scenarios</a>
                             <ul>
 								<li><a href="comparisonDetails.html">Top 3 Comparison</a></li>
                                 <li><a id="topCost" onclick="goToScenario(JSON.parse(localStorage.getItem('top3'))[0])">Best Scenario Cost</a></li>
@@ -42,7 +42,7 @@
 				</header>
 				<section class="wrapper style4 container special-alt">
 					<div class="row gtr-150" style="text-align: center; padding: 0px 0 0 60px;">
-						<div class="col-5 col-12-narrower">
+						<div class="col-5 col-12-narrower" style="padding-top: 0px;">
                             <div style="background-color: #b2e2e2;border: 1px solid;padding-left: 20px;margin-top: 90px;">
 								<div style="background-color: white;text-align: left;padding-bottom:10px;">
 									<h1 id="scenarioId" style="font-weight:bold;margin-left: 10px;color: black;">Scenario </h1>
@@ -52,16 +52,11 @@
 									
 								</div>
 							</div>	
-							
-							<div style="border: 1px solid;text-align:center;">
-								
-							</div>
-							
-	
+			
 
 						</div> 
 
-						<div class="col-7 col-12-narrower">
+						<div class="col-7 col-12-narrower" style="padding-top: 0px;">
 							<div id='layout'>
 								<div id='container' style="height:300px;width:480px"></div>
 							</div>
@@ -69,12 +64,11 @@
                     </div>
 					<br>
 					<div class="row gtr-150">
-						<div class="col-12 col-12-narrower" style="margin-top: 14px;">
+						<div class="col-12 col-12-narrower" style="padding-top: 50px;">
 							<div style="text-align: center;">
 								<a onclick="goToScenarioMetrics()" class="button">Show Graph</a>
 							</div>
-						</br>
-							<div style="text-align: center;">
+							<div style="text-align: center;padding-top: 15px;">
 								<a id="download-link" onclick="exportScenario();" class="button">Export Data</a>
 							</div>
 						</div>
