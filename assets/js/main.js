@@ -670,6 +670,7 @@ function submitForm() {
         localStorage.removeItem('top3');
     }
     window.location.href = 'submitted.html';
+    localStorage.removeItem('hasOverlayShown');
 }
 
 

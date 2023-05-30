@@ -47,6 +47,8 @@ function logout(){
     if (localStorage.getItem("isLoggedIn")){
         localStorage.removeItem("isLoggedIn");
         checkLogin();
+        localStorage.clear();
+        sessionStorage.clear();
         //alert("Logged Out Successfully!");
     }
 }

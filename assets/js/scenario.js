@@ -1177,3 +1177,19 @@ function getAllScenariosFromLocalStorage() {
     var scenarios = [scenario1,scenario2,scenario3,scenario4,scenario5,scenario6,scenario7,scenario8,scenario9,scenario10];
     return scenarios;
 }
+
+window.addEventListener('load', function() {
+    var overlay = document.getElementById('loading-overlay');
+    var hasOverlayShown = localStorage.getItem('hasOverlayShown');
+    
+    if (!hasOverlayShown) {
+      overlay.style.display = 'flex';
+      localStorage.setItem('hasOverlayShown', 'true');
+      
+      setTimeout(function() {
+        overlay.style.display = 'none';
+      }, 1500);
+    } else {
+      overlay.style.display = 'none';
+    }
+  });
