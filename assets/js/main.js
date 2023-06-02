@@ -653,12 +653,16 @@ function readTableContent() {
 
 function submitForm() {
     var form = document.forms["myForm"];
-    
     var customer = form.elements["customer"];
     var endDate = form.elements["endOrderDate"];
-
     sessionStorage.setItem('customer', JSON.stringify(customer.value));
     sessionStorage.setItem('endDate', JSON.stringify(endDate.value));
+
+    var customers = JSON.parse(localStorage.getItem('customers'));
+    if (!customers.includes(customer.value)) {
+        customers.push(customer.value);
+        localStorage.setItem('customers', JSON.stringify(customers));
+    }
 
     readTableContent();
 
@@ -679,4 +683,22 @@ function checkDate() {
     const currentDateString = currentDate.toISOString().slice(0, 16);
     const endOrderDateInput = document.getElementById("endOrderDate");
     endOrderDateInput.min = currentDateString;
+}
+
+function populateCustomerList() {
+    if (!localStorage.getItem('customers')) {
+        var customers = ['Customer 1', 'Customer 2', 'Customer 3'];
+        localStorage.setItem('customers', JSON.stringify(customers));
+    }
+
+    customers = JSON.parse(localStorage.getItem('customers'));
+
+    var datalist = document.getElementById('customer-list');
+    datalist.innerHTML = '';
+    
+    customers.forEach(function(customer) {
+        var option = document.createElement('option');
+        option.value = customer;
+        datalist.appendChild(option);
+    });
 }

@@ -218,3 +218,17 @@ body {
     margin-left: 10px;
     color: black;
   }
+
+  .dropdown {
+    position: relative;
+  }
+  
+  .dropdown input[type="text"] {
+    width: 100%;
+  }
+  
+  .dropdown datalist {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+  }

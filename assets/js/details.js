@@ -64,9 +64,7 @@ function insertGraph(scenario) {
     const yScaleRight2 = d3.scaleLinear()
         .range([height, 0])
         .domain([sample[2].value*0.95, sample[2].value*1.1]);
-    
-    //const makeYLines = () => d3.axisLeft().scale(yScale)
-    //const yAxisLeft = d3.axisLeft(yScaleLeft);
+
     const yAxisLeft = d3.axisLeft(yScaleLeft)
                         .tickValues(sample.map((d) => d.value))
                         .tickFormat((d) => d3.format('.2f')(d) + ' \u20AC');
@@ -94,14 +92,6 @@ function insertGraph(scenario) {
         .attr('transform', `translate(${width}, 0)`)
         .call(yAxisRight2)
         .style('stroke', '#66c2a4');
-    
-    /*chart.append('g')
-        .attr('class', 'grid')
-        .call(makeYLines()
-        .tickSize(-width, 0, 0)
-        .tickFormat('')
-        )*/
-    
 
     const barGroups = chart.selectAll()
         .data(sample)
@@ -112,7 +102,6 @@ function insertGraph(scenario) {
         .append('rect')
         .attr('class', 'barr')
         .attr('x', (g) => xScale(g.scenario))
-        //.attr('y', (g) => yScale(g.value))
         .attr('y', (g) => {
             if (g.scenario.includes('Cost')) {
                 return yScaleLeft(g.value); // Use right y-scale
@@ -122,7 +111,6 @@ function insertGraph(scenario) {
                 return yScaleRight2(g.value); // Use left y-scale
             }
         })
-        //.attr('height', (g) => height - yScale(g.value))
         .attr('height', (g) => {
             if (g.scenario.includes('Cost')) {
                 return height - yScaleLeft(g.value); // Use right y-scale
@@ -203,7 +191,6 @@ function insertGraph(scenario) {
         barGroups.append('text')
             .attr('class', 'divergence')
             .attr('x', (a) => xScale(a.scenario) + xScale.bandwidth() / 2)
-            //.attr('y', (a) => yScale(a.value) + 30)
             .attr('y', (a) => {
                 if (a.scenario.includes('Cost')) {
                     return yScaleLeft(a.value) - 10; // Use left y-scale
@@ -235,7 +222,6 @@ function insertGraph(scenario) {
         .append('text')
         .attr('class', 'value')
         .attr('x', (a) => xScale(a.scenario) + xScale.bandwidth() / 2)
-        //.attr('y', (a) => yScale(a.value) + 30)
         .attr('y', (a) => {
             if (a.scenario.includes('Cost')) {
                 return yScaleLeft(a.value) - 10; // Use right y-scale
@@ -245,16 +231,7 @@ function insertGraph(scenario) {
                 return yScaleRight2(a.value) - 10; // Use left y-scale
             }
         })
-        .attr('text-anchor', 'middle')
-        /*.text((a) => {
-            if (a.scenario.includes('Cost')) {
-              return `${a.value}\u20AC`;
-            } else if (a.scenario.includes('Time')) {
-              return `${a.value}h`;
-            } else {
-              return `${a.value}`;
-            }
-          }) */;
+        .attr('text-anchor', 'middle');
     
     svg.append('text')
         .attr('class', 'title')
@@ -601,7 +578,7 @@ function insertLineChart(scenario) {
         updateChart();
       }
     
-    // Add an event listener to the select element for the time scale on x-axis
+    // Event listener to the select element for the time scale on x-axis
     var select = document.getElementById("granularity");
     select.addEventListener("change", function () {
         var selectedOption = select.value;
@@ -613,33 +590,33 @@ function insertLineChart(scenario) {
           case "day":
             xScale.domain(d3.extent(allData.flat(), (d) => d.date));
             xScale.ticks(d3.timeDay);
-            xScale.tickFormat(d3.timeFormat("%d %b")); // Example format: 01 Jan
+            xScale.tickFormat(d3.timeFormat("%d %b"));
             break;
           case "week":
             const startOfWeek = d3.min(allData.flat(), (d) => getStartOfWeek(d.date));
             const endOfWeek = d3.max(allData.flat(), (d) => getEndOfWeek(d.date));
             xScale.domain([startOfWeek, endOfWeek]);
             xScale.ticks(d3.timeWeek);
-            xScale.tickFormat(d3.timeFormat("%b %d")); // Example format: 01 Jan
+            xScale.tickFormat(d3.timeFormat("%b %d"));
             break;
           case "month":
             const startOfMonth = d3.min(allData.flat(), (d) => getStartOfMonth(d.date));
             const endOfMonth = d3.max(allData.flat(), (d) => getEndOfMonth(d.date));
             xScale.domain([startOfMonth, endOfMonth]);
             xScale.ticks(d3.timeMonth);
-            xScale.tickFormat(d3.timeFormat("%b %Y")); // Example format: Jan 2023
+            xScale.tickFormat(d3.timeFormat("%b %Y"));
             break;
           case "year":
             const startOfYear = d3.min(allData.flat(), (d) => getStartOfYear(d.date));
             const endOfYear = d3.max(allData.flat(), (d) => getEndOfYear(d.date));
             xScale.domain([startOfYear, endOfYear]);
             xScale.ticks(d3.timeYear);
-            xScale.tickFormat(d3.timeFormat("%Y")); // Example format: 2023
+            xScale.tickFormat(d3.timeFormat("%Y"));
             break;
           default:
             xScale.domain(d3.extent(allData.flat(), (d) => d.date));
             xScale.ticks(d3.timeDay);
-            xScale.tickFormat(d3.timeFormat("%d %b")); // Example format: 01 Jan
+            xScale.tickFormat(d3.timeFormat("%d %b"));
             break;
         }
 
@@ -650,7 +627,6 @@ function insertLineChart(scenario) {
 
     }
     
-
     var allData = [];
     for (const obj in instances) {
         const d = Object.entries(instances[obj]).map(([instanceNumber, date]) => ({

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="assets/css/bar_chart.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
-	<body onload="checkLogin();checkDate()" class="index is-preload">
+	<body onload="checkLogin();checkDate();populateCustomerList();" class="index is-preload">
       <div id="page-wrapper">
 
           <!-- Header -->
@@ -37,8 +37,13 @@
                       <div class="row gtr-50">
                         <div class="col-6 col-12-mobile" style="display: flex; flex-direction: row;">
                           <label for="customer">Customer:</label>
-                          <input type="text" id="customer" name="customer" style="border: 1px solid; margin-left: 42px; padding: 0%;width: 270px;"  required>
+                          <div class="dropdown">
+                            <input type="text" id="customer" name="customer" list="customer-list" style="border: 1px solid; margin-left: 10px; padding: 0%; width: 200px;" required>
+                            <datalist id="customer-list"></datalist>
+                          </div>
                         </div>
+                        
+                        
 
                         <div class="col-12 col-12-mobile" style="display: flex; flex-direction: row;">
                           <label for="endOrderDate" style="margin-right: 37.5px;">End Order:</label>
