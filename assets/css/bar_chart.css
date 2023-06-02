@@ -136,3 +136,85 @@ body {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  .boxColorScenarioCost {
+    background-color: #006d2c;
+    border: 1px solid;
+    padding-left: 20px;
+  }
+
+  .boxColorScenarioTime {
+    background-color: #2ca25f;
+    border: 1px solid;
+    padding-left: 20px;
+  }
+
+  .boxColorScenarioMould {
+    background-color: #66c2a4;
+    border: 1px solid;
+    padding-left: 20px;
+  }
+
+  .scenarioBox {
+    background-color: white;
+    text-align: left;
+    padding-bottom:15px;
+  }
+
+  .scenario {
+    margin-left: 10px;
+    margin-bottom: 5px;
+    color: black;
+  }
+
+  .metricsText {
+    margin-left: 10px;
+    margin-bottom: -5px;
+    font-size:13pt;
+  }
+
+  .mouldText {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    font-size:13pt;
+  }
+
+  #button1 {
+    display: block;
+    width: 100px;
+    margin: 0 auto;
+    border: 1px solid;
+  }
+
+  #button2 {
+    display: block;
+    width: 100px;
+    margin: 0 auto;
+    border: 1px solid;
+  }
+
+  #button3 {
+    display: block;
+    width: 100px;
+    margin: 0 auto;
+    border: 1px solid;
+  }
+
+  .boxColorScenarioDetails {
+    background-color: #b2e2e2;
+    border: 1px solid;
+    padding-left: 20px;
+    margin-top: 90px;
+  }
+
+  .scenarioBoxDetails {
+    background-color: white;
+    text-align: left;
+    padding-bottom:10px;
+  }
+
+  .scenarioDetails {
+    font-weight:bold;
+    margin-left: 10px;
+    color: black;
+  }

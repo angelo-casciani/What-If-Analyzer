@@ -121,8 +121,8 @@ function insertCost(scenarios){
     const yScale = d3.scaleLinear()
         .range([height, 0])
         .domain([
-            0.99999 * d3.min(sample, (d) => d.cost),
-            d3.max(sample, (d) => d.cost)
+            0.999999 * d3.min(sample, (d) => d.cost),
+            1.0000003 * d3.max(sample, (d) => d.cost)
           ]);
         
     const makeYLines = () => d3.axisLeft()
@@ -134,14 +134,6 @@ function insertCost(scenarios){
     
     chart.append('g')
         .call(d3.axisLeft(yScale));
-
-    /*// Set up the initial y-axis
-const yAxis = chart.append('g')
-  .call(d3.axisLeft(yScale));
-
-// Update the y-axis ticks to the values of the bars
-yAxis.call(d3.axisLeft(yScale)
-  .tickValues(sample.map((d) => d.value))); */    
     
     chart.append('g')
         .attr('class', 'grid')
@@ -272,9 +264,8 @@ function insertTime(scenarios){
     // To handle the scale of the values on the y-axis
     const yScale = d3.scaleLinear()
         .range([height, 0])
-        .domain([0.9 * d3.min(sample, (d) => d.time),
-        d3.max(sample, (d) => d.time)]);
-        
+        .domain([0.99 * d3.min(sample, (d) => d.time),
+            1.01 * d3.max(sample, (d) => d.time)]);
     
     const makeYLines = () => d3.axisLeft()
         .scale(yScale)
@@ -416,7 +407,7 @@ function insertMould(scenarios) {
     const yScale = d3.scaleLinear()
         .range([height, 0])
         .domain([0.9 * d3.min(sample, (d) => d.mould),
-            d3.max(sample, (d) => d.mould)]);
+            1.05 * d3.max(sample, (d) => d.mould)]);
     
     // vertical grid lines
     // const makeXLines = () => d3.axisBottom()
@@ -617,8 +608,11 @@ function insertCostComparison(scenarios) {
     // To handle the scale of the values on the y-axis
     const yScale = d3.scaleLinear()
         .range([height, 0])
-        .domain([0.99999 * Math.min(sample[0].cost, sample[1].cost, sample[2].cost), Math.max(sample[0].cost, sample[1].cost, sample[2].cost)]);
-    
+        .domain([
+            0.999999 * d3.min(sample, (d) => d.cost),
+            1.0000005 * d3.max(sample, (d) => d.cost)
+          ]);
+
     const makeYLines = () => d3.axisLeft().scale(yScale)
     
     chart.append('g')
@@ -706,14 +700,6 @@ function insertCostComparison(scenarios) {
         chart.selectAll('.divergence').remove()
         })
     
-    /*barGroups 
-        .append('text')
-        .attr('class', 'value')
-        .attr('x', (a) => xScale(a.scenario) + xScale.bandwidth() / 2)
-        .attr('y', (a) => yScale(a.value) - 10)
-        .attr('text-anchor', 'middle')
-        .text((a) => `${a.value}\u20AC`)*/
-    
     svg
         .append('text')
         .attr('class', 'label')
@@ -758,7 +744,8 @@ function insertTimeComparison(scenarios) {
     // To handle the scale of the values on the y-axis
     const yScale = d3.scaleLinear()
         .range([height, 0])
-        .domain([0.9 * Math.min(sample[0].time, sample[1].time, sample[2].time), Math.max(sample[0].time, sample[1].time, sample[2].time)]);
+        .domain([0.99 * d3.min(sample, (d) => d.time),
+            1.01 * d3.max(sample, (d) => d.time)]);
 
     const makeYLines = () => d3.axisLeft().scale(yScale)
     
@@ -776,7 +763,6 @@ function insertTimeComparison(scenarios) {
         .tickSize(-width, 0, 0)
         .tickFormat('')
         )
-    
 
     const barGroups = chart.selectAll()
         .data(sample)
@@ -848,15 +834,7 @@ function insertTimeComparison(scenarios) {
         chart.selectAll('#limit').remove()
         chart.selectAll('.divergence').remove()
         })
-    
-    /*barGroups 
-        .append('text')
-        .attr('class', 'value')
-        .attr('x', (a) => xScale(a.scenario) + xScale.bandwidth() / 2)
-        .attr('y', (a) => yScale(a.value) - 10)
-        .attr('text-anchor', 'middle')
-        .text((a) => `${a.value}\u20AC`)*/
-    
+
     svg1
         .append('text')
         .attr('class', 'label')
@@ -901,7 +879,8 @@ function insertMouldComparison(scenarios) {
     // To handle the scale of the values on the y-axis
     const yScale = d3.scaleLinear()
         .range([height, 0])
-        .domain([0.9 * Math.min(sample[0].mould, sample[1].mould, sample[2].mould), Math.max(sample[0].mould, sample[1].mould, sample[2].mould)]);
+        .domain([0.85 * d3.min(sample, (d) => d.mould),
+            1.05 * d3.max(sample, (d) => d.mould)]);
 
     const makeYLines = () => d3.axisLeft().scale(yScale)
     
@@ -919,7 +898,6 @@ function insertMouldComparison(scenarios) {
         .tickSize(-width, 0, 0)
         .tickFormat('')
         )
-    
 
     const barGroups = chart.selectAll()
         .data(sample)
