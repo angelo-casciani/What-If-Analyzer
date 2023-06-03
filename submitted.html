@@ -30,27 +30,32 @@
                     <h2>The order has been <strong>correctly</strong>
                     <br />
                     inserted in the system.</h2>
-                    <p>Here, you can review the details.</p>
+                    <p>Here, you can review or modify the details.</p>
 				</header>
 				<section class="wrapper style2 container special-alt">
 					<div class="row gtr-50">
 						<div class="col-8 col-12-narrower">
-                            <p id="cust"><strong>Customer</strong>: </p>
-                            <p id="date"><strong>End Order</strong>: </p>
+                            <p style="margin-bottom:18px;">
+								<span style="font-weight: bold;">Customer</span>:
+								<span id="cust"></span>
+							</p>
+							<p style="margin-bottom:20px;">
+								<span style="font-weight: bold;">End Order</span>:
+								<span id="date"></span>
+							</p>
                             <div>
-                                <table id="myTable" class="myTable" style="border: 1px solid white;">
-                                        <tr class="table-header">
-                                            <td class="table-cell product-header"><strong>Product</strong>:</td>
-                                            <td class="table-cell type-header"><strong>Type</strong>:</td>
-                                            <td class="table-cell quantity-header"><strong>Quantity</strong>:</td>
-                                        </tr>
-                                    </table>
-                            </div>
+								<table id="myTable" class="myTable" style="border: 1px solid white;">
+									<tr class="table-header">
+										<td class="table-cell product-header" style="font-weight:bold;">Product:</td>
+										<td class="table-cell type-header" style="font-weight:bold;">Type:</td>
+										<td class="table-cell quantity-header" style="font-weight:bold;">Quantity:</td>
+									</tr>
+								</table>
+							</div>
                             <footer>
-                                <ul class="buttons">
-                                    <li><a href="comparison.html" class="button">Go To Comparison</a></li>
-                                </ul>
-                            </footer>
+								<a href="orderpage.html" class="button" style="margin:5px">Modify Order</a>
+								<a href="comparison.html" class="button primary">Go to Comparison</a>
+							</footer>
 						</div>        
 				</section>
 			</article>

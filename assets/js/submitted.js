@@ -15,5 +15,4 @@ function populatePage() {
         typ.innerHTML = order[i][1];
         quant.innerHTML = order[i][2];
       }
-    
 }

@@ -133,7 +133,8 @@ function insertCost(scenarios){
         .call(d3.axisBottom(xScale));
     
     chart.append('g')
-        .call(d3.axisLeft(yScale));
+        .call(d3.axisLeft(yScale)
+        .tickFormat(d3.format('.2f')));
     
     chart.append('g')
         .attr('class', 'grid')
@@ -1154,6 +1155,26 @@ function getAllScenariosFromLocalStorage() {
     var scenario10 = JSON.parse(localStorage.getItem('scenario10'));
     var scenarios = [scenario1,scenario2,scenario3,scenario4,scenario5,scenario6,scenario7,scenario8,scenario9,scenario10];
     return scenarios;
+}
+
+function populateOrderInfo() {
+    document.getElementById("cust").innerHTML += sessionStorage.getItem("customer").replace(/"/g, "");
+
+    var formattedDate = sessionStorage.getItem("endDate").replace(/T/g, ' ').replace(/-/g, '/').replace(/"/g, "");
+    document.getElementById("date").innerHTML += formattedDate;
+
+    order = JSON.parse(sessionStorage.getItem('order'));
+    for (var i = 0; i < order.length; i++) {
+        var row = document.getElementById("myTable").insertRow();
+        var prod = row.insertCell(0);
+        var typ = row.insertCell(1);
+        var quant = row.insertCell(2);
+        
+        prod.innerHTML = order[i][0];
+        typ.innerHTML = order[i][1];
+        quant.innerHTML = order[i][2];
+        
+    }
 }
 
 window.addEventListener('load', function() {

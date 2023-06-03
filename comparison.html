@@ -10,7 +10,7 @@
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<script src="assets/js/d3.v5.min.js"></script>
 	</head>
-	<body class="index is-preload" onload="checkLogin();fillData()">
+	<body class="index is-preload" onload="checkLogin();fillData();populateOrderInfo()">
 		<div id="loading-overlay">
 			<div class="loader"></div>
 		</div>
@@ -38,11 +38,39 @@
 
 			<!-- Main -->
 			<article id="main">
-				<header class="special container">
+				<header class="special container" style="margin-bottom:2em">
 					<span class="icon solid fa-chart-bar"></span>
                     <h2><strong>Scenarios Comparison</strong></h2>
-                    <p>Here, you can graphically compare the production scenarios.</p>
+                    <p>Here, you can graphically compare the production scenarios for the inserted order.</p>
 				</header>
+
+				<section class="wrapper style3 container special-alt" style="margin-top:10px;margin-bottom:10px;padding-top:30px;padding-bottom:30px;">
+					<div class="row gtr-50">
+						<div class="col-8 col-12-narrower" >
+							<p style="margin-bottom:1px;">
+								<span style="font-weight: bold;">Customer</span>:
+								<span id="cust"></span>
+							</p>
+							<p style="margin-bottom:1px;">
+								<span style="font-weight: bold;">End Order</span>:
+								<span id="date"></span>
+							</p>
+							<div>
+								<table id="myTable" class="myTable" style="border: 1px solid grey;margin-bottom:0;">
+									<tr class="table-header">
+										<td class="table-cell product-header" style="font-weight:bold;">Product:</td>
+										<td class="table-cell type-header" style="font-weight:bold;">Type:</td>
+										<td class="table-cell quantity-header" style="font-weight:bold;">Quantity:</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+
+					</div>
+					
+					
+				</section>
+
 				<section class="wrapper style4 container special-alt">
 					<div class="row gtr-50">
 						<div class="col-12 col-12-narrower">

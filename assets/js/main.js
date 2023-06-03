@@ -702,3 +702,207 @@ function populateCustomerList() {
         datalist.appendChild(option);
     });
 }
+
+function populateOrder() {
+    if (sessionStorage.getItem('customer')) {
+        document.getElementById('customer').value = sessionStorage.getItem('customer').replace(/"/g, "");
+    }
+    if (sessionStorage.getItem('endDate')) {
+        var endDate = sessionStorage.getItem('endDate');
+        document.getElementById('endOrderDate').value = endDate.replace(/"/g, "");
+    }
+    if (sessionStorage.getItem('order')) {
+        order = JSON.parse(sessionStorage.getItem('order'));
+
+        var selectedText = order[0][0];
+        var selectedValue;
+
+        for (var key in productsAvailable) {
+            if (productsAvailable.hasOwnProperty(key) && productsAvailable[key].text === selectedText) {
+                selectedValue = productsAvailable[key].value;
+                break;
+            }
+        }
+
+        var selectElement = document.getElementById("prod0");
+        var optionElement = document.createElement("option");
+        optionElement.value = selectedValue;
+        optionElement.text = selectedText;
+        selectElement.appendChild(optionElement);
+        selectElement.value = selectedValue;
+
+        //document.getElementById('type0').value = order[0][1];
+        document.getElementById('quant0').value = order[0][2];
+
+        var selectedType = "";
+        var selectedTypeOption = "";
+
+        switch(order[0][0]){
+            case "MONOB":
+                for (var key in monobAvailable) {
+                    if (monobAvailable.hasOwnProperty(key) && monobAvailable[key].flagAvailable === true) {
+                        selectedTypeOption = monobAvailable[key].value;
+                        selectedType = monobAvailable[key].text;
+                        break;
+                    }
+                }
+                break
+            case "VASIS":
+                for (var key in vasisAvailable) {
+                    if (vasisAvailable.hasOwnProperty(key) && vasisAvailable[key].flagAvailable === true) {
+                        selectedTypeOption = vasisAvailable[key].value;
+                        selectedType = vasisAvailable[key].text;
+                        break;
+                    }
+                }
+                break
+            case "VASO":
+                for (var key in vasoAvailable) {
+                    if (vasoAvailable.hasOwnProperty(key) && vasoAvailable[key].flagAvailable === true) {
+                        selectedTypeOption = vasoAvailable[key].value;
+                        selectedType = vasoAvailable[key].text;
+                        break;
+                    }
+                }
+                break
+            case "LAVABI":
+                for (var key in vasisAvailable) {
+                    if (lavabiAvailable.hasOwnProperty(key) && lavabiAvailable[key].flagAvailable === true) {
+                        selectedTypeOption = lavabiAvailable[key].value;
+                        selectedType = lavabiAvailable[key].text;
+                        break;
+                    }
+                }
+                break
+            case "BIDET":
+                for (var key in vasisAvailable) {
+                    if (bidetAvailable.hasOwnProperty(key) && bidetAvailable[key].flagAvailable === true) {
+                        selectedTypeOption = bidetAvailable[key].value;
+                        selectedType = bidetAvailable[key].text;
+                        break;
+                    }
+                }
+                break
+            case "BIDES":
+                for (var key in bidesAvailable) {
+                    if (bidesAvailable.hasOwnProperty(key) && bidesAvailable[key].flagAvailable === true) {
+                        selectedTypeOption = vasisAvailable[key].value;
+                        selectedType = vasisAvailable[key].text;
+                        break;
+                    }
+                }
+                break
+        }
+
+        var selectTypeElement = document.getElementById("type0");
+        var optionTypeElement = document.createElement("option");
+        optionTypeElement.value = selectedTypeOption;
+        optionTypeElement.text = selectedType;
+        optionTypeElement.selected = true;
+        selectTypeElement.appendChild(optionTypeElement);
+        selectTypeElement.value = selectedTypeOption;
+
+
+        if (order.length > 1) {
+            for (var i = 1; i < order.length; i++) {
+            
+                var selectedText = order[i][0];
+                var selectedValue;
+
+                for (var key in productsAvailable) {
+                    if (productsAvailable.hasOwnProperty(key) && productsAvailable[key].text === selectedText) {
+                        selectedValue = productsAvailable[key].value;
+                        break;
+                    }
+                }
+
+                var selectedType = "";
+                var selectedTypeOption = "";
+
+                switch(order[i][0]){
+                    case "MONOB":
+                        for (var key in monobAvailable) {
+                            if (monobAvailable.hasOwnProperty(key) && monobAvailable[key].flagAvailable === true) {
+                                selectedTypeOption = monobAvailable[key].value;
+                                selectedType = monobAvailable[key].text;
+                                break;
+                            }
+                        }
+                        break
+                    case "VASIS":
+                        for (var key in vasisAvailable) {
+                            if (vasisAvailable.hasOwnProperty(key) && vasisAvailable[key].flagAvailable === true) {
+                                selectedTypeOption = vasisAvailable[key].value;
+                                selectedType = vasisAvailable[key].text;
+                                break;
+                            }
+                        }
+                        break
+                    case "VASO":
+                        for (var key in vasoAvailable) {
+                            if (vasoAvailable.hasOwnProperty(key) && vasoAvailable[key].flagAvailable === true) {
+                                selectedTypeOption = vasoAvailable[key].value;
+                                selectedType = vasoAvailable[key].text;
+                                break;
+                            }
+                        }
+                        break
+                    case "LAVABI":
+                        for (var key in vasisAvailable) {
+                            if (lavabiAvailable.hasOwnProperty(key) && lavabiAvailable[key].flagAvailable === true) {
+                                selectedTypeOption = lavabiAvailable[key].value;
+                                selectedType = lavabiAvailable[key].text;
+                                break;
+                            }
+                        }
+                        break
+                    case "BIDET":
+                        for (var key in vasisAvailable) {
+                            if (bidetAvailable.hasOwnProperty(key) && bidetAvailable[key].flagAvailable === true) {
+                                selectedTypeOption = bidetAvailable[key].value;
+                                selectedType = bidetAvailable[key].text;
+                                break;
+                            }
+                        }
+                        break
+                    case "BIDES":
+                        for (var key in bidesAvailable) {
+                            if (bidesAvailable.hasOwnProperty(key) && bidesAvailable[key].flagAvailable === true) {
+                                selectedTypeOption = vasisAvailable[key].value;
+                                selectedType = vasisAvailable[key].text;
+                                break;
+                            }
+                        }
+                        break
+                }
+
+                $("#myTable").append("<tr>"
+                    + "<td>"
+                    + `<select id=\"prod${i}\" name =\"product\" class=\"product\" required>`
+                    + "<option value=\"\" selected disabled>Select a product:</option>"
+                    + `<option value=\"${selectedValue}\" selected>${order[i][0]}</option>`
+                    + "</select>"
+                    + "</td>"
+                    + "<td>"
+                    + "<select name=\"type\" class=\"type\" required>"
+                    + "<option value=\"\" selected disabled>Select a type:</option>"
+                    + `<option value=\"${selectedTypeOption}\" selected>${order[i][1]}</option>`
+                    + "</select>"
+                    + "</td>"
+                    + "<td>"
+                    + `<input id=\"quant${i}\" class=\"quantity\" type=\"text\" style=\"border: 1px solid;\" oninput=\"this.value = this.value.replace(/[^0-9]/g, '');\" required/>`
+                    + "</td>"
+                    + "<td>"
+                    + "<input id=\"removeProduct\" name=\"removeProduct\" type=\"button\" value=\"Remove Product\"/>"
+                    + "</td>"
+                    + "</tr>"
+                )
+                
+            
+                document.getElementById(`quant${i}`).value = order[i][2];
+            }
+        }
+    }
+}
+
+
