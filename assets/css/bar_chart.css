@@ -97,15 +97,14 @@ body {
     width: 14px;
     height: 14px;
     border: 1px solid black;
-    background-color: #ffffff; /* Set the desired color here */
+    background-color: #ffffff;
     border-radius: 2px;
     margin-right: 6px;
     vertical-align: middle;
   }
   
   .checkbox input[type="checkbox"]:checked + label:before {
-    /* Change the color of checked checkbox */
-    background-color: #0cbda898; /* Set the desired color for checked checkbox */
+    background-color: #0cbda898;
   }
 
   /*Loading Spinner for Scenarios Comparison*/

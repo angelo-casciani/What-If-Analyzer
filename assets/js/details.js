@@ -401,7 +401,7 @@ function datesToMachine(scenario, objectsOnMachines) {
 
 function insertScatterplot(data) {
     var margin = { top: 100, right: 205, bottom: 80, left: 65 };
-    var width = 1150 - margin.left - margin.right;
+    var width = 1000 - margin.left - margin.right;
     var height = 650 - margin.top - margin.bottom;
 
     const svg = d3
@@ -471,7 +471,7 @@ function insertScatterplot(data) {
         .append("text")
         .attr("class", "axis-label")
         .attr("x", width / 2)
-        .attr("y", height + margin.bottom*0.6)
+        .attr("y", height + margin.bottom*0.5)
         .attr("text-anchor", "middle")
         .text("Machines");
 
@@ -666,7 +666,7 @@ function insertLineChart(scenario) {
 
     // Set up the dimensions and margins for the chart
     var margin = { top: 100, right: 205, bottom: 80, left: 55 };
-    var width = 1150 - margin.left - margin.right;
+    var width = 1000 - margin.left - margin.right;
     var height = 650 - margin.top - margin.bottom;
     
     // Create the SVG container
@@ -687,7 +687,7 @@ function insertLineChart(scenario) {
     const yScale = d3
         .scaleLinear()
         .range([height, 0])
-        .domain([0, d3.max(allData.flat(), (d) => d.instanceNumber)]);
+        .domain([0, d3.max(allData.flat(), (d) => d.instanceNumber *1.1)]);
 
     // Create the line generator
     var line = d3
@@ -763,13 +763,13 @@ function insertLineChart(scenario) {
 function insertLegend(svg, allGroup, myColor) {
     const legendLabels = allGroup;
     const legendColorScale = d3.scaleOrdinal()
-  .domain(legendLabels)
-  .range(allGroup.map(d => myColor(d)));
+                            .domain(legendLabels)
+                            .range(allGroup.map(d => myColor(d)));
 
     // Append the legend container to the SVG
     const legend = svg.append("g")
     .attr("class", "legend")
-    .attr("transform", "translate(820, -100)");
+    .attr("transform", "translate(840, -100)");
     
     // Add legend items
     const legendItems = legend.selectAll(".legend-item")
