@@ -400,10 +400,10 @@ function datesToMachine(scenario, objectsOnMachines) {
 }
 
 function insertScatterplot(data) {
-    var margin = { top: 50, right: 250, bottom: 40, left: 100 };
-    var width = 1000 - margin.left - margin.right;
-    var height = 450 - margin.top - margin.bottom;
-    
+    var margin = { top: 100, right: 205, bottom: 80, left: 65 };
+    var width = 1150 - margin.left - margin.right;
+    var height = 650 - margin.top - margin.bottom;
+
     const svg = d3
         .select("#scatterplot")
         .append("svg")
@@ -466,37 +466,32 @@ function insertScatterplot(data) {
         }
     }
 
-
-    // Add x-axis label
+    // Add labels
     svg
         .append("text")
         .attr("class", "axis-label")
         .attr("x", width / 2)
-        .attr("y", height + margin.bottom*1)
+        .attr("y", height + margin.bottom*0.6)
         .attr("text-anchor", "middle")
         .text("Machines");
 
-    // Add y-axis label
     svg
         .append("text")
         .attr("class", "axis-label")
         .attr("transform", "rotate(-90)")
         .attr("x", -height / 2)
-        .attr("y", -margin.left*0.75)
+        .attr("y", -margin.left*1.05)
         .attr("dy", "1em")
         .attr("text-anchor", "middle")
-        .text("Dates");
+        .text("Time");
 
-    // Add chart title
     svg
         .append("text")
         .attr("class", "title")
         .attr("x", width / 2)
-        .attr("y", -30)
+        .attr("y", -83)
         .attr("text-anchor", "middle")
         .text("Mould Changes over Time");
-
-
 }
 
 function insertLineChart(scenario) {
@@ -670,9 +665,9 @@ function insertLineChart(scenario) {
     }
 
     // Set up the dimensions and margins for the chart
-    var margin = { top: 50, right: 250, bottom: 40, left: 100 };
-    var width = 1000 - margin.left - margin.right;
-    var height = 450 - margin.top - margin.bottom;
+    var margin = { top: 100, right: 205, bottom: 80, left: 55 };
+    var width = 1150 - margin.left - margin.right;
+    var height = 650 - margin.top - margin.bottom;
     
     // Create the SVG container
     var svg = d3
@@ -738,9 +733,9 @@ function insertLineChart(scenario) {
         .append("text")
         .attr("class", "axis-label")
         .attr("x", width / 2)
-        .attr("y", height + margin.bottom)
+        .attr("y", height + margin.bottom*0.5)
         .attr("text-anchor", "middle")
-        .text("Machines");
+        .text("Time");
 
     // Add y-axis label
     svg
@@ -748,7 +743,7 @@ function insertLineChart(scenario) {
         .attr("class", "axis-label")
         .attr("transform", "rotate(-90)")
         .attr("x", -height / 2)
-        .attr("y", -margin.left*0.6)
+        .attr("y", -margin.left)
         .attr("dy", "1em")
         .attr("text-anchor", "middle")
         .text("Quantity");
@@ -758,7 +753,7 @@ function insertLineChart(scenario) {
         .append("text")
         .attr("class", "title")
         .attr("x", width / 2)
-        .attr("y", -34)
+        .attr("y", -83)
         .attr("text-anchor", "middle")
         .text("Produced Quantity over Time");
 
@@ -774,7 +769,7 @@ function insertLegend(svg, allGroup, myColor) {
     // Append the legend container to the SVG
     const legend = svg.append("g")
     .attr("class", "legend")
-    .attr("transform", "translate(670, 0)");
+    .attr("transform", "translate(820, -100)");
     
     // Add legend items
     const legendItems = legend.selectAll(".legend-item")

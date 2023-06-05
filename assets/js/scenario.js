@@ -1191,4 +1191,4 @@ window.addEventListener('load', function() {
     } else {
       overlay.style.display = 'none';
     }
-  });
+});

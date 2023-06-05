@@ -718,12 +718,13 @@ function populateOrder() {
         var selectedValue;
 
         for (var key in productsAvailable) {
-            if (productsAvailable.hasOwnProperty(key) && productsAvailable[key].text === selectedText) {
+            if (productsAvailable.hasOwnProperty(key) && productsAvailable[key].text === selectedText && productsAvailable[key].flagAvailable === true) {
                 selectedValue = productsAvailable[key].value;
+                productsAvailable[key].flagAvailable = false;
                 break;
             }
         }
-
+        
         var selectElement = document.getElementById("prod0");
         var optionElement = document.createElement("option");
         optionElement.value = selectedValue;
@@ -731,7 +732,6 @@ function populateOrder() {
         selectElement.appendChild(optionElement);
         selectElement.value = selectedValue;
 
-        //document.getElementById('type0').value = order[0][1];
         document.getElementById('quant0').value = order[0][2];
 
         var selectedType = "";
@@ -743,6 +743,7 @@ function populateOrder() {
                     if (monobAvailable.hasOwnProperty(key) && monobAvailable[key].flagAvailable === true) {
                         selectedTypeOption = monobAvailable[key].value;
                         selectedType = monobAvailable[key].text;
+                        monobAvailable[key].flagAvailable = false;
                         break;
                     }
                 }
@@ -752,6 +753,7 @@ function populateOrder() {
                     if (vasisAvailable.hasOwnProperty(key) && vasisAvailable[key].flagAvailable === true) {
                         selectedTypeOption = vasisAvailable[key].value;
                         selectedType = vasisAvailable[key].text;
+                        vasisAvailable[key].flagAvailable = false;
                         break;
                     }
                 }
@@ -761,6 +763,7 @@ function populateOrder() {
                     if (vasoAvailable.hasOwnProperty(key) && vasoAvailable[key].flagAvailable === true) {
                         selectedTypeOption = vasoAvailable[key].value;
                         selectedType = vasoAvailable[key].text;
+                        vasoAvailable[key].flagAvailable = false;
                         break;
                     }
                 }
@@ -770,6 +773,7 @@ function populateOrder() {
                     if (lavabiAvailable.hasOwnProperty(key) && lavabiAvailable[key].flagAvailable === true) {
                         selectedTypeOption = lavabiAvailable[key].value;
                         selectedType = lavabiAvailable[key].text;
+                        lavabiAvailable[key].flagAvailable = false;
                         break;
                     }
                 }
@@ -779,6 +783,7 @@ function populateOrder() {
                     if (bidetAvailable.hasOwnProperty(key) && bidetAvailable[key].flagAvailable === true) {
                         selectedTypeOption = bidetAvailable[key].value;
                         selectedType = bidetAvailable[key].text;
+                        bidetAvailable[key].flagAvailable = false;
                         break;
                     }
                 }
@@ -788,6 +793,7 @@ function populateOrder() {
                     if (bidesAvailable.hasOwnProperty(key) && bidesAvailable[key].flagAvailable === true) {
                         selectedTypeOption = vasisAvailable[key].value;
                         selectedType = vasisAvailable[key].text;
+                        bidesAvailable[key].flagAvailable = false;
                         break;
                     }
                 }
@@ -812,6 +818,7 @@ function populateOrder() {
                 for (var key in productsAvailable) {
                     if (productsAvailable.hasOwnProperty(key) && productsAvailable[key].text === selectedText) {
                         selectedValue = productsAvailable[key].value;
+                        productsAvailable[key].flagAvailable = false;
                         break;
                     }
                 }
@@ -825,6 +832,7 @@ function populateOrder() {
                             if (monobAvailable.hasOwnProperty(key) && monobAvailable[key].flagAvailable === true) {
                                 selectedTypeOption = monobAvailable[key].value;
                                 selectedType = monobAvailable[key].text;
+                                monobAvailable[key].flagAvailable = false;
                                 break;
                             }
                         }
@@ -834,6 +842,7 @@ function populateOrder() {
                             if (vasisAvailable.hasOwnProperty(key) && vasisAvailable[key].flagAvailable === true) {
                                 selectedTypeOption = vasisAvailable[key].value;
                                 selectedType = vasisAvailable[key].text;
+                                vasisAvailable[key].flagAvailable = false;
                                 break;
                             }
                         }
@@ -843,6 +852,7 @@ function populateOrder() {
                             if (vasoAvailable.hasOwnProperty(key) && vasoAvailable[key].flagAvailable === true) {
                                 selectedTypeOption = vasoAvailable[key].value;
                                 selectedType = vasoAvailable[key].text;
+                                vasoAvailable[key].flagAvailable = false;
                                 break;
                             }
                         }
@@ -852,6 +862,7 @@ function populateOrder() {
                             if (lavabiAvailable.hasOwnProperty(key) && lavabiAvailable[key].flagAvailable === true) {
                                 selectedTypeOption = lavabiAvailable[key].value;
                                 selectedType = lavabiAvailable[key].text;
+                                lavabiAvailable[key].flagAvailable = false;
                                 break;
                             }
                         }
@@ -861,6 +872,7 @@ function populateOrder() {
                             if (bidetAvailable.hasOwnProperty(key) && bidetAvailable[key].flagAvailable === true) {
                                 selectedTypeOption = bidetAvailable[key].value;
                                 selectedType = bidetAvailable[key].text;
+                                bidetAvailable[key].flagAvailable = false;
                                 break;
                             }
                         }
@@ -870,6 +882,7 @@ function populateOrder() {
                             if (bidesAvailable.hasOwnProperty(key) && bidesAvailable[key].flagAvailable === true) {
                                 selectedTypeOption = vasisAvailable[key].value;
                                 selectedType = vasisAvailable[key].text;
+                                bidesAvailable[key].flagAvailable = false;
                                 break;
                             }
                         }
