@@ -1187,7 +1187,7 @@ window.addEventListener('load', function() {
       
       setTimeout(function() {
         overlay.style.display = 'none';
-      }, 1500);
+      }, 1000);
     } else {
       overlay.style.display = 'none';
     }
