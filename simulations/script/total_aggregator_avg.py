@@ -61,7 +61,7 @@ def filter(repetition_dir):
                     row[2] = row[2][0:19]
                     writer.writerow(row)
 
-def aggregateRepetition(repetition_dir):
+def aggregate_repetition(repetition_dir):
     current_dir = repetition_dir
     files = []
 
@@ -129,6 +129,14 @@ def aggregateRepetition(repetition_dir):
 
     return order
 
+def clean_output_files(repetition_dir):
+    current_dir = repetition_dir
+
+    for file_name in os.listdir(current_dir):
+        if file_name.startswith('out_'):
+            file_path = os.path.join(current_dir, file_name)
+            os.remove(file_path)
+
 def total_aggregation_scenario(scenario_dir, output_directory):
     current_directory = scenario_dir
 
@@ -143,13 +151,14 @@ def total_aggregation_scenario(scenario_dir, output_directory):
         if repetition_dir.is_dir() and repetition_dir.name[-1].isdigit():
             print(f"    Processing {repetition_dir.name}...")
             filter(repetition_dir)
-            repetition = aggregateRepetition(repetition_dir)
+            repetition = aggregate_repetition(repetition_dir)
             if minMouldChanges == 0 or repetition["totalMouldChangesScenario"] < minMouldChanges:
                 objects = repetition["objects"]
                 orchestrator = repetition["orchestator"]
                 minMouldChanges = repetition["totalMouldChangesScenario"]
             totalCostScenarios += repetition["totalCostScenario"]
             totalTimeScenarios += repetition["totalProductionTimeScenario"]
+            clean_output_files(repetition_dir)
 
     avgTotalCost = totalCostScenarios / 10
     avgTotalTime = totalTimeScenarios / 10
