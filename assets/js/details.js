@@ -497,10 +497,12 @@ function insertScatterplot(data) {
 function insertLineChart(scenario) {
     var allGroup = [];
     var instances = {};
+    var objectStartDates = {};
     for (var i=0; i < Object.keys(scenario["objects"]).length; i++) {
         var name = scenario["objects"][i]["objectName"];
         allGroup.push(name);
         instances[name] = scenario["objects"][i]["instances"];
+        objectStartDates[name] = scenario["objects"][i]["startDate"];
     }
 
     // A color scale: one color for each group
@@ -625,9 +627,13 @@ function insertLineChart(scenario) {
     var allData = [];
     for (const obj in instances) {
         const d = Object.entries(instances[obj]).map(([instanceNumber, date]) => ({
-            instanceNumber: +instanceNumber,
+            instanceNumber: +(parseInt(instanceNumber)+1),
             date: new Date(date),
         }));
+        d.unshift({
+            instanceNumber: 0,
+            date: new Date(objectStartDates[obj]),
+        });
         allData.push(d);
     }
 
